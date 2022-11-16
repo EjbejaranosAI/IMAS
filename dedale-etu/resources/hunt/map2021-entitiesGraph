@@ -1,0 +1,7 @@
+mapname:map2021Graph
+agentExplo:Explo1:2:2:-1:-1:0:1:1
+agentExplo:Explo2:2:3:-1:-1:0:1:1
+agentExplo:Explo3:2:4:-1:-1:0:1:1
+agentExplo:Explo4:2:5:-1:-1:0:1:1
+agentExplo:Explo5:2:6:-1:-1:0:1:1
+wumpus:Golem1:1:1:-1:-1:2:1:1

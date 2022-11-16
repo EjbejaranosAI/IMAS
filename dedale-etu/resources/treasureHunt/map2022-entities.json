@@ -1,0 +1,90 @@
+[
+{ 
+  "agentType":"agentCollect",
+  "agentName": "A1",
+  "communicationRange": 3,
+  "initialLocation": "M30",
+  "backPackCapacityGold": 20,
+  "backPackCapacityDiamond":20, 
+  "detectionRadius": 0,
+  "strengthExpertise": 1,
+  "lockPickingExpertise":1
+  },
+{ 
+  "agentType":"agentCollect",
+  "agentName": "A2",
+  "communicationRange": 4,
+  "initialLocation": "94",
+  "backPackCapacityGold": 5,
+  "backPackCapacityDiamond":30, 
+  "detectionRadius": 0,
+  "strengthExpertise": 0,
+  "lockPickingExpertise":0
+  },
+{ 
+  "agentType":"agentCollect",
+  "agentName": "A3",
+  "communicationRange": 2,
+  "initialLocation": "47",
+  "backPackCapacityGold": 25,
+  "backPackCapacityDiamond":10, 
+  "detectionRadius": 0,
+  "strengthExpertise": 2,
+  "lockPickingExpertise":0
+  },
+{ 
+  "agentType":"agentCollect",
+  "agentName": "A4",
+  "communicationRange": 3,
+  "initialLocation": "M7",
+  "backPackCapacityGold": 10,
+  "backPackCapacityDiamond":40, 
+  "detectionRadius": 0,
+  "strengthExpertise": 0,
+  "lockPickingExpertise":1
+  },
+{ 
+  "agentType":"agentCollect",
+  "agentName": "A5",
+  "communicationRange": 2,
+  "initialLocation": "19",
+  "backPackCapacityGold": 70,
+  "backPackCapacityDiamond":100, 
+  "detectionRadius": 0,
+  "strengthExpertise": 0,
+  "lockPickingExpertise":2
+  },
+{ 
+  "agentType":"agentCollect",
+  "agentName": "A6",
+  "communicationRange": 2,
+  "initialLocation": "88",
+  "backPackCapacityGold": 7,
+  "backPackCapacityDiamond":30, 
+  "detectionRadius": 0,
+  "strengthExpertise": 1,
+  "lockPickingExpertise":1
+  },
+{ 
+  "agentType":"wumpus",
+  "agentName": "G1",
+  "communicationRange": 2,
+  "initialLocation": "M26",
+  "backPackCapacityGold": 20,
+  "backPackCapacityDiamond":80, 
+  "detectionRadius": 2,
+  "strengthExpertise": 2,
+  "lockPickingExpertise":2
+  },
+{ 
+  "agentType":"wumpus",
+  "agentName": "G2",
+  "communicationRange": 2,
+  "initialLocation": "M11",
+  "backPackCapacityGold": 40,
+  "backPackCapacityDiamond":40, 
+  "detectionRadius": 3,
+  "strengthExpertise": 1,
+  "lockPickingExpertise":1
+  }
+]

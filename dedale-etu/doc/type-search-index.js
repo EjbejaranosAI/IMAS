@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"eu.su.mas.dedaleEtu.mas.knowledge","l":"MapRepresentation"},{"p":"eu.su.mas.dedaleEtu.mas.knowledge","l":"MapRepresentation.MapAttribute"}]

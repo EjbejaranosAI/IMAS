@@ -1,0 +1,9 @@
+mapname:map2020graph
+mapname:map2020Tree
+agentExplo:Explo1:3:4:-1:-1:0:1:1
+agentExplo:Explo2:2:94:-1:-1:0:1:1
+agentExplo:Explo3:4:2:-1:-1:0:1:1
+agentExplo:Explo4:1:3:-1:-1:0:1:1
+agentExplo:Explo5:2:7:-1:-1:0:1:1
+agentExplo:Explo6:1:58:-1:-1:0:1:1
+wumpus:Golem:3:44:-1:-1:10:1:1

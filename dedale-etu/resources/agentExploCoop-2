@@ -1,0 +1,4 @@
+mapname:map2018MultiTypes
+agentExplo:1stAgent:3:free:-1:-1:0:1:1
+agentExplo:2ndAgent:3:free:-1:-1:0:1:1
+HumanControlled:ImHere:3:free:-1:-1:1:1:1

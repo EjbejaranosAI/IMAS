@@ -1,0 +1,907 @@
+DGS004
+null 0 0
+an 0
+cn 0  label:0
+an 1
+cn 1  label:1
+an 2
+cn 2  label:2
+an 3
+cn 3  label:3
+an 4
+cn 4  label:4
+an 5
+cn 5  label:5
+an 6
+cn 6  label:6
+an 7
+cn 7  label:7
+an 8
+cn 8  label:8
+an 9
+cn 9  label:9
+an 10
+cn 10  label:10
+an 11
+cn 11  label:11
+an 12
+cn 12  label:12
+an 13
+cn 13  label:13
+an 14
+cn 14  label:14
+an 15
+cn 15  label:15
+an 16
+cn 16  label:16
+an 17
+cn 17  label:17
+an 18
+cn 18  label:18
+an 19
+cn 19  label:19
+an 20
+cn 20  label:20
+an 21
+cn 21  label:21
+an 22
+cn 22  label:22
+an 23
+cn 23  label:23
+an 24
+cn 24  label:24
+an 25
+cn 25  label:25
+an 26
+cn 26  label:26
+an 27
+cn 27  label:27
+an 28
+cn 28  label:28
+an 29
+cn 29  label:29
+an 30
+cn 30  label:30
+an 31
+cn 31  label:31
+an 32
+cn 32  label:32
+an 33
+cn 33  label:33
+an 34
+cn 34  label:34
+an 35
+cn 35  label:35
+an 36
+cn 36  label:36
+an 37
+cn 37  label:37
+an 38
+cn 38  label:38
+an 39
+cn 39  label:39
+an 40
+cn 40  label:40
+an 41
+cn 41  label:41
+an 42
+cn 42  label:42
+an 43
+cn 43  label:43
+an 44
+cn 44  label:44
+an 45
+cn 45  label:45
+an 46
+cn 46  label:46
+an 47
+cn 47  label:47
+an 48
+cn 48  label:48
+an 49
+cn 49  label:49
+an 50
+cn 50  label:50
+an 51
+cn 51  label:51
+an 52
+cn 52  label:52
+an 53
+cn 53  label:53
+an 54
+cn 54  label:54
+an 55
+cn 55  label:55
+an 56
+cn 56  label:56
+an 57
+cn 57  label:57
+an 58
+cn 58  label:58
+an 59
+cn 59  label:59
+an 60
+cn 60  label:60
+an 61
+cn 61  label:61
+an 62
+cn 62  label:62
+an 63
+cn 63  label:63
+an 64
+cn 64  label:64
+an 65
+cn 65  label:65
+an 66
+cn 66  label:66
+an 67
+cn 67  label:67
+an 68
+cn 68  label:68
+an 69
+cn 69  label:69
+an 70
+cn 70  label:70
+an 71
+cn 71  label:71
+an 72
+cn 72  label:72
+an 73
+cn 73  label:73
+an 74
+cn 74  label:74
+an 75
+cn 75  label:75
+an 76
+cn 76  label:76
+an 77
+cn 77  label:77
+an 78
+cn 78  label:78
+an 79
+cn 79  label:79
+an 80
+cn 80  label:80
+an 81
+cn 81  label:81
+an 82
+cn 82  label:82
+an 83
+cn 83  label:83
+an 84
+cn 84  label:84
+an 85
+cn 85  label:85
+an 86
+cn 86  label:86
+an 87
+cn 87  label:87
+an 88
+cn 88  label:88
+an 89
+cn 89  label:89
+an 90
+cn 90  label:90
+an 91
+cn 91  label:91
+an 92
+cn 92  label:92
+an 93
+cn 93  label:93
+an 94
+cn 94  label:94
+an 95
+cn 95  label:95
+an 96
+cn 96  label:96
+an 97
+cn 97  label:97
+an 98
+cn 98  label:98
+an 99
+cn 99  label:99
+an 100
+cn 100  label:100
+an 101
+cn 101  label:101
+an 102
+cn 102  label:102
+an 103
+cn 103  label:103
+an 104
+cn 104  label:104
+an 105
+cn 105  label:105
+an 106
+cn 106  label:106
+an 107
+cn 107  label:107
+an 108
+cn 108  label:108
+an 109
+cn 109  label:109
+an 110
+cn 110  label:110
+an 111
+cn 111  label:111
+an 112
+cn 112  label:112
+an 113
+cn 113  label:113
+an 114
+cn 114  label:114
+an 115
+cn 115  label:115
+an 116
+cn 116  label:116
+an 117
+cn 117  label:117
+an 118
+cn 118  label:118
+an 119
+cn 119  label:119
+an 120
+cn 120  label:120
+an 121
+cn 121  label:121
+an 122
+cn 122  label:122
+an 123
+cn 123  label:123
+an 124
+cn 124  label:124
+an 125
+cn 125  label:125
+an 126
+cn 126  label:126
+an 127
+cn 127  label:127
+an 128
+cn 128  label:128
+an 129
+cn 129  label:129
+an 130
+cn 130  label:130
+an 131
+cn 131  label:131
+an 132
+cn 132  label:132
+an 133
+cn 133  label:133
+an 134
+cn 134  label:134
+an 135
+cn 135  label:135
+an 136
+cn 136  label:136
+an 137
+cn 137  label:137
+an 138
+cn 138  label:138
+an 139
+cn 139  label:139
+an 140
+cn 140  label:140
+an 141
+cn 141  label:141
+an 142
+cn 142  label:142
+an 143
+cn 143  label:143
+an 144
+cn 144  label:144
+an 145
+cn 145  label:145
+an 146
+cn 146  label:146
+an 147
+cn 147  label:147
+an 148
+cn 148  label:148
+an 149
+cn 149  label:149
+an 150
+cn 150  label:150
+an 151
+cn 151  label:151
+an 152
+cn 152  label:152
+an 153
+cn 153  label:153
+an 154
+cn 154  label:154
+an 155
+cn 155  label:155
+an 156
+cn 156  label:156
+an 157
+cn 157  label:157
+an 158
+cn 158  label:158
+an 159
+cn 159  label:159
+an 160
+cn 160  label:160
+an 161
+cn 161  label:161
+an 162
+cn 162  label:162
+an 163
+cn 163  label:163
+an 164
+cn 164  label:164
+an 165
+cn 165  label:165
+an 166
+cn 166  label:166
+an 167
+cn 167  label:167
+an 168
+cn 168  label:168
+an 169
+cn 169  label:169
+an 170
+cn 170  label:170
+an 171
+cn 171  label:171
+an 172
+cn 172  label:172
+an 173
+cn 173  label:173
+an 174
+cn 174  label:174
+an 175
+cn 175  label:175
+an 176
+cn 176  label:176
+an 177
+cn 177  label:177
+an 178
+cn 178  label:178
+an 179
+cn 179  label:179
+an 180
+cn 180  label:180
+an 181
+cn 181  label:181
+an 182
+cn 182  label:182
+an 183
+cn 183  label:183
+an 184
+cn 184  label:184
+an 185
+cn 185  label:185
+an 186
+cn 186  label:186
+an 187
+cn 187  label:187
+an 188
+cn 188  label:188
+an 189
+cn 189  label:189
+an 190
+cn 190  label:190
+an 191
+cn 191  label:191
+an 192
+cn 192  label:192
+an 193
+cn 193  label:193
+an 194
+cn 194  label:194
+an 195
+cn 195  label:195
+an 196
+cn 196  label:196
+an 197
+cn 197  label:197
+an 198
+cn 198  label:198
+an 199
+cn 199  label:199
+an 200
+cn 200  label:200
+an 201
+cn 201  label:201
+an 202
+cn 202  label:202
+an 203
+cn 203  label:203
+an 204
+cn 204  label:204
+an 205
+cn 205  label:205
+an 206
+cn 206  label:206
+an 207
+cn 207  label:207
+an 208
+cn 208  label:208
+an 209
+cn 209  label:209
+an 210
+cn 210  label:210
+an 211
+cn 211  label:211
+an 212
+cn 212  label:212
+an 213
+cn 213  label:213
+an 214
+cn 214  label:214
+an 215
+cn 215  label:215
+an 216
+cn 216  label:216
+an 217
+cn 217  label:217
+an 218
+cn 218  label:218
+an 219
+cn 219  label:219
+an 220
+cn 220  label:220
+an 221
+cn 221  label:221
+an 222
+cn 222  label:222
+an 223
+cn 223  label:223
+an 224
+cn 224  label:224
+an 225
+cn 225  label:225
+an 226
+cn 226  label:226
+an 227
+cn 227  label:227
+an 228
+cn 228  label:228
+an 229
+cn 229  label:229
+an 230
+cn 230  label:230
+an 231
+cn 231  label:231
+an 232
+cn 232  label:232
+an 233
+cn 233  label:233
+an 234
+cn 234  label:234
+an 235
+cn 235  label:235
+an 236
+cn 236  label:236
+an 237
+cn 237  label:237
+an 238
+cn 238  label:238
+an 239
+cn 239  label:239
+an 240
+cn 240  label:240
+an 241
+cn 241  label:241
+an 242
+cn 242  label:242
+an 243
+cn 243  label:243
+an 244
+cn 244  label:244
+an 245
+cn 245  label:245
+an 246
+cn 246  label:246
+an 247
+cn 247  label:247
+an 248
+cn 248  label:248
+an 249
+cn 249  label:249
+an 250
+cn 250  label:250
+an 251
+cn 251  label:251
+an 252
+cn 252  label:252
+an 253
+cn 253  label:253
+an 254
+cn 254  label:254
+an 255
+cn 255  label:255
+an 256
+cn 256  label:256
+an 257
+cn 257  label:257
+an 258
+cn 258  label:258
+an 259
+cn 259  label:259
+an 260
+cn 260  label:260
+an 261
+cn 261  label:261
+an 262
+cn 262  label:262
+an 263
+cn 263  label:263
+an 264
+cn 264  label:264
+an 265
+cn 265  label:265
+an 266
+cn 266  label:266
+an 267
+cn 267  label:267
+an 268
+cn 268  label:268
+an 269
+cn 269  label:269
+an 270
+cn 270  label:270
+an 271
+cn 271  label:271
+an 272
+cn 272  label:272
+an 273
+cn 273  label:273
+an 274
+cn 274  label:274
+an 275
+cn 275  label:275
+an 276
+cn 276  label:276
+an 277
+cn 277  label:277
+an 278
+cn 278  label:278
+an 279
+cn 279  label:279
+an 280
+cn 280  label:280
+an 281
+cn 281  label:281
+an 282
+cn 282  label:282
+an 283
+cn 283  label:283
+an 284
+cn 284  label:284
+an 285
+cn 285  label:285
+an 286
+cn 286  label:286
+an 287
+cn 287  label:287
+an 288
+cn 288  label:288
+an 289
+cn 289  label:289
+an 290
+cn 290  label:290
+an 291
+cn 291  label:291
+an 292
+cn 292  label:292
+an 293
+cn 293  label:293
+an 294
+cn 294  label:294
+an 295
+cn 295  label:295
+an 296
+cn 296  label:296
+an 297
+cn 297  label:297
+an 298
+cn 298  label:298
+an 299
+cn 299  label:299
+an 300
+cn 300  label:300
+an 301
+cn 301  label:301
+ae 0_1 0  1
+ae 2_1 2  1
+ae 3_2 3  2
+ae 4_1 4  1
+ae 5_2 5  2
+ae 6_0 6  0
+ae 7_2 7  2
+ae 8_5 8  5
+ae 9_2 9  2
+ae 10_4 10  4
+ae 11_10 11  10
+ae 12_0 12  0
+ae 13_8 13  8
+ae 14_9 14  9
+ae 15_4 15  4
+ae 16_8 16  8
+ae 17_8 17  8
+ae 18_0 18  0
+ae 19_0 19  0
+ae 20_11 20  11
+ae 21_8 21  8
+ae 22_2 22  2
+ae 23_8 23  8
+ae 24_8 24  8
+ae 25_19 25  19
+ae 26_1 26  1
+ae 27_14 27  14
+ae 28_8 28  8
+ae 29_5 29  5
+ae 30_2 30  2
+ae 31_2 31  2
+ae 32_2 32  2
+ae 33_2 33  2
+ae 34_11 34  11
+ae 35_5 35  5
+ae 36_2 36  2
+ae 37_8 37  8
+ae 38_32 38  32
+ae 39_5 39  5
+ae 40_10 40  10
+ae 41_28 41  28
+ae 42_9 42  9
+ae 43_9 43  9
+ae 44_2 44  2
+ae 45_16 45  16
+ae 46_27 46  27
+ae 47_10 47  10
+ae 48_5 48  5
+ae 49_14 49  14
+ae 50_1 50  1
+ae 51_8 51  8
+ae 52_21 52  21
+ae 53_18 53  18
+ae 54_19 54  19
+ae 55_50 55  50
+ae 56_5 56  5
+ae 57_8 57  8
+ae 58_42 58  42
+ae 59_22 59  22
+ae 60_2 60  2
+ae 61_50 61  50
+ae 62_22 62  22
+ae 63_8 63  8
+ae 64_2 64  2
+ae 65_5 65  5
+ae 66_27 66  27
+ae 67_25 67  25
+ae 68_60 68  60
+ae 69_9 69  9
+ae 70_32 70  32
+ae 71_2 71  2
+ae 72_44 72  44
+ae 73_8 73  8
+ae 74_4 74  4
+ae 75_41 75  41
+ae 76_61 76  61
+ae 77_22 77  22
+ae 78_44 78  44
+ae 79_34 79  34
+ae 80_27 80  27
+ae 81_45 81  45
+ae 82_27 82  27
+ae 83_71 83  71
+ae 84_6 84  6
+ae 85_44 85  44
+ae 86_34 86  34
+ae 87_64 87  64
+ae 88_64 88  64
+ae 89_37 89  37
+ae 90_28 90  28
+ae 91_18 91  18
+ae 92_4 92  4
+ae 93_28 93  28
+ae 94_68 94  68
+ae 95_27 95  27
+ae 96_60 96  60
+ae 97_8 97  8
+ae 98_4 98  4
+ae 99_1 99  1
+ae 100_44 100  44
+ae 101_73 101  73
+ae 102_10 102  10
+ae 103_5 103  5
+ae 104_85 104  85
+ae 105_1 105  1
+ae 106_1 106  1
+ae 107_60 107  60
+ae 108_0 108  0
+ae 109_3 109  3
+ae 110_92 110  92
+ae 111_8 111  8
+ae 112_60 112  60
+ae 113_2 113  2
+ae 114_93 114  93
+ae 115_22 115  22
+ae 116_109 116  109
+ae 117_4 117  4
+ae 118_10 118  10
+ae 119_21 119  21
+ae 120_50 120  50
+ae 121_91 121  91
+ae 122_27 122  27
+ae 123_1 123  1
+ae 124_118 124  118
+ae 125_1 125  1
+ae 126_40 126  40
+ae 127_9 127  9
+ae 128_49 128  49
+ae 129_56 129  56
+ae 130_28 130  28
+ae 131_19 131  19
+ae 132_19 132  19
+ae 133_10 133  10
+ae 134_15 134  15
+ae 135_2 135  2
+ae 136_115 136  115
+ae 137_8 137  8
+ae 138_74 138  74
+ae 139_15 139  15
+ae 140_29 140  29
+ae 141_18 141  18
+ae 142_1 142  1
+ae 143_117 143  117
+ae 144_92 144  92
+ae 145_27 145  27
+ae 146_15 146  15
+ae 147_51 147  51
+ae 148_130 148  130
+ae 149_9 149  9
+ae 150_81 150  81
+ae 151_14 151  14
+ae 152_8 152  8
+ae 153_145 153  145
+ae 154_27 154  27
+ae 155_0 155  0
+ae 156_17 156  17
+ae 157_155 157  155
+ae 158_134 158  134
+ae 159_33 159  33
+ae 160_78 160  78
+ae 161_24 161  24
+ae 162_10 162  10
+ae 163_12 163  12
+ae 164_110 164  110
+ae 165_46 165  46
+ae 166_5 166  5
+ae 167_9 167  9
+ae 168_4 168  4
+ae 169_140 169  140
+ae 170_18 170  18
+ae 171_161 171  161
+ae 172_55 172  55
+ae 173_19 173  19
+ae 174_167 174  167
+ae 175_9 175  9
+ae 176_28 176  28
+ae 177_152 177  152
+ae 178_22 178  22
+ae 179_120 179  120
+ae 180_86 180  86
+ae 181_137 181  137
+ae 182_15 182  15
+ae 183_68 183  68
+ae 184_154 184  154
+ae 185_4 185  4
+ae 186_170 186  170
+ae 187_112 187  112
+ae 188_25 188  25
+ae 189_8 189  8
+ae 190_53 190  53
+ae 191_188 191  188
+ae 192_86 192  86
+ae 193_135 193  135
+ae 194_0 194  0
+ae 195_5 195  5
+ae 196_20 196  20
+ae 197_4 197  4
+ae 198_92 198  92
+ae 199_33 199  33
+ae 200_46 200  46
+ae 201_75 201  75
+ae 202_86 202  86
+ae 203_199 203  199
+ae 204_25 204  25
+ae 205_95 205  95
+ae 206_98 206  98
+ae 207_22 207  22
+ae 208_14 208  14
+ae 209_66 209  66
+ae 210_63 210  63
+ae 211_115 211  115
+ae 212_60 212  60
+ae 213_19 213  19
+ae 214_2 214  2
+ae 215_31 215  31
+ae 216_139 216  139
+ae 217_45 217  45
+ae 218_8 218  8
+ae 219_5 219  5
+ae 220_170 220  170
+ae 221_3 221  3
+ae 222_124 222  124
+ae 223_8 223  8
+ae 224_14 224  14
+ae 225_84 225  84
+ae 226_209 226  209
+ae 227_8 227  8
+ae 228_145 228  145
+ae 229_8 229  8
+ae 230_83 230  83
+ae 231_1 231  1
+ae 232_231 232  231
+ae 233_1 233  1
+ae 234_28 234  28
+ae 235_81 235  81
+ae 236_15 236  15
+ae 237_86 237  86
+ae 238_112 238  112
+ae 239_3 239  3
+ae 240_60 240  60
+ae 241_1 241  1
+ae 242_124 242  124
+ae 243_76 243  76
+ae 244_188 244  188
+ae 245_104 245  104
+ae 246_1 246  1
+ae 247_84 247  84
+ae 248_173 248  173
+ae 249_73 249  73
+ae 250_17 250  17
+ae 251_6 251  6
+ae 252_167 252  167
+ae 253_4 253  4
+ae 254_25 254  25
+ae 255_56 255  56
+ae 256_15 256  15
+ae 257_154 257  154
+ae 258_37 258  37
+ae 259_16 259  16
+ae 260_62 260  62
+ae 261_81 261  81
+ae 262_25 262  25
+ae 263_14 263  14
+ae 264_4 264  4
+ae 265_73 265  73
+ae 266_112 266  112
+ae 267_155 267  155
+ae 268_5 268  5
+ae 269_51 269  51
+ae 270_2 270  2
+ae 271_64 271  64
+ae 272_38 272  38
+ae 273_14 273  14
+ae 274_253 274  253
+ae 275_256 275  256
+ae 276_60 276  60
+ae 277_53 277  53
+ae 278_10 278  10
+ae 279_27 279  27
+ae 280_1 280  1
+ae 281_19 281  19
+ae 282_112 282  112
+ae 283_15 283  15
+ae 284_17 284  17
+ae 285_211 285  211
+ae 286_246 286  246
+ae 287_74 287  74
+ae 288_22 288  22
+ae 289_154 289  154
+ae 290_86 290  86
+ae 291_1 291  1
+ae 292_44 292  44
+ae 293_2 293  2
+ae 294_124 294  124
+ae 295_55 295  55
+ae 296_34 296  34
+ae 297_239 297  239
+ae 298_5 298  5
+ae 299_211 299  211
+ae 300_15 300  15
+ae 301_0 301  0

@@ -1,0 +1,400 @@
+DGS004
+null 0 0
+an M1  label:M1
+an M2	label:M2
+an M3	label:M3
+an M4	label:M4
+an M8	label:M8
+an M6	label:M6
+an M7	label:M7
+an M9	label:M9
+an M10	label:M10
+an M11	label:M11
+an M12	label:M12
+an M13	label:M13
+an M14	label:M14
+an M15	label:M15
+an M16	label:M16
+an M18	label:M18
+an M19	label:M19
+an M20	label:M20
+an M21	label:M21
+an M22	label:M22
+an M23	label:M23
+an M24	label:M24
+an M25	label:M25
+an M26	label:M26
+an M28	label:M28
+an M29	label:M29
+an M30	label:M30
+an M31	label:M31
+an M34	label:M34
+an M35	label:M35
+an M39	label:M39
+an M40	label:M40
+ae M8-M7 M7  M8	
+ae M3-M2 M2  M3	
+ae M4-M3 M3  M4	
+ae M6-M9 M9  M6	
+ae M7-M6 M6  M7	
+ae M2-M1 M1  M2	
+ae M9-M1 M1  M9	
+ae M6-M2 M2  M6	
+ae M7-M3 M3  M7	
+ae M8-M4 M4  M8	
+ae M10-M14 M14  M10	
+ae M11-M15 M15  M11	
+ae M12-M16 M16  M12	
+ae M15-M14 M14  M15	
+ae M16-M15 M15  M16	
+ae M18-M16 M16  M18	
+ae M12-M13 M13  M12	
+ae M11-M12 M12  M11	
+ae M10-M11 M11  M10	
+ae M1-M10 M10  M1	
+ae M2-M11 M11  M2	
+ae M3-M12 M12  M3	
+ae M4-M13 M13  M4	
+ae M13-M18 M18  M13	
+ae M30-M9 M9  M30	
+ae M29-M30 M30  M29	
+ae M28-M29 M29  M28	
+ae M31-M28 M28  M31	
+ae M30-M31 M31  M30	
+ae M34-M9 M9  M34	
+ae M23-M39 M39  M23	
+ae M21-M23 M23  M21	
+ae M8-M21 M21  M8	
+ae M20-M8 M8  M20	
+ae M19-M20 M20  M19	
+ae M4-M19 M19  M4	
+ae M22-M20 M20  M22	
+ae M24-M22 M22  M24	
+ae M25-M24 M24  M25	
+ae M26-M25 M25  M26	
+ae M22-M26 M26  M22	
+ae M23-M24 M24  M23	
+ae M22-M21 M21  M22	
+ae M35-M18 M18  M35	
+ae M28-M39 M28  M39	
+ae M40-M39 M39  M40	
+an 2	label:2
+an 3	label:3
+an 4	label:4
+an 5	label:5
+an 7	label:7
+an 8	label:8
+an 9	label:9
+an 10	label:10
+an 11	label:11
+an 12	label:12
+an 13	label:13
+an 14	label:14
+an 15	label:15
+an 16	label:16
+an 17	label:17
+an 18	label:18
+an 19	label:19
+an 20	label:20
+an 21	label:21
+an 22	label:22
+an 24	label:24
+an 25	label:25
+an 26	label:26
+an 27	label:27
+an 28	label:28
+an 29	label:29
+an 30	label:30
+an 31	label:31
+an 32	label:32
+an 33	label:33
+an 35	label:35
+an 36	label:36
+an 37	label:37
+an 38	label:38
+an 39	label:39
+an 40	label:40
+an 42	label:42
+an 43	label:43
+an 44	label:44
+an 45	label:45
+an 46	label:46
+an 47	label:47
+an 48	label:48
+an 49	label:49
+an 50	label:50
+an 51	label:51
+an 52	label:52
+an 53	label:53
+an 54	label:54
+an 55	label:55
+an 56	label:56
+an 57	label:57
+an 58	label:58
+an 59	label:59
+an 60	label:60
+an 61	label:61
+an 62	label:62
+an 63	label:63
+an 65	label:65
+an 66	label:66
+an 67	label:67
+an 68	label:68
+an 69	label:69
+an 70	label:70
+an 71	label:71
+an 73	label:73
+an 74	label:74
+an 75	label:75
+an 76	label:76
+an 77	label:77
+an 78	label:78
+an 79	label:79
+an 80	label:80
+an 81	label:81
+an 82	label:82
+an 83	label:83
+an 84	label:84
+an 85	label:85
+an 86	label:86
+an 87	label:87
+an 88	label:88
+an 89	label:89
+an 90	label:90
+an 91	label:91
+an 92	label:92
+an 93	label:93
+an 94	label:94
+an 95	label:95
+an 96	label:96
+an 97	label:97
+an 98	label:98
+an 99	label:99
+ae e4	2 3
+ae e5	2 7
+ae e6	3 4
+ae e7	4 5
+ae e9	5 58
+ae e11	7 8
+ae e12	8 9
+ae e13	9 10
+ae e14	60 10
+ae e15	10 11
+ae e16	8 12
+ae e17	12 13
+ae e18	13 14
+ae e19	14 15
+ae e20	15 17
+ae e21	15 19
+ae e22	16 18
+ae e23	16 20
+ae e24	16 21
+ae e25	16 22
+ae e26	17 28
+ae e27	17 27
+ae e28	19 27
+ae e29	20 25
+ae e30	21 24
+ae e32	22 97
+ae e33	22 51
+ae e34	28 81
+ae e35	28 29
+ae e36	27 31
+ae e37	25 26
+ae e38	25 33
+ae e39	24 33
+ae e41	29 35
+ae e42	30 31
+ae e43	31 80
+ae e44	30 36
+ae e45	31 32
+ae e46	33 40
+ae e48	35 43
+ae e49	35 44
+ae e50	36 44
+ae e51	37 38
+ae e52	37 45
+ae e53	38 46
+ae e54	39 47
+ae e55	39 48
+ae e56	40 49
+ae e57	40 59
+ae e60	42 50
+ae e61	43 44
+ae e62	44 45
+ae e63	44 57
+ae e64	46 47
+ae e65	49 66
+ae e66	52 66
+ae e68	57 81
+ae e69	56 63
+ae e70	56 54
+ae e71	55 56
+ae e72	54 55
+ae e74	55 65
+ae e75	54 66
+ae e76	53 55
+ae e77	52 53
+ae e78	52 67
+ae e79	51 67
+ae e80	59 61
+ae e81	59 62
+ae e82	60 63
+ae e83	61 62
+ae e84	62 63
+ae e86	63 65
+ae e88	65 78
+ae e89	66 67
+ae e90	67 68
+ae e91	67 71
+ae e92	68 69
+ae e93	69 70
+ae e95	69 73
+ae e96	69 74
+ae e97	69 75
+ae e98	70 71
+ae e99	71 76
+ae e101	73 74
+ae e102	74 75
+ae e104	76 77
+ae e105	77 78
+ae e106	78 79
+ae e107	80 81
+ae e108	82 84
+ae e109	82 85
+ae e110	82 92
+ae e111	83 85
+ae e112	83 89
+ae e113	83 88
+ae e114	83 99
+ae e115	84 85
+ae e116	84 86
+ae e117	85 87
+ae e118	85 86
+ae e119	85 92
+ae e120	86 87
+ae e121	88 89
+ae e122	89 90
+ae e123	89 91
+ae e124	90 91
+ae e125	91 92
+ae e126	92 93
+ae e127	93 94
+ae e128	50 95
+ae e130	95 96
+ae e131	97 98
+ae e132	98 99
+ae e177	M35 32
+ae e178 M34 79 
+ae e179 M14 42
+ae e180 96 11
+ae 181 86 75
+ae 182 48 M26
+an h1  
+cn h1 label:h1 
+an h2  
+cn h2 label:h2 
+an h3  
+cn h3 label:h3 
+an h4  
+cn h4 label:h4 
+an h5  
+cn h5 label:h5 
+an h6  
+cn h6 label:h6 
+an h7  
+cn h7 label:h7 
+an h8  
+cn h8 label:h8 
+an h9  
+cn h9 label:h9 
+an h11  
+cn h11 label:h11 
+an h12  
+cn h12 label:h12 
+an h13  
+cn h13 label:h13 
+an h14  
+cn h14 label:h14 
+an h15  
+cn h15 label:h15 
+an h16  
+cn h16 label:h16 
+an h17  
+cn h17 label:h17 
+an h18  
+cn h18 label:h18 
+an h19  
+cn h19 label:h19 
+an h20  
+cn h20 label:h20 
+an h21  
+cn h21 label:h21 
+an h22  
+cn h22 label:h22 
+an h23  
+cn h23 label:h23 
+an h25  
+cn h25 label:h25 
+an h26  
+cn h26 label:h26 
+an h40  
+cn h40 label:h40 
+ae he1 h1 h2
+ae he2 h1 h3
+ae he3 h1 h4
+ae he4 h1 h5
+ae he5 h1 h6
+ae he6 h1 h7
+ae he7 h1 h8
+ae he8 h1 h9
+ae he9 h2 h3
+ae he10 h2 h9
+ae he11 h3 h4
+ae he12 h4 h5
+ae he13 h5 h6
+ae he14 h6 h7
+ae he15 h7 h8
+ae he16 h8 h9
+ae he19 h11 h12
+ae he20 h12 h13
+ae he21 h13 h14
+ae he22 h14 h15
+ae he23 h15 h16
+ae he24 h16 h17
+ae he25 h17 h18
+ae he26 h18 h19
+ae he27 h19 h20
+ae he28 h20 h21
+ae he29 h21 h22
+ae he30 h22 h23
+ae he34 h11 h9
+ae he35 h11 h2
+ae he36 h12 h2
+ae he37 h13 h2
+ae he38 h13 h3
+ae he39 h14 h3
+ae he40 h15 h3
+ae he41 h15 h4
+ae he42 h16 h4
+ae he43 h17 h4
+ae he44 h17 h5
+ae he45 h18 h5
+ae he46 h19 h5
+ae he47 h19 h6
+ae he48 h20 h6
+ae he49 h21 h6
+ae he50 h21 h7
+ae he51 h22 h7
+ae he52 h23 h7
+ae he53 h23 h8
+ae he55 h25 h8
+ae he56 h25 h9
+ae he73 h26 h25
+ae he75 h26 h11
+ae he115 h40 h23
+ae he117 h40 h25
+ae he118 h8 h40
+ae he119 h9 h26
+ae he120 h40 M26
+ae he121 94 M34

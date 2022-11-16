@@ -1,0 +1,6 @@
+mapname:map2021Tree
+agentExplo:Explo1:2:290:-1:-1:0:1:1
+agentExplo:Explo2:2:216:-1:-1:0:1:1
+agentExplo:Explo3:3:32:-1:-1:0:1:1
+wumpus:Golem2:1:25:-1:-1:2:1:1
+wumpus:Golem1:1:8:-1:-1:1:1:1

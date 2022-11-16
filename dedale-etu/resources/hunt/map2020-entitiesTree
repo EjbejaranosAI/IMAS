@@ -1,0 +1,5 @@
+mapname:map2020Tree
+agentExplo:Explo1:3:220:-1:-1:0:1:1
+agentExplo:Explo2:3:170:-1:-1:0:1:1
+agentExplo:Explo3:3:211:-1:-1:0:1:1
+wumpus:Golem:3:229:-1:-1:1:1:1
