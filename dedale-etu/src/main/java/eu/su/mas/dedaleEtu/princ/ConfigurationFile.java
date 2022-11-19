@@ -89,7 +89,8 @@ public final class ConfigurationFile {
 	 * Give the elements available on the map, if any
 	 */
 	// If the environment is loaded but you do not want to define elements on the map
-	public static String INSTANCE_CONFIGURATION_ELEMENTS="resources/distributedExploration/testMap";
+//	public static String INSTANCE_CONFIGURATION_ELEMENTS="resources/distributedExploration/testMap";
+	public static String INSTANCE_CONFIGURATION_ELEMENTS="resources/URVElements";
 	
 	// otherwise
 	//public static String INSTANCE_CONFIGURATION_ELEMENTS="resources/treasureHunt/map2019-elementsExam1";
@@ -147,7 +148,8 @@ public final class ConfigurationFile {
 	 * Must'nt be null as it describes the native agents' capabilities 
 	 */
 	//public static String INSTANCE_CONFIGURATION_ENTITIES=null;
-	public static String INSTANCE_CONFIGURATION_ENTITIES="resources/agentExplo";
+//	public static String INSTANCE_CONFIGURATION_ENTITIES="resources/agentExplo";
+	public static String INSTANCE_CONFIGURATION_ENTITIES="resources/agents.json";
 	//public static String INSTANCE_CONFIGURATION_ENTITIES="resources/agentExplo-2";
 	//public static String INSTANCE_CONFIGURATION_ENTITIES="resources/agentExploCoop-2";
 	//public static String INSTANCE_CONFIGURATION_ENTITIES="resources/agentExploCoop-2.json";
