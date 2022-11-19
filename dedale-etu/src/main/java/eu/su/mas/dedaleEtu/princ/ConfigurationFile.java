@@ -90,7 +90,7 @@ public final class ConfigurationFile {
 	 */
 	// If the environment is loaded but you do not want to define elements on the map
 //	public static String INSTANCE_CONFIGURATION_ELEMENTS="resources/distributedExploration/testMap";
-	public static String INSTANCE_CONFIGURATION_ELEMENTS="resources/URVElements";
+	public static String INSTANCE_CONFIGURATION_ELEMENTS="resources/TerrassaElements3";
 	
 	// otherwise
 	//public static String INSTANCE_CONFIGURATION_ELEMENTS="resources/treasureHunt/map2019-elementsExam1";
