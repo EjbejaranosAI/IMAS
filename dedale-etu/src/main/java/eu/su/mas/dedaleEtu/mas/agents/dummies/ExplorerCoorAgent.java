@@ -9,8 +9,8 @@ import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agent.behaviours.ReceiveTreasureTankerBehaviour;
 import eu.su.mas.dedale.mas.agent.behaviours.startMyBehaviours;
-import eu.su.mas.dedale.mas.agent.dummies.ExploreSoloAgent;
-import eu.su.mas.dedale.mas.agent.dummies.CollectorCoorAgent;
+import eu.su.mas.dedaleEtu.mas.agents.dummies.ExploreSoloAgent;
+import eu.su.mas.dedaleEtu.mas.agents.dummies.CollectorCoorAgent;
 import eu.su.mas.dedale.mas.agent.knowledge.MapRepresentation;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
@@ -104,15 +104,20 @@ class TrackExplorers extends SimpleBehaviour {
 	 */
 	private static final long serialVersionUID = 9088209402507795289L;
 
-	public TrackExplorers (final AbstractDedaleAgent myagent, ExploreSoloAgent[] agents) {
-		super(myagent, 10000);
+	private boolean finished = false;
+
+	public TrackExplorers (final AbstractDedaleAgent myagent) {
+		super(myagent);
 	}
 
 	@Override
-	public void onTick() {
-		//Example to retrieve the current position
-		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
+	public void action() {
+		// empty for now
+	}
 
+	@Override
+	public boolean done() {
+		return finished;
 	}
 }
 
@@ -123,15 +128,20 @@ class SendExplorer extends SimpleBehaviour {
 	 */
 	private static final long serialVersionUID = 9088209402507795289L;
 
-	public SendExplorer (final AbstractDedaleAgent myagent, ExploreSoloAgent agent) {
-		super(myagent, 10000);
+	private boolean finished = false;
+
+	public SendExplorer (final AbstractDedaleAgent myagent) {
+		super(myagent);
+	}
+
+@Override
+	public void action() {
+		// empty for now
 	}
 
 	@Override
-	public void onTick() {
-		//Example to retrieve the current position
-		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
-
+	public boolean done() {
+		return finished;
 	}
 
 }
@@ -143,15 +153,20 @@ class ReceiveMapUpdate extends SimpleBehaviour {
 	 */
 	private static final long serialVersionUID = 9088209402507795289L;
 
-	public ReceiveMapUpdate (final AbstractDedaleAgent myagent, MapRepresentation mymap) {
-		super(myagent, 10000);
+	private boolean finished = false;
+
+	public ReceiveMapUpdate (final AbstractDedaleAgent myagent) {
+		super(myagent);
+	}
+
+@Override
+	public void action() {
+		// empty for now
 	}
 
 	@Override
-	public void onTick() {
-		//Example to retrieve the current position
-		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
-
+	public boolean done() {
+		return finished;
 	}
 
 }
@@ -163,15 +178,20 @@ class ReceiveTreasureLocation extends SimpleBehaviour {
 	 */
 	private static final long serialVersionUID = 9088209402507795289L;
 
-	public ReceiveTreasureLocation (final AbstractDedaleAgent myagent, MapRepresentation mymap) {
-		super(myagent, 10000);
+	private boolean finished = false;
+
+	public ReceiveTreasureLocation (final AbstractDedaleAgent myagent) {
+		super(myagent);
+	}
+
+@Override
+	public void action() {
+		// empty for now
 	}
 
 	@Override
-	public void onTick() {
-		//Example to retrieve the current position
-		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
-
+	public boolean done() {
+		return finished;
 	}
 
 }
@@ -183,15 +203,20 @@ class PetitionCollectorCoor extends SimpleBehaviour {
 	 */
 	private static final long serialVersionUID = 9088209402507795289L;
 
-	public PetitionCollectorCoor (final AbstractDedaleAgent myagent, CollectorCoorAgent agent) {
-		super(myagent, 10000);
+	private boolean finished = false;
+
+	public PetitionCollectorCoor (final AbstractDedaleAgent myagent) {
+		super(myagent);
+	}
+
+@Override
+	public void action() {
+		// empty for now
 	}
 
 	@Override
-	public void onTick() {
-		//Example to retrieve the current position
-		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
-
+	public boolean done() {
+		return finished;
 	}
 
 }

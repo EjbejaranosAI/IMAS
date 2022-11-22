@@ -9,7 +9,7 @@ import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agent.behaviours.ReceiveTreasureTankerBehaviour;
 import eu.su.mas.dedale.mas.agent.behaviours.startMyBehaviours;
-import eu.su.mas.dedale.mas.agent.dummies.DummyTankerAgent;
+import eu.su.mas.dedaleEtu.mas.agents.dummies.DummyTankerAgent;
 import eu.su.mas.dedale.mas.agent.knowledge.MapRepresentation;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
@@ -99,15 +99,20 @@ class TrackTanker extends SimpleBehaviour {
 	 */
 	private static final long serialVersionUID = 9088209402507795289L;
 
-	public TrackTanker (final AbstractDedaleAgent myagent, DummyTankerAgent agent) {
-		super(myagent, 10000);
+	private boolean finished = false;
+
+	public TrackTanker (final AbstractDedaleAgent myagent) {
+		super(myagent);
+	}
+
+@Override
+	public void action() {
+		// empty for now
 	}
 
 	@Override
-	public void onTick() {
-		//Example to retrieve the current position
-		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
-
+	public boolean done() {
+		return finished;
 	}
 }
 
@@ -118,14 +123,19 @@ class SendTanker extends SimpleBehaviour {
 	 */
 	private static final long serialVersionUID = 9088209402507795289L;
 
-	public SendTanker (final AbstractDedaleAgent myagent, DummyTankerAgent agent, MapRepresentation mymap) {
-		super(myagent, 10000);
+	private boolean finished = false;
+
+	public SendTanker (final AbstractDedaleAgent myagent) {
+		super(myagent);
+	}
+
+@Override
+	public void action() {
+		// empty for now
 	}
 
 	@Override
-	public void onTick() {
-		//Example to retrieve the current position
-		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
-
+	public boolean done() {
+		return finished;
 	}
 }

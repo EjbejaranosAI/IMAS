@@ -9,7 +9,7 @@ import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agent.behaviours.ReceiveTreasureTankerBehaviour;
 import eu.su.mas.dedale.mas.agent.behaviours.startMyBehaviours;
-import eu.su.mas.dedale.mas.agent.dummies.TankerCoorAgent;
+import eu.su.mas.dedaleEtu.mas.agents.dummies.TankerCoorAgent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
 
@@ -99,15 +99,20 @@ class TrackCollectors extends SimpleBehaviour {
 	 */
 	private static final long serialVersionUID = 9088209402507795289L;
 
-	public TrackCollectors (final AbstractDedaleAgent myagent, DummyCollectorAgent[] agents) {
-		super(myagent, 10000);
+	private boolean finished = false;
+
+	public TrackCollectors (final AbstractDedaleAgent myagent) {
+		super(myagent);
+	}
+
+@Override
+	public void action() {
+		// empty for now
 	}
 
 	@Override
-	public void onTick() {
-		//Example to retrieve the current position
-		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
-
+	public boolean done() {
+		return finished;
 	}
 }
 
@@ -118,15 +123,20 @@ class SendCollector extends SimpleBehaviour {
 	 */
 	private static final long serialVersionUID = 9088209402507795289L;
 
-	public SendCollector (final AbstractDedaleAgent myagent, DummyCollectorAgent agent) {
-		super(myagent, 10000);
+	private boolean finished = false;
+
+	public SendCollector (final AbstractDedaleAgent myagent) {
+		super(myagent);
+	}
+
+@Override
+	public void action() {
+		// empty for now
 	}
 
 	@Override
-	public void onTick() {
-		//Example to retrieve the current position
-		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
-
+	public boolean done() {
+		return finished;
 	}
 
 }
@@ -138,15 +148,20 @@ class PetitionTankerCoor extends SimpleBehaviour {
 	 */
 	private static final long serialVersionUID = 9088209402507795289L;
 
-	public PetitionTankerCoor (final AbstractDedaleAgent myagent, TankerCoorAgent agent) {
-		super(myagent, 10000);
+	private boolean finished = false;
+
+	public PetitionTankerCoor (final AbstractDedaleAgent myagent) {
+		super(myagent);
+	}
+
+@Override
+	public void action() {
+		// empty for now
 	}
 
 	@Override
-	public void onTick() {
-		//Example to retrieve the current position
-		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
-
+	public boolean done() {
+		return finished;
 	}
 
 }
