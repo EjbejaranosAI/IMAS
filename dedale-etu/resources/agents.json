@@ -99,6 +99,39 @@
     "lockPickingExpertise":0
   },
   {
+    "agentType":"agentTankerCoord",
+    "agentName": "TankerCoord",
+    "communicationRange": 3,
+    "initialLocation": "free",
+    "backPackCapacityGold": 0,
+    "backPackCapacityDiamond":0,
+    "detectionRadius": 0,
+    "strengthExpertise": 0,
+    "lockPickingExpertise":0
+  },
+  {
+    "agentType":"agentCollectorCoord",
+    "agentName": "CollectorCoord",
+    "communicationRange": 3,
+    "initialLocation": "free",
+    "backPackCapacityGold": 0,
+    "backPackCapacityDiamond":0,
+    "detectionRadius": 0,
+    "strengthExpertise": 0,
+    "lockPickingExpertise":0
+  },
+  {
+    "agentType":"agentExplorerCoord",
+    "agentName": "ExplorerCoord",
+    "communicationRange": 3,
+    "initialLocation": "free",
+    "backPackCapacityGold": 0,
+    "backPackCapacityDiamond":0,
+    "detectionRadius": 0,
+    "strengthExpertise": 0,
+    "lockPickingExpertise":0
+  },
+  {
     "agentType":"agentTankerCoop",
     "agentName": "TankerCoop",
     "communicationRange": 3,
@@ -132,30 +165,8 @@
     "lockPickingExpertise":0
   },
   {
-    "agentType":"agentTankerCoop",
-    "agentName": "TankerCoop",
-    "communicationRange": 3,
-    "initialLocation": "free",
-    "backPackCapacityGold": 0,
-    "backPackCapacityDiamond":0,
-    "detectionRadius": 0,
-    "strengthExpertise": 0,
-    "lockPickingExpertise":0
-  },
-  {
-    "agentType":"agentCollectorCoop",
-    "agentName": "CollectorCoop",
-    "communicationRange": 3,
-    "initialLocation": "free",
-    "backPackCapacityGold": 0,
-    "backPackCapacityDiamond":0,
-    "detectionRadius": 0,
-    "strengthExpertise": 0,
-    "lockPickingExpertise":0
-  },
-  {
-    "agentType":"agentExplorerCoop",
-    "agentName": "ExplorerCoop",
+    "agentType":"agentGeneralManager",
+    "agentName": "General Manager",
     "communicationRange": 3,
     "initialLocation": "free",
     "backPackCapacityGold": 0,
