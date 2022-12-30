@@ -34,14 +34,14 @@
   },
   {
     "agentType":"agentCollect",
-  "agentName": "Collect1",
-  "communicationRange": 3,
-  "initialLocation": "free",
-  "backPackCapacityGold": 50,
-  "backPackCapacityDiamond":-1,
-  "detectionRadius": 0,
-  "strengthExpertise": 1,
-  "lockPickingExpertise":1
+    "agentName": "Collect1",
+    "communicationRange": 3,
+    "initialLocation": "free",
+    "backPackCapacityGold": 50,
+    "backPackCapacityDiamond":-1,
+    "detectionRadius": 0,
+    "strengthExpertise": 1,
+    "lockPickingExpertise":1
   },
   {
     "agentType":"agentCollect",
