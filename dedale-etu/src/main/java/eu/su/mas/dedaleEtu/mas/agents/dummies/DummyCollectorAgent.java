@@ -102,12 +102,12 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 				System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
 
 				//Little pause to allow you to follow what is going on
-				try {
-					System.out.println("Press enter in the console to allow the agent "+this.myAgent.getLocalName() +" to execute its next move");
-					System.in.read();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				//try {
+				//	System.out.println("Press enter in the console to allow the agent "+this.myAgent.getLocalName() +" to execute its next move");
+				//	System.in.read();
+				//} catch (IOException e) {
+				//	e.printStackTrace();
+				//}
 				
 				//list of observations associated to the currentPosition
 				List<Couple<Observation,Integer>> lObservations= lobs.get(0).getRight();
@@ -117,12 +117,15 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 				for(Couple<Observation,Integer> o:lObservations){
 					switch (o.getLeft()) {
 					case DIAMOND:case GOLD:
-						
+
 						System.out.println(this.myAgent.getLocalName()+" - My treasure type is : "+((AbstractDedaleAgent) this.myAgent).getMyTreasureType());
 						System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
 						System.out.println(this.myAgent.getLocalName()+" - Value of the treasure on the current position: "+o.getLeft() +": "+ o.getRight());
+						System.out.println(this.myAgent.getLocalName()+" - The agent unlocked :"+((AbstractDedaleAgent) this.myAgent).openLock(Observation.GOLD));
+						System.out.println(this.myAgent.getLocalName()+" - The agent unlocked :"+((AbstractDedaleAgent) this.myAgent).openLock(Observation.DIAMOND));
 						System.out.println(this.myAgent.getLocalName()+" - The agent grabbed :"+((AbstractDedaleAgent) this.myAgent).pick());
 						System.out.println(this.myAgent.getLocalName()+" - the remaining backpack capacity is: "+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
+
 						b=true;
 						break;
 					default:
@@ -136,14 +139,15 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 					System.out.println("State of the observations after picking "+lobs2);
 				}
 
-				//Trying to store everything in the tanker
+				//Trying to store everything in the tankers
 				System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent)this.myAgent).getBackPackFreeSpace());
-				System.out.println(this.myAgent.getLocalName()+" - The agent tries to transfer is load into the Silo (if reachable); succes ? : "+((AbstractDedaleAgent)this.myAgent).emptyMyBackPack("Silo"));
+				System.out.println(this.myAgent.getLocalName()+" - The agent tries to transfer is load into Tank1 (if reachable); succes ? : "+((AbstractDedaleAgent)this.myAgent).emptyMyBackPack("Tanker1"));
+				System.out.println(this.myAgent.getLocalName()+" - The agent tries to transfer is load into Tank2 (if reachable); succes ? : "+((AbstractDedaleAgent)this.myAgent).emptyMyBackPack("Tanker2"));
 				System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent)this.myAgent).getBackPackFreeSpace());
 
 				//Random move from the current position
 				Random r= new Random();
-				int moveId=1+r.nextInt(lobs.size()-1);//removing the current position from the list of target to accelerate the tests, but not necessary as to stay is an action
+				int moveId=1+r.nextInt(lobs.size()-1); //removing the current position from the list of target to accelerate the tests, but not necessary as to stay is an action
 
 				//The move action (if any) should be the last action of your behaviour
 				((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
