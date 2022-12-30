@@ -8,6 +8,7 @@ import eu.su.mas.dedaleEtu.mas.agents.dummies.CollectorCoorAgent;
 import eu.su.mas.dedaleEtu.mas.agents.dummies.DummyTankerAgent;
 import eu.su.mas.dedaleEtu.mas.agents.dummies.explo.ExploreCoopAgent;
 import eu.su.mas.dedaleEtu.mas.agents.dummies.DummyCollectorAgent;
+import eu.su.mas.dedaleEtu.mas.agents.dummies.MarioAgent;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agents.GateKeeperAgent;
 import jade.core.Profile;
@@ -523,7 +524,7 @@ public class Principal {
 //				Assert.assertNotNull("This container does not exist",c);
 //
 //				//2) Give the name of your agent, MUST be the same as the one given in the entities file.
-//				agentName="CollectorCord";
+//				agentName="CollectorCoord";
 //
 //				//3) If you want to give specific parameters to your agent, add them here
 //				Object [] entityParametersC5={"My parameters"};
@@ -531,6 +532,20 @@ public class Principal {
 //				//4) Give the class name of your agent to let the system instantiate it
 //				ag=createNewDedaleAgent(c, agentName, CollectorCoorAgent.class.getName(), entityParametersC5);
 //				agentList.add(ag);
+
+//		//1) Get the container where the agent will appear
+		c = containerList.get(ConfigurationFile.LOCAL_CONTAINER2_NAME);
+		Assert.assertNotNull("This container does not exist",c);
+
+		//2) Give the name of your agent, MUST be the same as the one given in the entities file.
+		agentName="MarioCoord";
+
+		//3) If you want to give specific parameters to your agent, add them here
+		Object [] entityParametersM={"My parameters"};
+
+		//4) Give the class name of your agent to let the system instantiate it
+		ag=createNewDedaleAgent(c, agentName, MarioAgent.class.getName(), entityParametersM);
+		agentList.add(ag);
 
 		 /***************
 		 * AGENT General Manager
