@@ -1,6 +1,6 @@
 DGS004
 null 0 0
-cg  "stylesheet":"node {size: 1px;	fill-color: #777;text-mode: hidden;z-index: 0;}edge {shape: line; fill-color: #222; arrow-size: 3px, 2px;}"
+cg  "stylesheet":"node {size: 1px;	fill-color: #777;z-index: 0;}edge {shape: line; fill-color: #222; arrow-size: 3px, 2px;}"
 cg  "ui.quality":true
 cg  "ui.antialias":true
 an "-101771"

@@ -99,8 +99,8 @@
     "lockPickingExpertise":0
   },
   {
-    "agentType":"agentTankerCoord",
-    "agentName": "TankerCoord",
+    "agentType":"agentTanker",
+    "agentName": "TankerCoordinator",
     "communicationRange": 3,
     "initialLocation": "free",
     "backPackCapacityGold": 0,
@@ -110,8 +110,8 @@
     "lockPickingExpertise":0
   },
   {
-    "agentType":"agentCollectorCoord",
-    "agentName": "CollectorCoord",
+    "agentType":"agentCollector",
+    "agentName": "CollectorCoordinator",
     "communicationRange": 3,
     "initialLocation": "free",
     "backPackCapacityGold": 0,
@@ -121,8 +121,8 @@
     "lockPickingExpertise":0
   },
   {
-    "agentType":"agentExplorerCoord",
-    "agentName": "ExplorerCoord",
+    "agentType":"agentExplorer",
+    "agentName": "ExplorerCoordinator",
     "communicationRange": 3,
     "initialLocation": "free",
     "backPackCapacityGold": 0,
@@ -132,8 +132,8 @@
     "lockPickingExpertise":0
   },
   {
-    "agentType":"agentTankerCoop",
-    "agentName": "TankerCoop",
+    "agentType":"agentExplorer",
+    "agentName": "GeneralManager",
     "communicationRange": 3,
     "initialLocation": "free",
     "backPackCapacityGold": 0,
@@ -143,48 +143,26 @@
     "lockPickingExpertise":0
   },
   {
-    "agentType":"agentCollectorCoop",
-    "agentName": "CollectorCoop",
+    "agentType":"HumanControlled",
+    "agentName": "ImHere",
     "communicationRange": 3,
     "initialLocation": "free",
-    "backPackCapacityGold": 0,
-    "backPackCapacityDiamond":0,
-    "detectionRadius": 0,
-    "strengthExpertise": 0,
-    "lockPickingExpertise":0
+    "backPackCapacityGold": -1,
+    "backPackCapacityDiamond":-1,
+    "detectionRadius": 1,
+    "strengthExpertise": 1,
+    "lockPickingExpertise":1
   },
   {
-    "agentType":"agentExplorerCoop",
-    "agentName": "ExplorerCoop",
-    "communicationRange": 3,
+    "agentType":"wumpus",
+    "agentName": "Golem1",
+    "communicationRange": 2,
     "initialLocation": "free",
-    "backPackCapacityGold": 0,
-    "backPackCapacityDiamond":0,
-    "detectionRadius": 0,
-    "strengthExpertise": 0,
-    "lockPickingExpertise":0
-  },
-  {
-    "agentType":"agentGeneralManager",
-    "agentName": "General Manager",
-    "communicationRange": 3,
-    "initialLocation": "free",
-    "backPackCapacityGold": 0,
-    "backPackCapacityDiamond":0,
-    "detectionRadius": 0,
-    "strengthExpertise": 0,
-    "lockPickingExpertise":0
-  },
-  {
-    "agentType":"agentCollect",
-    "agentName": "MarioCoord",
-    "communicationRange": 3,
-    "initialLocation": "free",
-    "backPackCapacityGold": 0,
-    "backPackCapacityDiamond":0,
-    "detectionRadius": 0,
-    "strengthExpertise": 0,
-    "lockPickingExpertise":0
+    "backPackCapacityGold": 20,
+    "backPackCapacityDiamond":80,
+    "detectionRadius": 2,
+    "strengthExpertise": 2,
+    "lockPickingExpertise":2
   }
 ]
 
