@@ -64,6 +64,24 @@
                 </configuration>
             </plugin></plugins></build>
         </profile>
+        <profile>
+            <id>jade-responders</id>
+            <build><plugins><plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <mainClass>jade.Boot</mainClass>
+                    <arguments>
+                        <argument>-gui</argument>
+                        <argument>-agents</argument>
+                        <argument>responder1:urv.imas.protocols.ContractNetResponderAgent;
+                            responder2:urv.imas.protocols.ContractNetResponderAgent;
+                            responder3:urv.imas.protocols.ContractNetResponderAgent</argument>
+                    </arguments>
+                </configuration>
+            </plugin></plugins></build>
+        </profile>
     </profiles>
 
     <properties>
