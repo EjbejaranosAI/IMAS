@@ -53,16 +53,20 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 	private List<String> list_agentNames;
 
+	private List<Couple<String, List<Couple<Observation, Integer>>>> treasures = new ArrayList<>();
+
 	/**
 	 *
 	 * @param myagent
 	 * @param myMap known map of the world the agent is living in
 	 * @param agentNames name of the agents to share the map with
 	 */
-	public ExploCoopBehaviour(final AbstractDedaleAgent myagent, MapRepresentation myMap,List<String> agentNames) {
+	public ExploCoopBehaviour(final AbstractDedaleAgent myagent, MapRepresentation myMap,List<String> agentNames, List<Couple<String, List<Couple<Observation, Integer>>>> treasures) {
 		super(myagent);
 		this.myMap=myMap;
 		this.list_agentNames=agentNames;
+		this.treasures=treasures;
+
 
 
 	}
@@ -96,10 +100,17 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 			this.myMap.addNode(myPosition, MapAttribute.closed);
 
 			//2) get the surrounding nodes and, if not in closedNodes, add them to open nodes.
+			if (!lobs.get(0).getRight().isEmpty()){
+
+				this.treasures.add(lobs.get(0));
+				System.out.println(this.myAgent.getLocalName()+ ":    "+this.treasures);
+			}
 			String nextNode=null;
 			Iterator<Couple<String, List<Couple<Observation, Integer>>>> iter=lobs.iterator();
 			while(iter.hasNext()){
-				String nodeId=iter.next().getLeft();
+				Couple<String, List<Couple<Observation, Integer>>> CurrentNode=iter.next();
+				String nodeId = CurrentNode.getLeft();
+
 				boolean isNewNode=this.myMap.addNewNode(nodeId);
 				//the node may exist, but not necessarily the edge
 				if (myPosition!=nodeId) {

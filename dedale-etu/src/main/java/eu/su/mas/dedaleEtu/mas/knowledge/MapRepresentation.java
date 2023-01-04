@@ -265,7 +265,7 @@ public class MapRepresentation implements Serializable {
 		viewer.setCloseFramePolicy(FxViewer.CloseFramePolicy.CLOSE_VIEWER);
 		viewer.addDefaultView(true);
 
-		g.display(); //This is commented to don't allow the explorers maps to be open
+//		g.display(); //This is commented to don't allow the explorers maps to be open
 	}
 
 	public void mergeMap(SerializableSimpleGraph<String, MapAttribute> sgreceived) {
