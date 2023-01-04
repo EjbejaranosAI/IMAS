@@ -8,7 +8,7 @@ import dataStructures.tuple.Couple;
 import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agent.behaviours.ReceiveTreasureTankerBehaviour;
-import eu.su.mas.dedale.mas.agent.behaviours.platformManagment.startMyBehaviours;
+import eu.su.mas.dedale.mas.agent.behaviours.startMyBehaviours;
 import eu.su.mas.dedaleEtu.mas.agents.dummies.ExploreSoloAgent;
 import eu.su.mas.dedaleEtu.mas.agents.dummies.CollectorCoorAgent;
 import eu.su.mas.dedale.mas.agent.knowledge.MapRepresentation;

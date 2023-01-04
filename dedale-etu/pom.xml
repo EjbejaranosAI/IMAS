@@ -182,11 +182,6 @@
 			<artifactId>tools</artifactId>
 			<version>-SNAPSHOT</version>
 		</dependency>
-        <dependency>
-            <groupId>com.gitlab.dedale</groupId>
-            <artifactId>dedale</artifactId>
-            <version>-9409ad0d48-1</version>
-        </dependency>
     </dependencies>
 
 	<build>
