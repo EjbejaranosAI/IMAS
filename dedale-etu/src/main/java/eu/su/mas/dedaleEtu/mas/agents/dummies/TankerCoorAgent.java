@@ -21,7 +21,7 @@ import jade.core.behaviours.SimpleBehaviour;
  */
 public class TankerCoorAgent extends AbstractDedaleAgent {
 
-		private static final long serialVersionUID = -2991562876411096907L;
+	private static final long serialVersionUID = -2991562876411096907L;
 
 
 	/**
@@ -105,7 +105,7 @@ class TrackTanker extends SimpleBehaviour {
 		super(myagent);
 	}
 
-@Override
+	@Override
 	public void action() {
 		// empty for now
 	}
@@ -129,7 +129,7 @@ class SendTanker extends SimpleBehaviour {
 		super(myagent);
 	}
 
-@Override
+	@Override
 	public void action() {
 		// empty for now
 	}

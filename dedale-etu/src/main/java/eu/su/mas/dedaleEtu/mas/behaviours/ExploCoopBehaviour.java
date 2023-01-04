@@ -30,10 +30,10 @@ import jade.lang.acl.UnreadableException;
  * <pre>
  * This behaviour allows an agent to explore the environment and learn the associated topological map.
  * The algorithm is a pseudo - DFS computationally consuming because its not optimised at all.
- * 
+ *
  * When all the nodes around him are visited, the agent randomly select an open node and go there to restart its dfs. 
  * This (non optimal) behaviour is done until all nodes are explored. 
- * 
+ *
  * Warning, this behaviour does not save the content of visited nodes, only the topology.
  * Warning, the sub-behaviour ShareMap periodically share the whole map
  * </pre>
@@ -53,18 +53,18 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 	private List<String> list_agentNames;
 
-/**
- * 
- * @param myagent
- * @param myMap known map of the world the agent is living in
- * @param agentNames name of the agents to share the map with
- */
+	/**
+	 *
+	 * @param myagent
+	 * @param myMap known map of the world the agent is living in
+	 * @param agentNames name of the agents to share the map with
+	 */
 	public ExploCoopBehaviour(final AbstractDedaleAgent myagent, MapRepresentation myMap,List<String> agentNames) {
 		super(myagent);
 		this.myMap=myMap;
 		this.list_agentNames=agentNames;
-		
-		
+
+
 	}
 
 	@Override
@@ -81,6 +81,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 		if (myPosition!=null){
 			//List of observable from the agent's current position
 			List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
+			System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
 
 			/**
 			 * Just added here to let you see what the agent is doing, otherwise he will be too quick
@@ -124,7 +125,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 				}else {
 					//System.out.println("nextNode notNUll - "+this.myAgent.getLocalName()+"-- list= "+this.myMap.getOpenNodes()+"\n -- nextNode: "+nextNode);
 				}
-				//4) At each time step, the agent blindly send all its graph to its surrounding to illustrate how to share its knowledge (the topology currently) with the the others agents. 	
+				//4) At each time step, the agent blindly send all its graph to its surrounding to illustrate how to share its knowledge (the topology currently) with the the others agents.
 				// If it was written properly, this sharing action should be in a dedicated behaviour set, the receivers be automatically computed, and only a subgraph would be shared.
 
 //				ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
@@ -136,19 +137,20 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 //					msg.addReceiver(new AID("1stAgent",false));
 //				}
 //				SerializableSimpleGraph<String, MapAttribute> sg=this.myMap.getSerializableGraph();
-//				try {					
+//				try {
 //					msg.setContentObject(sg);
 //				} catch (IOException e) {
 //					e.printStackTrace();
 //				}
 //				((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
 
-				//5) At each time step, the agent check if he received a graph from a teammate. 	
+				//5) At each time step, the agent check if he received a graph from a teammate.
 				// If it was written properly, this sharing action should be in a dedicated behaviour set.
 				MessageTemplate msgTemplate=MessageTemplate.and(
 						MessageTemplate.MatchProtocol("SHARE-TOPO"),
 						MessageTemplate.MatchPerformative(ACLMessage.INFORM));
 				ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
+//				System.out.println("msgReceived: " + msgReceived);
 				if (msgReceived!=null) {
 					SerializableSimpleGraph<String, MapAttribute> sgreceived=null;
 					try {
@@ -157,6 +159,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					System.out.println("Mensajeeee! Recibido: " + sgreceived);
 					this.myMap.mergeMap(sgreceived);
 				}
 

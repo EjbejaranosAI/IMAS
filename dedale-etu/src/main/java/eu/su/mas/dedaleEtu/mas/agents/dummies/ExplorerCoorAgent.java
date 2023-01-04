@@ -22,7 +22,7 @@ import jade.core.behaviours.SimpleBehaviour;
  */
 public class ExplorerCoorAgent extends AbstractDedaleAgent {
 
-		private static final long serialVersionUID = -2991562876411096907L;
+	private static final long serialVersionUID = -2991562876411096907L;
 
 
 	/**
@@ -134,7 +134,7 @@ class SendExplorer extends SimpleBehaviour {
 		super(myagent);
 	}
 
-@Override
+	@Override
 	public void action() {
 		// empty for now
 	}
@@ -159,7 +159,7 @@ class ReceiveMapUpdate extends SimpleBehaviour {
 		super(myagent);
 	}
 
-@Override
+	@Override
 	public void action() {
 		// empty for now
 	}
@@ -184,7 +184,7 @@ class ReceiveTreasureLocation extends SimpleBehaviour {
 		super(myagent);
 	}
 
-@Override
+	@Override
 	public void action() {
 		// empty for now
 	}
@@ -209,7 +209,7 @@ class PetitionCollectorCoor extends SimpleBehaviour {
 		super(myagent);
 	}
 
-@Override
+	@Override
 	public void action() {
 		// empty for now
 	}
@@ -220,5 +220,3 @@ class PetitionCollectorCoor extends SimpleBehaviour {
 	}
 
 }
-
-

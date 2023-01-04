@@ -16,16 +16,16 @@ import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.TickerBehaviour;
 
 /**
- * This dummy collector moves randomly, tries all its methods at each time step, store the treasure that match is treasureType 
+ * This dummy collector moves randomly, tries all its methods at each time step, store the treasure that match is treasureType
  * in its backpack and intends to empty its backPack in the Tanker agent. @see {@link RandomWalkExchangeBehaviour}
- * 
+ *
  * @author hc
  *
  */
 public class DummyCollectorAgent extends AbstractDedaleAgent{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -1784844593772918359L;
 
@@ -33,10 +33,10 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 
 	/**
 	 * This method is automatically called when "agent".start() is executed.
-	 * Consider that Agent is launched for the first time. 
-	 * 			1) set the agent attributes 
+	 * Consider that Agent is launched for the first time.
+	 * 			1) set the agent attributes
 	 *	 		2) add the behaviours
-	 *          
+	 *
 	 */
 	protected void setup(){
 
@@ -62,28 +62,28 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 
 
 	/**************************************
-	 * 
-	 * 
+	 *
+	 *
 	 * 				BEHAVIOUR
-	 * 
-	 * 
+	 *
+	 *
 	 **************************************/
 
 
 	/**
 	 * This behaviour is triggerable every 600ms.
-	 *  It tries all the API methods at each time step, store the treasure that match the entity treasureType in its backpack and intends to 
+	 *  It tries all the API methods at each time step, store the treasure that match the entity treasureType in its backpack and intends to
 	 *  empty its backPack in the Tanker agent (if he is in reach)
 	 *<br/>
 	 *
-	 *  Rmq : This behaviour is in the same class as the DummyCollectorAgent for clarity reasons. You should prefer to save your behaviours in the behaviours package, and all the behaviours referring to a given protocol in the same class    
-	 *	
+	 *  Rmq : This behaviour is in the same class as the DummyCollectorAgent for clarity reasons. You should prefer to save your behaviours in the behaviours package, and all the behaviours referring to a given protocol in the same class
+	 *
 	 *	@author hc
 	 */
 	class RandomWalkExchangeBehaviour extends TickerBehaviour{
 		/**
 		 * When an agent choose to move
-		 *  
+		 *
 		 */
 		private static final long serialVersionUID = 9088209402507795289L;
 
@@ -99,7 +99,7 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 
 			if (myPosition!=""){
 				List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
-				System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
+//				System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
 
 				//Little pause to allow you to follow what is going on
 				//try {
@@ -108,7 +108,7 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 				//} catch (IOException e) {
 				//	e.printStackTrace();
 				//}
-				
+
 				//list of observations associated to the currentPosition
 				List<Couple<Observation,Integer>> lObservations= lobs.get(0).getRight();
 
@@ -116,20 +116,22 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 				Boolean b=false;
 				for(Couple<Observation,Integer> o:lObservations){
 					switch (o.getLeft()) {
-					case DIAMOND:case GOLD:
+						case DIAMOND:case GOLD:
 
-						System.out.println(this.myAgent.getLocalName()+" - My treasure type is : "+((AbstractDedaleAgent) this.myAgent).getMyTreasureType());
-						System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
-						System.out.println(this.myAgent.getLocalName()+" - Value of the treasure on the current position: "+o.getLeft() +": "+ o.getRight());
-						System.out.println(this.myAgent.getLocalName()+" - The agent unlocked :"+((AbstractDedaleAgent) this.myAgent).openLock(Observation.GOLD));
-						System.out.println(this.myAgent.getLocalName()+" - The agent unlocked :"+((AbstractDedaleAgent) this.myAgent).openLock(Observation.DIAMOND));
-						System.out.println(this.myAgent.getLocalName()+" - The agent grabbed :"+((AbstractDedaleAgent) this.myAgent).pick());
-						System.out.println(this.myAgent.getLocalName()+" - the remaining backpack capacity is: "+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
+//						System.out.println(this.myAgent.getLocalName()+" - My treasure type is : "+((AbstractDedaleAgent) this.myAgent).getMyTreasureType());
+//						System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
+							System.out.println(this.myAgent.getLocalName()+" - Value of the treasure on the current position: "+o.getLeft() +": "+ o.getRight());
+//						System.out.println(this.myAgent.getLocalName()+" - The agent unlocked :"+((AbstractDedaleAgent) this.myAgent).openLock(Observation.GOLD));
+							((AbstractDedaleAgent) this.myAgent).openLock(Observation.GOLD);
+//						System.out.println(this.myAgent.getLocalName()+" - The agent unlocked :"+((AbstractDedaleAgent) this.myAgent).openLock(Observation.DIAMOND));
+							((AbstractDedaleAgent) this.myAgent).openLock(Observation.DIAMOND);
+							System.out.println(this.myAgent.getLocalName()+" - The agent grabbed :"+((AbstractDedaleAgent) this.myAgent).pick());
+//						System.out.println(this.myAgent.getLocalName()+" - the remaining backpack capacity is: "+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
 
-						b=true;
-						break;
-					default:
-						break;
+							b=true;
+							break;
+						default:
+							break;
 					}
 				}
 
@@ -140,10 +142,10 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 				}
 
 				//Trying to store everything in the tankers
-				System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent)this.myAgent).getBackPackFreeSpace());
+//				System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent)this.myAgent).getBackPackFreeSpace());
 				System.out.println(this.myAgent.getLocalName()+" - The agent tries to transfer is load into Tank1 (if reachable); succes ? : "+((AbstractDedaleAgent)this.myAgent).emptyMyBackPack("Tanker1"));
 				System.out.println(this.myAgent.getLocalName()+" - The agent tries to transfer is load into Tank2 (if reachable); succes ? : "+((AbstractDedaleAgent)this.myAgent).emptyMyBackPack("Tanker2"));
-				System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent)this.myAgent).getBackPackFreeSpace());
+//				System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent)this.myAgent).getBackPackFreeSpace());
 
 				//Random move from the current position
 				Random r= new Random();

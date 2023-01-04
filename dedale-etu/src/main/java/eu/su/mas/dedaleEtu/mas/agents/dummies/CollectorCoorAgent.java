@@ -20,7 +20,7 @@ import jade.core.behaviours.SimpleBehaviour;
  */
 public class CollectorCoorAgent extends AbstractDedaleAgent {
 
-		private static final long serialVersionUID = -2991562876411096907L;
+	private static final long serialVersionUID = -2991562876411096907L;
 
 
 	/**
@@ -105,7 +105,7 @@ class TrackCollectors extends SimpleBehaviour {
 		super(myagent);
 	}
 
-@Override
+	@Override
 	public void action() {
 		// empty for now
 	}
@@ -129,7 +129,7 @@ class SendCollector extends SimpleBehaviour {
 		super(myagent);
 	}
 
-@Override
+	@Override
 	public void action() {
 		// empty for now
 	}
@@ -154,7 +154,7 @@ class PetitionTankerCoor extends SimpleBehaviour {
 		super(myagent);
 	}
 
-@Override
+	@Override
 	public void action() {
 		// empty for now
 	}
@@ -165,4 +165,3 @@ class PetitionTankerCoor extends SimpleBehaviour {
 	}
 
 }
-

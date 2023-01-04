@@ -13,7 +13,7 @@ import jade.core.behaviours.Behaviour;
 
 /**
  * <pre>
- * ExploreCoop agent. 
+ * ExploreCoop agent.
  * Basic example of how to "collaboratively" explore the map
  *  - It explore the map using a DFS algorithm and blindly tries to share the topology with the agents within reach.
  *  - The shortestPath computation is not optimized
@@ -22,12 +22,12 @@ import jade.core.behaviours.Behaviour;
  *   - You should give him the list of agents'name to send its map to in parameter when creating the agent.
  *   Object [] entityParameters={"Name1","Name2};
  *   ag=createNewDedaleAgent(c, agentName, ExploreCoopAgent.class.getName(), entityParameters);
- *  
+ *
  * It stops when all nodes have been visited.
- * 
- * 
+ *
+ *
  *  </pre>
- *  
+ *
  * @author hc
  *
  */
@@ -37,24 +37,23 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 
 	private static final long serialVersionUID = -7969469610241668140L;
 	private MapRepresentation myMap;
-	
+
 
 	/**
 	 * This method is automatically called when "agent".start() is executed.
-	 * Consider that Agent is launched for the first time. 
-	 * 			1) set the agent attributes 
+	 * Consider that Agent is launched for the first time.
+	 * 			1) set the agent attributes
 	 *	 		2) add the behaviours
-	 *          
+	 *
 	 */
 	protected void setup(){
 
 		super.setup();
-		
+
 		//get the parameters added to the agent at creation (if any)
 		final Object[] args = getArguments();
-		
 		List<String> list_agentNames=new ArrayList<String>();
-		
+
 		if(args.length==0){
 			System.err.println("Error while creating the agent, names of agent to contact expected");
 			System.exit(-1);
@@ -66,29 +65,30 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 			}
 		}
 
+
 		List<Behaviour> lb=new ArrayList<Behaviour>();
-		
+
 		/************************************************
-		 * 
+		 *
 		 * ADD the behaviours of the Dummy Moving Agent
-		 * 
+		 *
 		 ************************************************/
-		
+
 		lb.add(new ExploCoopBehaviour(this,this.myMap,list_agentNames));
 
-		
-		
+
+
 		/***
 		 * MANDATORY TO ALLOW YOUR AGENT TO BE DEPLOYED CORRECTLY
 		 */
-		
-		
+
+
 		addBehaviour(new startMyBehaviours(this,lb));
-		
+
 		System.out.println("the  agent "+this.getLocalName()+ " is started");
 
 	}
-	
-	
-	
+
+
+
 }

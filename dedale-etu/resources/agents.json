@@ -1,25 +1,25 @@
 [
   {
     "agentType":"agentExplo",
-  "agentName": "Explo1",
-  "communicationRange": 3,
-  "initialLocation": "free",
-  "backPackCapacityGold": -1,
-  "backPackCapacityDiamond":-1,
-  "detectionRadius": 0,
-  "strengthExpertise": 3,
-  "lockPickingExpertise":2
+    "agentName": "Explo1",
+    "communicationRange": 3,
+    "initialLocation": "free",
+    "backPackCapacityGold": -1,
+    "backPackCapacityDiamond":-1,
+    "detectionRadius": 0,
+    "strengthExpertise": 3,
+    "lockPickingExpertise":2
   },
   {
     "agentType":"agentExplo",
-  "agentName": "Explo2",
-  "communicationRange": 3,
-  "initialLocation": "free",
-  "backPackCapacityGold": -1,
-  "backPackCapacityDiamond":-1,
-  "detectionRadius": 0,
-  "strengthExpertise": 2,
-  "lockPickingExpertise":3
+    "agentName": "Explo2",
+    "communicationRange": 3,
+    "initialLocation": "free",
+    "backPackCapacityGold": -1,
+    "backPackCapacityDiamond":-1,
+    "detectionRadius": 0,
+    "strengthExpertise": 2,
+    "lockPickingExpertise":3
   },
   {
     "agentType":"agentExplo",
@@ -48,8 +48,8 @@
     "agentName": "Collect2",
     "communicationRange": 3,
     "initialLocation": "free",
-    "backPackCapacityGold": 50,
-    "backPackCapacityDiamond":-1,
+    "backPackCapacityGold": -1,
+    "backPackCapacityDiamond":50,
     "detectionRadius": 0,
     "strengthExpertise": 1,
     "lockPickingExpertise":1
@@ -81,8 +81,8 @@
     "agentName": "Tanker1",
     "communicationRange": 3,
     "initialLocation": "free",
-    "backPackCapacityGold": 400,
-    "backPackCapacityDiamond":400,
+    "backPackCapacityGold": 550,
+    "backPackCapacityDiamond":550,
     "detectionRadius": 0,
     "strengthExpertise": 0,
     "lockPickingExpertise":0
@@ -91,7 +91,7 @@
     "agentType":"agentTanker",
     "agentName": "Tanker2",
     "communicationRange": 3,
-    "initialLocation": "free",
+    "initialLocation": "0_0",
     "backPackCapacityGold": 400,
     "backPackCapacityDiamond":400,
     "detectionRadius": 0,
@@ -165,5 +165,3 @@
     "lockPickingExpertise":2
   }
 ]
-
-

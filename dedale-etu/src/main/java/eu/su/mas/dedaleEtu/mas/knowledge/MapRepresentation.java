@@ -29,7 +29,7 @@ import javafx.application.Platform;
  * This simple topology representation only deals with the graph, not its content.</br>
  * The knowledge representation is not well written (at all), it is just given as a minimal example.</br>
  * The viewer methods are not independent of the data structure, and the dijkstra is recomputed every-time.
- * 
+ *
  * @author hc
  */
 public class MapRepresentation implements Serializable {
@@ -40,7 +40,7 @@ public class MapRepresentation implements Serializable {
 	 *
 	 */
 
-	public enum MapAttribute {	
+	public enum MapAttribute {
 		agent,open,closed;
 
 	}
@@ -129,8 +129,8 @@ public class MapRepresentation implements Serializable {
 
 	/**
 	 * Compute the shortest Path from idFrom to IdTo. The computation is currently not very efficient
-	 * 
-	 * 
+	 *
+	 *
 	 * @param idFrom id of the origin node
 	 * @param idTo id of the destination node
 	 * @return the list of nodes to follow, null if the targeted node is not currently reachable
@@ -163,8 +163,8 @@ public class MapRepresentation implements Serializable {
 		//2) select the closest one
 		List<Couple<String,Integer>> lc=
 				opennodes.stream()
-				.map(on -> (getShortestPath(myPosition,on)!=null)? new Couple<String, Integer>(on,getShortestPath(myPosition,on).size()): new Couple<String, Integer>(on,Integer.MAX_VALUE))//some nodes my be unreachable if the agents do not share at least one common node.
-				.collect(Collectors.toList());
+						.map(on -> (getShortestPath(myPosition,on)!=null)? new Couple<String, Integer>(on,getShortestPath(myPosition,on).size()): new Couple<String, Integer>(on,Integer.MAX_VALUE))//some nodes my be unreachable if the agents do not share at least one common node.
+						.collect(Collectors.toList());
 
 		Optional<Couple<String,Integer>> closest=lc.stream().min(Comparator.comparing(Couple::getRight));
 		//3) Compute shorterPath
@@ -176,7 +176,7 @@ public class MapRepresentation implements Serializable {
 
 	public List<String> getOpenNodes(){
 		return this.g.nodes()
-				.filter(x ->x .getAttribute("ui.class")==MapAttribute.open.toString()) 
+				.filter(x ->x .getAttribute("ui.class")==MapAttribute.open.toString())
 				.map(Node::getId)
 				.collect(Collectors.toList());
 	}
@@ -209,7 +209,7 @@ public class MapRepresentation implements Serializable {
 			Node sn=e.getSourceNode();
 			Node tn=e.getTargetNode();
 			sg.addEdge(e.getId(), sn.getId(), tn.getId());
-		}	
+		}
 	}
 
 
@@ -265,7 +265,7 @@ public class MapRepresentation implements Serializable {
 		viewer.setCloseFramePolicy(FxViewer.CloseFramePolicy.CLOSE_VIEWER);
 		viewer.addDefaultView(true);
 
-//		g.display(); //This is commented to don't allow the explorers maps to be open
+		g.display(); //This is commented to don't allow the explorers maps to be open
 	}
 
 	public void mergeMap(SerializableSimpleGraph<String, MapAttribute> sgreceived) {
@@ -305,7 +305,7 @@ public class MapRepresentation implements Serializable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return true if there exist at least one openNode on the graph 
 	 */
 	public boolean hasOpenNode() {
