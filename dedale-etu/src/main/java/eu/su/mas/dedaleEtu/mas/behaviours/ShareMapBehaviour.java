@@ -56,8 +56,10 @@ public class ShareMapBehaviour extends TickerBehaviour{
 		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
 		msg.setProtocol("SHARE-TOPO");
 		msg.setSender(this.myAgent.getAID());
+//		System.out.println("Senders name:  "+ this.myAgent.getAID());
 		for (String agentName : receivers) {
 			msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
+//			System.out.println("Recievers name:  "+ agentName + AID.ISLOCALNAME);
 		}
 			
 		SerializableSimpleGraph<String, MapAttribute> sg=this.myMap.getSerializableGraph();
@@ -66,6 +68,7 @@ public class ShareMapBehaviour extends TickerBehaviour{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+//		System.out.println("Mensajeee! Enviado:  "+ msg);
 		((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
 
 		

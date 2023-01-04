@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
-import eu.su.mas.dedale.mas.agent.behaviours.startMyBehaviours;
+import eu.su.mas.dedale.mas.agent.behaviours.platformManagment.startMyBehaviours;
 
 import eu.su.mas.dedaleEtu.mas.behaviours.ExploCoopBehaviour;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
@@ -52,7 +52,6 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 		
 		//get the parameters added to the agent at creation (if any)
 		final Object[] args = getArguments();
-		
 		List<String> list_agentNames=new ArrayList<String>();
 		
 		if(args.length==0){
@@ -65,6 +64,7 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 				i++;
 			}
 		}
+
 
 		List<Behaviour> lb=new ArrayList<Behaviour>();
 		

@@ -3,7 +3,7 @@ package eu.su.mas.dedaleEtu.mas.agents.dummies;
 
 import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
-import eu.su.mas.dedale.mas.agent.behaviours.startMyBehaviours;
+import eu.su.mas.dedale.mas.agent.behaviours.platformManagment.startMyBehaviours;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -99,7 +99,7 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 
 			if (myPosition!=""){
 				List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
-				System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
+//				System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
 
 				//Little pause to allow you to follow what is going on
 				//try {
@@ -118,13 +118,15 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 					switch (o.getLeft()) {
 					case DIAMOND:case GOLD:
 
-						System.out.println(this.myAgent.getLocalName()+" - My treasure type is : "+((AbstractDedaleAgent) this.myAgent).getMyTreasureType());
-						System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
+//						System.out.println(this.myAgent.getLocalName()+" - My treasure type is : "+((AbstractDedaleAgent) this.myAgent).getMyTreasureType());
+//						System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
 						System.out.println(this.myAgent.getLocalName()+" - Value of the treasure on the current position: "+o.getLeft() +": "+ o.getRight());
-						System.out.println(this.myAgent.getLocalName()+" - The agent unlocked :"+((AbstractDedaleAgent) this.myAgent).openLock(Observation.GOLD));
-						System.out.println(this.myAgent.getLocalName()+" - The agent unlocked :"+((AbstractDedaleAgent) this.myAgent).openLock(Observation.DIAMOND));
+//						System.out.println(this.myAgent.getLocalName()+" - The agent unlocked :"+((AbstractDedaleAgent) this.myAgent).openLock(Observation.GOLD));
+						((AbstractDedaleAgent) this.myAgent).openLock(Observation.GOLD);
+//						System.out.println(this.myAgent.getLocalName()+" - The agent unlocked :"+((AbstractDedaleAgent) this.myAgent).openLock(Observation.DIAMOND));
+						((AbstractDedaleAgent) this.myAgent).openLock(Observation.DIAMOND);
 						System.out.println(this.myAgent.getLocalName()+" - The agent grabbed :"+((AbstractDedaleAgent) this.myAgent).pick());
-						System.out.println(this.myAgent.getLocalName()+" - the remaining backpack capacity is: "+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
+//						System.out.println(this.myAgent.getLocalName()+" - the remaining backpack capacity is: "+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
 
 						b=true;
 						break;
@@ -140,10 +142,10 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 				}
 
 				//Trying to store everything in the tankers
-				System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent)this.myAgent).getBackPackFreeSpace());
+//				System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent)this.myAgent).getBackPackFreeSpace());
 				System.out.println(this.myAgent.getLocalName()+" - The agent tries to transfer is load into Tank1 (if reachable); succes ? : "+((AbstractDedaleAgent)this.myAgent).emptyMyBackPack("Tanker1"));
 				System.out.println(this.myAgent.getLocalName()+" - The agent tries to transfer is load into Tank2 (if reachable); succes ? : "+((AbstractDedaleAgent)this.myAgent).emptyMyBackPack("Tanker2"));
-				System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent)this.myAgent).getBackPackFreeSpace());
+//				System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent)this.myAgent).getBackPackFreeSpace());
 
 				//Random move from the current position
 				Random r= new Random();

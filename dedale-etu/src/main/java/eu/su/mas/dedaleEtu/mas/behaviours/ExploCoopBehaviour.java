@@ -81,6 +81,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 		if (myPosition!=null){
 			//List of observable from the agent's current position
 			List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
+			System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
 
 			/**
 			 * Just added here to let you see what the agent is doing, otherwise he will be too quick
@@ -136,7 +137,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 //					msg.addReceiver(new AID("1stAgent",false));
 //				}
 //				SerializableSimpleGraph<String, MapAttribute> sg=this.myMap.getSerializableGraph();
-//				try {					
+//				try {
 //					msg.setContentObject(sg);
 //				} catch (IOException e) {
 //					e.printStackTrace();
@@ -149,6 +150,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 						MessageTemplate.MatchProtocol("SHARE-TOPO"),
 						MessageTemplate.MatchPerformative(ACLMessage.INFORM));
 				ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
+//				System.out.println("msgReceived: " + msgReceived);
 				if (msgReceived!=null) {
 					SerializableSimpleGraph<String, MapAttribute> sgreceived=null;
 					try {
@@ -157,6 +159,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					System.out.println("Mensajeeee! Recibido: " + sgreceived);
 					this.myMap.mergeMap(sgreceived);
 				}
 
