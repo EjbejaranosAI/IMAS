@@ -21,14 +21,18 @@ What things you need to install the software and how to install them
 1.Clone the repository
 
 '''
-https://github.com/EjbejaranosAI/IMAS.git
+git clone https://github.com/EjbejaranosAI/IMAS.git
 '''
+
 2. For each OS:
 - For MacOs
+'''
 Hombrew install jdk
-```
-```
+'''
+
+'''
 Hombrew install maven
+'''
 
 - For Windows
 
