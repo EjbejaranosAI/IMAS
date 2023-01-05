@@ -1,5 +1,7 @@
 package eu.su.mas.dedaleEtu.mas.agents.dummies.explo;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 
 import dataStructures.tuple.Couple;
@@ -7,12 +9,18 @@ import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agent.behaviours.startMyBehaviours;
 
+
 import eu.su.mas.dedaleEtu.mas.behaviours.ExploCoopBehaviour;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
 
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.core.behaviours.TickerBehaviour;
+
+import jade.core.AID;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
+import jade.lang.acl.UnreadableException;
 
 
 /**
@@ -130,19 +138,35 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 
 			String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 			System.out.println(this.myAgent.getLocalName()+" HolaTothom");
-			System.out.println("Lista de tesoros: "+this.treasures);
+			System.out.println("Treasures List: "+this.treasures);
 			System.out.println("Current position: "+myPosition);
 
 			ArrayList<List> newPath=new ArrayList<>();
 			newPath.add(this.myMap.getShortestPath(myPosition,this.treasures.get(0).getLeft()));
-			for (Integer i = 0; i < this.treasures.size()/2; i++ ) {
+			for (Integer i = 0; i < (this.treasures.size()-1)/2; i++ ) {
 				newPath.add(this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
-				System.out.println("Path1: "+ this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
+				System.out.println("Path " + i +": "+ this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
 			}
 
 			System.out.println("NewPath: "+newPath);
 
 
+////			 Send exploration finished message
+		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+		msg.setProtocol("SHARE-TOPO");
+		msg.setSender(this.myAgent.getAID());
+//		System.out.println("Senders name:  "+ this.myAgent.getAID());
+		ArrayList<String> receivers = new ArrayList<>(Arrays.asList("Tanker1", "Tanker2"));
+		for (String agentName : receivers) {
+			msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
+//			System.out.println("Recievers name:  "+ agentName + AID.ISLOCALNAME);
+		}
+
+			msg.setContent("Exploration finished, route plan done!");
+			System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContent());
+			((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+
+			this.myAgent.addBehaviour(new sendShortestPath((AbstractDedaleAgent) this.myAgent, this.myMap, this.treasures));
 			finished = true;
 		}
 
@@ -154,5 +178,68 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 
 	}
 
+	private static class sendShortestPath extends TickerBehaviour {
+		/**
+		 * When an agent choose to move
+		 *
+		 */
+		private static final long serialVersionUID = 9088209402507795289L;
 
+		private final MapRepresentation myMap;
+
+		private final List<Couple<String, List<Couple<Observation, Integer>>>> treasures;
+
+		public sendShortestPath (final AbstractDedaleAgent myagent, MapRepresentation myMap, List<Couple<String, List<Couple<Observation, Integer>>>> treasures) {
+			super(myagent,600);
+			this.myMap = myMap;
+			this.treasures = treasures;
+		}
+
+		@Override
+		public void onTick() {
+			//			 Receive exploration finished message
+			MessageTemplate msgTemplate=MessageTemplate.and(
+					MessageTemplate.MatchProtocol("SHARE-TOPO"),
+					MessageTemplate.MatchPerformative(ACLMessage.INFORM));
+			ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
+//			System.out.println("msgReceived: " + msgReceived);
+
+			if (msgReceived!=null) {
+				String message = (String) msgReceived.getContent();
+				System.out.println(this.myAgent.getLocalName() + " received the message --> " + message);
+				if (message.contains("_")){
+					ArrayList<List> newPath=new ArrayList<>();
+					newPath.add(this.myMap.getShortestPath(message,this.treasures.get(0).getLeft()));
+					for (Integer i = 0; i < (this.treasures.size()-1)/2; i++ ) {
+						newPath.add(this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
+						System.out.println("Path " + i +": "+ this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
+					}
+
+					System.out.println("NewPath: "+newPath);
+
+
+					////			 Send exploration finished message
+					ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+					msg.setProtocol("SHARE-TOPO");
+					msg.setSender(this.myAgent.getAID());
+					ArrayList<String> receivers = new ArrayList<>(Arrays.asList("Tanker1", "Tanker2"));
+					for (String agentName : receivers) {
+						msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
+					}
+
+					try {
+						msg.setContentObject((Serializable) newPath);
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+					try {
+						System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContentObject());
+					} catch (UnreadableException e) {
+						throw new RuntimeException(e);
+					}
+					((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+				}
+			}
+		}
+	}
 }
