@@ -14,18 +14,34 @@ These instructions will get you a copy of the project up and running on your loc
 
 What things you need to install the software and how to install them
 
-```
-mvn install java exec:
+- IntelliJ IDEA https://www.jetbrains.com/idea/
 ```
 
 ### 💻 Installing
 
 A step by step series of examples that tell you how to get a development env running
 
-Say what the step will be
+- For MacOs
 
 ```
-Give the example
+Hombrew install jdk
+```
+```
+Hombrew install maven
+```
+
+- For Windows
+
+- For Linux
+
+### 💻 Installing
+Go for your terminal and write the following commands
+
+```
+cd dedale-etu
+```
+```
+mvn install java exec:
 ```
 
 <img src="https://raw.githubusercontent.com/sagar-viradiya/sagar-viradiya/master/resources/banner.png" alt="Welcome to IMAS Treasures">
@@ -38,5 +54,5 @@ Give the example
 
 
 
-
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=anuraghazra&layout=compact)](https://github.com/anuraghazra/github-readme-stats)
 
