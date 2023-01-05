@@ -1,4 +1,4 @@
-# IMAS MULTI-AGENT SYSTEMS
+# ✨ IMAS MULTI-AGENT SYSTEMS ✨
 
 MAS (Integrated Multi-Agent Systems) is a software platform for developing multi-agent systems. It is based on the JADE (Java Agent DEvelopment Framework) platform and provides a set of tools and libraries for building agent-based systems.
 
@@ -6,11 +6,11 @@ In a multi-agent system, multiple agents interact with each other and with their
 
 
 
-## Getting Started
+## 🚀 Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### Prerequisites
+### 🌱 Prerequisites
 
 What things you need to install the software and how to install them
 
@@ -18,7 +18,7 @@ What things you need to install the software and how to install them
 mvn install java exec:
 ```
 
-### Installing
+### 💻 Installing
 
 A step by step series of examples that tell you how to get a development env running
 
@@ -28,5 +28,15 @@ Say what the step will be
 Give the example
 ```
 
-And repeat
+<img src="https://raw.githubusercontent.com/sagar-viradiya/sagar-viradiya/master/resources/banner.png" alt="Welcome to IMAS Treasures">
+
+<p align="center"> 
+  Visitor count<br>
+  <img src="https://profile-counter.glitch.me/sagar-viradiya/count.svg" />
+</p>
+
+
+
+
+
 
