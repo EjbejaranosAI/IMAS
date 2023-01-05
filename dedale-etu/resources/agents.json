@@ -121,8 +121,8 @@
     "lockPickingExpertise":0
   },
   {
-    "agentType":"agentExplo",
-    "agentName": "ExplorerCoord",
+    "agentType":"agentExplorer",
+    "agentName": "ExplorerCoordinator",
     "communicationRange": 3,
     "initialLocation": "free",
     "backPackCapacityGold": 0,
