@@ -45,9 +45,12 @@ public class GeneralManagerAgent extends AbstractDedaleAgent {
          * ADD the behaviours of you agent here
          *
          ************************************************/
-        lb.add(new TrackCollectors(this));
-        lb.add(new SendCollector(this));
-        lb.add(new PetitionTankerCoor(this));
+
+
+        //lb.add(new TrackCollectors(this));
+        //lb.add(new SendCollector(this));
+        //lb.add(new PetitionTankerCoor(this));
+        //lb.add(new GetInfoExplorers(this));
 
 
         /***
@@ -86,12 +89,57 @@ public class GeneralManagerAgent extends AbstractDedaleAgent {
 
 /**************************************
  *
- *
  * 				BEHAVIOUR
- *
  *
  **************************************/
 
+
+/**************************************
+* 		Managae Explorers behaviours
+ **************************************/
+class GetInfoExplorers extends SimpleBehaviour {
+    /**
+     * When an agent choose to migrate all its components should be serializable
+     *
+     */
+    private static final long serialVersionUID = 9088209402507795289L;
+
+    private boolean finished = false;
+
+    public GetInfoExplorers (final AbstractDedaleAgent myagent) {
+        super(myagent);
+    }
+
+    @Override
+    public void action() {
+        // Get the current position and observations of the agent
+        String myPosition = ((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
+        List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();
+        List<String> explorerList = new ArrayList<String>();
+
+        // Process the observations to determine the number of explorers in the map
+        if(lobs!=null){
+            for(Couple<String,List<Couple<Observation,Integer>>> o:lobs){
+                if(o.getRight().size()>0){
+                    if(o.getRight().get(0).getLeft().getName().equals("Explorer")){
+                        explorerList.add(o.getLeft());
+                    }
+                }
+            }
+        }
+        // Print the number of explorers in the map
+        System.out.println("There are "+explorerList.size()+" explorers in the map");
+    }
+
+    @Override
+    public boolean done() {
+        return finished;
+    }
+}
+
+/**************************************
+ * 		Manage Tankers behaviours
+ **************************************/
 class TrackCoordinators extends SimpleBehaviour {
     /**
      * When an agent choose to migrate all its components should be serializable
@@ -116,6 +164,9 @@ class TrackCoordinators extends SimpleBehaviour {
     }
 }
 
+/**************************************
+ * 		Manage message behaviours
+ **************************************/
 class SendInstructions extends SimpleBehaviour {
     /**
      * When an agent choose to migrate all its components should be serializable
@@ -140,7 +191,9 @@ class SendInstructions extends SimpleBehaviour {
     }
 
 }
-
+/**************************************
+ * 		Manage receive states behaviours
+ **************************************/
 class ReceiveStats extends SimpleBehaviour {
     /**
      * When an agent choose to migrate all its components should be serializable

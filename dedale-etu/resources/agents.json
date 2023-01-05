@@ -132,12 +132,12 @@
     "lockPickingExpertise":0
   },
   {
-    "agentType":"agentExplo",
+    "agentType":"HumanControlled",
     "agentName": "GeneralManager",
     "communicationRange": 3,
     "initialLocation": "free",
-    "backPackCapacityGold": 0,
-    "backPackCapacityDiamond":0,
+    "backPackCapacityGold": -1,
+    "backPackCapacityDiamond":-1,
     "detectionRadius": 0,
     "strengthExpertise": 0,
     "lockPickingExpertise":0

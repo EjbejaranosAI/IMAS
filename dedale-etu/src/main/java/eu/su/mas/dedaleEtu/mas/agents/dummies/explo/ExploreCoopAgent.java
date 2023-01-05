@@ -39,6 +39,8 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 	private MapRepresentation myMap;
 
 
+
+
 	/**
 	 * This method is automatically called when "agent".start() is executed.
 	 * Consider that Agent is launched for the first time.
@@ -75,6 +77,7 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 		 ************************************************/
 
 		lb.add(new ExploCoopBehaviour(this,this.myMap,list_agentNames));
+
 
 
 
