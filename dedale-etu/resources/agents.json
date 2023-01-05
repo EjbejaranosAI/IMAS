@@ -80,7 +80,7 @@
     "agentType":"agentTanker",
     "agentName": "Tanker1",
     "communicationRange": 3,
-    "initialLocation": "free",
+    "initialLocation": "2_4",
     "backPackCapacityGold": 550,
     "backPackCapacityDiamond":550,
     "detectionRadius": 0,

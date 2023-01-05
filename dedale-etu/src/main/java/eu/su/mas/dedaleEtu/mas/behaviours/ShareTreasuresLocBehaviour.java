@@ -1,18 +1,19 @@
 package eu.su.mas.dedaleEtu.mas.behaviours;
 
-import java.io.IOException;
-import java.util.List;
-
 import dataStructures.serializableGraph.SerializableSimpleGraph;
-
+import dataStructures.tuple.Couple;
+import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation.MapAttribute;
-
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * The agent periodically share its map.
@@ -21,9 +22,10 @@ import jade.lang.acl.ACLMessage;
  * @author hc
  *
  */
-public class ShareMapBehaviour extends TickerBehaviour{
+public class ShareTreasuresLocBehaviour extends TickerBehaviour{
 
-	private MapRepresentation myMap;
+//	private MapRepresentation myMap;
+	private List<Couple<String, List<Couple<Observation, Integer>>>> treasures;
 	private List<String> receivers;
 
 	/**
@@ -32,12 +34,12 @@ public class ShareMapBehaviour extends TickerBehaviour{
 	 * If it was written properly, this sharing action would NOT be in a ticker behaviour and only a subgraph would be shared.
 	 * @param a the agent
 	 * @param period the periodicity of the behaviour (in ms)
-	 * @param mymap (the map to share)
+	 * @param treasures (the list of treasures locations to share)
 	 * @param receivers the list of agents to send the map to
 	 */
-	public ShareMapBehaviour(Agent a, long period,MapRepresentation mymap, List<String> receivers) {
+	public ShareTreasuresLocBehaviour(Agent a, long period, List<Couple<String, List<Couple<Observation, Integer>>>> treasures, List<String> receivers) {
 		super(a, period);
-		this.myMap=mymap;
+		this.treasures=treasures;
 		this.receivers=receivers;
 	}
 
@@ -48,7 +50,7 @@ public class ShareMapBehaviour extends TickerBehaviour{
 
 	@Override
 	protected void onTick() {
-//		System.out.println("Entro en ShareMap");
+//		System.out.println("Tratando de enviar la lista de tesoros");
 		//4) At each time step, the agent blindly send all its graph to its surrounding to illustrate how to share its knowledge (the topology currently) with the the others agents.
 		// If it was written properly, this sharing action should be in a dedicated behaviour set, the receivers be automatically computed, and only a subgraph would be shared.
 
@@ -61,9 +63,8 @@ public class ShareMapBehaviour extends TickerBehaviour{
 //			System.out.println("Recievers name:  "+ agentName + AID.ISLOCALNAME);
 		}
 
-		SerializableSimpleGraph<String, MapAttribute> sg=this.myMap.getSerializableGraph();
 		try {
-			msg.setContentObject(sg);
+			msg.setContentObject((Serializable) this.treasures);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

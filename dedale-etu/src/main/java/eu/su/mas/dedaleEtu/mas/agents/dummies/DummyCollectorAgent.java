@@ -138,7 +138,7 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 				//If the agent picked (part of) the treasure
 				if (b){
 					List<Couple<String,List<Couple<Observation,Integer>>>> lobs2=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
-					System.out.println("State of the observations after picking "+lobs2);
+//					System.out.println("State of the observations after picking "+lobs2);
 				}
 
 				//Trying to store everything in the tankers

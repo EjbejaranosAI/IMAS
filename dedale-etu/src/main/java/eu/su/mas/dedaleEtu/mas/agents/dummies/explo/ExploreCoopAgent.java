@@ -1,7 +1,6 @@
 package eu.su.mas.dedaleEtu.mas.agents.dummies.explo;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import dataStructures.tuple.Couple;
 import eu.su.mas.dedale.env.Observation;
@@ -12,6 +11,9 @@ import eu.su.mas.dedaleEtu.mas.behaviours.ExploCoopBehaviour;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
 
 import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.SimpleBehaviour;
+import jade.core.behaviours.TickerBehaviour;
+
 
 /**
  * <pre>
@@ -78,6 +80,7 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 		 ************************************************/
 
 		lb.add(new ExploCoopBehaviour(this,this.myMap,list_agentNames, treasures));
+//		lb.add(new HelloPrint(this));
 		/***
 		 * MANDATORY TO ALLOW YOUR AGENT TO BE DEPLOYED CORRECTLY
 		 */
@@ -87,8 +90,69 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 
 		System.out.println("the  agent "+this.getLocalName()+ " is started");
 
+
 	}
 
+	/**************************************
+	 *
+	 *
+	 * 				BEHAVIOUR
+	 *
+	 *
+	 **************************************/
+
+	public static class HelloPath extends SimpleBehaviour {
+		/**
+		 * When an agent choose to move
+		 *
+		 */
+		private static final long serialVersionUID = 9088209402507795289L;
+
+		private boolean finished = false;
+		private final MapRepresentation myMap;
+		private final List<Couple<String, List<Couple<Observation, Integer>>>> treasures;
+
+		public HelloPath (final AbstractDedaleAgent myagent, MapRepresentation myMap, List<Couple<String, List<Couple<Observation, Integer>>>> treasures) {
+			super(myagent);
+			this.myMap=myMap;
+			this.myAgent=myagent;
+			this.treasures=treasures;
+		}
+
+
+
+		@Override
+		public void action() {
+			//Example to retrieve the current position
+			Set<Couple<String, List<Couple<Observation, Integer>>>> set = new HashSet<>(this.treasures);
+			this.treasures.clear();
+			this.treasures.addAll((Collection<? extends Couple<String, List<Couple<Observation, Integer>>>>) set);
+
+			String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
+			System.out.println(this.myAgent.getLocalName()+" HolaTothom");
+			System.out.println("Lista de tesoros: "+this.treasures);
+			System.out.println("Current position: "+myPosition);
+
+			ArrayList<List> newPath=new ArrayList<>();
+			newPath.add(this.myMap.getShortestPath(myPosition,this.treasures.get(0).getLeft()));
+			for (Integer i = 0; i < this.treasures.size()/2; i++ ) {
+				newPath.add(this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
+				System.out.println("Path1: "+ this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
+			}
+
+			System.out.println("NewPath: "+newPath);
+
+
+			finished = true;
+		}
+
+		@Override
+		public boolean done() {
+			System.out.println("Entering to DONE!!!!!!");
+			return finished;
+		}
+
+	}
 
 
 }

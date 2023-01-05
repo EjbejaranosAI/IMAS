@@ -1,6 +1,8 @@
 package eu.su.mas.dedaleEtu.mas.agents.dummies;
 
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 
 import dataStructures.serializableGraph.SerializableSimpleGraph;
@@ -9,6 +11,7 @@ import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agent.behaviours.ReceiveTreasureTankerBehaviour;
 import eu.su.mas.dedale.mas.agent.behaviours.startMyBehaviours;
+import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
@@ -51,7 +54,7 @@ public class DummyTankerAgent extends AbstractDedaleAgent{
 		super.setup();
 
 		List<Behaviour> lb=new ArrayList<Behaviour>();
-		lb.add(new RandomTankerBehaviour(this));
+		lb.add(new TankerBehaviour(this));
 
 		addBehaviour(new startMyBehaviours(this,lb));
 
@@ -92,18 +95,55 @@ class TankerBehaviour extends SimpleBehaviour{
 
 	@Override
 	public void action() {
-		System.out.println("Entering to action!!!!!!");
+		System.out.println("Entering to tanker action!!!!!!");
 
 		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 		System.out.println("Position:" + myPosition);
-		int n_tank = Character.getNumericValue(this.myAgent.getLocalName().charAt(6));
-		System.out.println(n_tank == 1);
-		if(n_tank == 1) {
-			String target  = "9_9";
-			System.out.println("if tanker 1");
-			List<String> path = Arrays.asList("5_6", "6_6", "6_7", "7_7");
-			for (String p : path) {
-				((AbstractDedaleAgent) this.myAgent).moveTo(p);
+
+		// Send position to the explorer
+//		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+//		msg.setProtocol("SHARE-TOPO");
+//		msg.setSender(this.myAgent.getAID());
+////		System.out.println("Senders name:  "+ this.myAgent.getAID());
+//		for (String agentName : receivers) {
+//			msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
+////			System.out.println("Recievers name:  "+ agentName + AID.ISLOCALNAME);
+//		}
+//
+//		try {
+//			msg.setContentObject((Serializable) this.treasures);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+////		System.out.println("Mensajeee! Enviado:  "+ msg);
+//		((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+
+		// Receive path from explorer
+//		MessageTemplate msgTemplate=MessageTemplate.and(
+//				MessageTemplate.MatchProtocol("SHARE-TOPO"),
+//				MessageTemplate.MatchPerformative(ACLMessage.INFORM));
+//		ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
+//		ArrayList<List<String>> paths = new ArrayList<>();
+//		if (msgReceived!=null) {
+//			try {
+//				paths = (ArrayList<List<String>>) msgReceived.getContentObject();
+//			} catch (UnreadableException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+
+		// Dummy message with path
+		ArrayList<List<String>> paths = new ArrayList<>();
+		paths.add(Arrays.asList("2_5", "3_5", "3_4", "3_3", "3_2", "3_1", "3_0"));
+		paths.add(Arrays.asList("2_0", "2_1", "1_1"));
+		paths.add(Arrays.asList("2_1", "2_2", "3_2", "3_3", "4_3", "5_3"));
+
+
+
+		for (List path : paths) {
+			for(Object p:path){
+				((AbstractDedaleAgent) this.myAgent).moveTo((String) p);
 				System.out.println(this.myAgent.getLocalName() + " ---- Moving to:  " + p);
 				try {
 					this.myAgent.doWait(1000);
@@ -111,19 +151,37 @@ class TankerBehaviour extends SimpleBehaviour{
 					e.printStackTrace();
 				}
 			}
-		} else if (n_tank == 2) {
-			String target  = "5_5";
-			List<String> path2 = Arrays.asList("0_1", "1_1", "1_2", "2_2");
-			for (String p2 : path2) {
-				((AbstractDedaleAgent) this.myAgent).moveTo(p2);
-				System.out.println(this.myAgent.getLocalName() + " ---- Moving to:  " + p2);
-				try {
-					this.myAgent.doWait(1000);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+
 		}
+
+//		int n_tank = Character.getNumericValue(this.myAgent.getLocalName().charAt(6));
+//		System.out.println(n_tank == 1);
+//		if(n_tank == 1) {
+//			String target  = "9_9";
+//			System.out.println("if tanker 1");
+//			List<String> path = Arrays.asList("5_6", "6_6", "6_7", "7_7");
+//			for (String p : path) {
+//				((AbstractDedaleAgent) this.myAgent).moveTo(p);
+//				System.out.println(this.myAgent.getLocalName() + " ---- Moving to:  " + p);
+//				try {
+//					this.myAgent.doWait(1000);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		} else if (n_tank == 2) {
+//			String target  = "5_5";
+//			List<String> path2 = Arrays.asList("0_1", "1_1", "1_2", "2_2");
+//			for (String p2 : path2) {
+//				((AbstractDedaleAgent) this.myAgent).moveTo(p2);
+//				System.out.println(this.myAgent.getLocalName() + " ---- Moving to:  " + p2);
+//				try {
+//					this.myAgent.doWait(1000);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
 		finished = true;
 	}
 
