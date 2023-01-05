@@ -15,7 +15,7 @@ These instructions will get you a copy of the project up and running on your loc
 What things you need to install the software and how to install them
 
 - IntelliJ IDEA https://www.jetbrains.com/idea/
-```
+
 
 ### 💻 Installing
 
@@ -23,12 +23,12 @@ A step by step series of examples that tell you how to get a development env run
 
 - For MacOs
 
-```
+
 Hombrew install jdk
 ```
 ```
 Hombrew install maven
-```
+
 
 - For Windows
 
@@ -40,6 +40,7 @@ Go for your terminal and write the following commands
 ```
 cd dedale-etu
 ```
+
 ```
 mvn install java exec:
 ```
