@@ -110,7 +110,7 @@
     "lockPickingExpertise":0
   },
   {
-    "agentType":"agentCollector",
+    "agentType":"agentCollect",
     "agentName": "CollectorCoordinator",
     "communicationRange": 3,
     "initialLocation": "free",
@@ -121,8 +121,8 @@
     "lockPickingExpertise":0
   },
   {
-    "agentType":"agentExplorer",
-    "agentName": "ExplorerCoordinator",
+    "agentType":"agentExplo",
+    "agentName": "ExplorerCoord",
     "communicationRange": 3,
     "initialLocation": "free",
     "backPackCapacityGold": 0,
@@ -132,7 +132,7 @@
     "lockPickingExpertise":0
   },
   {
-    "agentType":"agentExplorer",
+    "agentType":"agentExplo",
     "agentName": "GeneralManager",
     "communicationRange": 3,
     "initialLocation": "free",
