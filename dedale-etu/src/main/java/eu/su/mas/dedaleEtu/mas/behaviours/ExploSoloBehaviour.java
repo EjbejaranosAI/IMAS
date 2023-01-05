@@ -71,7 +71,7 @@ public class ExploSoloBehaviour extends SimpleBehaviour {
 			 * Just added here to let you see what the agent is doing, otherwise he will be too quick
 			 */
 			try {
-				this.myAgent.doWait(500);
+				this.myAgent.doWait(1000);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -114,6 +114,7 @@ public class ExploSoloBehaviour extends SimpleBehaviour {
 					//chose one, compute the path and take the first step.
 					nextNode=this.myMap.getShortestPath(myPosition, this.openNodes.get(0)).get(0);
 				}
+				System.out.println("The explorer is going to move to "+ nextNode );
 				
 				
 				
@@ -166,6 +167,7 @@ public class ExploSoloBehaviour extends SimpleBehaviour {
 				/************************************************
 				 * 				END API CALL ILUSTRATION
 				 *************************************************/
+				System.out.println("The explorer "+this.myAgent+"is going to move to "+ nextNode );
 				((AbstractDedaleAgent)this.myAgent).moveTo(nextNode);
 			}
 

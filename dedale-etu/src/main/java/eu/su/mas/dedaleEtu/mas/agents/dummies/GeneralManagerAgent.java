@@ -12,8 +12,9 @@ import eu.su.mas.dedale.mas.agent.behaviours.startMyBehaviours;
 import eu.su.mas.dedaleEtu.mas.agents.dummies.TankerCoorAgent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
-
-
+import jade.core.behaviours.TickerBehaviour;
+import java.util.Random;
+import eu.su.mas.dedale.mas.agent.behaviours.startMyBehaviours;
 /**
  * General Manager agent. It keeps track of all dummy collectors and their positions.
  *
@@ -51,6 +52,7 @@ public class GeneralManagerAgent extends AbstractDedaleAgent {
         //lb.add(new SendCollector(this));
         //lb.add(new PetitionTankerCoor(this));
         //lb.add(new GetInfoExplorers(this));
+        lb.add(new RandomWalkExchangeBehaviour(this));
 
 
         /***
@@ -217,4 +219,48 @@ class ReceiveStats extends SimpleBehaviour {
         return finished;
     }
 
+}
+
+class RandomWalkExchangeBehaviour extends TickerBehaviour{
+    /**
+     * When an agent choose to move
+     *
+     */
+    private static final long serialVersionUID = 9088209402507795289L;
+
+    public RandomWalkExchangeBehaviour (final AbstractDedaleAgent myagent) {
+        super(myagent, 600);
+        //super(myagent);
+    }
+
+    @Override
+    public void onTick() {
+        //Example to retrieve the current position
+        String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
+
+        if (myPosition!=""){
+            List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
+//				System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
+
+            //Little pause to allow you to follow what is going on
+            //try {
+            //	System.out.println("Press enter in the console to allow the agent "+this.myAgent.getLocalName() +" to execute its next move");
+            //	System.in.read();
+            //} catch (IOException e) {
+            //	e.printStackTrace();
+            //}
+            List<Couple<Observation,Integer>> lObservations= lobs.get(0).getRight();
+
+
+            //Trying to store everything in the tankers
+
+            System.out.println("I am the General Manager guys! and I am  "+ this.myAgent.getLocalName()+" and the position  is "+myPosition);
+
+            //Random move from the current position
+            Random r= new Random();
+            int moveId=1+r.nextInt(lobs.size()-1); //removing the current position from the list of target to accelerate the tests, but not necessary as to stay is an action
+            //The move action (if any) should be the last action of your behaviour
+            ((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
+        }
+    }
 }
