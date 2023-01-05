@@ -109,7 +109,7 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 	 *
 	 **************************************/
 
-	public static class HelloPath extends SimpleBehaviour {
+	public static class HelloPath extends TickerBehaviour {
 		/**
 		 * When an agent choose to move
 		 *
@@ -119,18 +119,20 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 		private boolean finished = false;
 		private final MapRepresentation myMap;
 		private final List<Couple<String, List<Couple<Observation, Integer>>>> treasures;
+		private ArrayList<String> CoallParticipant;
 
 		public HelloPath (final AbstractDedaleAgent myagent, MapRepresentation myMap, List<Couple<String, List<Couple<Observation, Integer>>>> treasures) {
-			super(myagent);
+			super(myagent,600);
 			this.myMap=myMap;
 			this.myAgent=myagent;
 			this.treasures=treasures;
+			this.CoallParticipant=new ArrayList<>(Arrays.asList("Tanker"));
 		}
 
 
 
 		@Override
-		public void action() {
+		public void onTick() {
 			//Example to retrieve the current position
 			Set<Couple<String, List<Couple<Observation, Integer>>>> set = new HashSet<>(this.treasures);
 			this.treasures.clear();
@@ -151,30 +153,64 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 			System.out.println("NewPath: "+newPath);
 
 
-////			 Send exploration finished message
-		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-		msg.setProtocol("SHARE-TOPO");
-		msg.setSender(this.myAgent.getAID());
-//		System.out.println("Senders name:  "+ this.myAgent.getAID());
-		ArrayList<String> receivers = new ArrayList<>(Arrays.asList("Tanker1", "Tanker2"));
-		for (String agentName : receivers) {
-			msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
-//			System.out.println("Recievers name:  "+ agentName + AID.ISLOCALNAME);
+////	 Send exploration finished message  - ESCUCHANDO
+			// TODO Repetir hasta que alguien lo escuche
+//		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+//		msg.setProtocol("SHARE-TOPO");
+//		msg.setSender(this.myAgent.getAID());
+//		ArrayList<String> receivers = new ArrayList<>(Arrays.asList("Tanker1", "Tanker2"));
+//		for (String agentName : receivers) {
+//			msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
+//		}
+//		msg.setContent("Exploration finished, route plan done!");
+//		System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContent());
+//		((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+		// Sending order to stop until a coallition is formed
+
+			if(!this.CoallParticipant.isEmpty()){
+				// Notify to stop, waiting the responses
+				ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+				msg.setProtocol("SHARE-TOPO");
+				msg.setSender(this.myAgent.getAID());
+				ArrayList<String> receivers = new ArrayList<>(Arrays.asList("Tanker1", "Tanker2"));
+				for (String agentName : receivers) {
+					msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
+				}
+				msg.setContent("Exploration finished, route plan done!");
+				System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContent());
+				((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+
+				// Listening to messages until list is finished, (waiting for agents names)
+				MessageTemplate msgTemplate = MessageTemplate.and(
+						MessageTemplate.MatchProtocol("SHARE-TOPO"),
+						MessageTemplate.MatchPerformative(ACLMessage.INFORM));
+				ACLMessage msgReceived = this.myAgent.receive(msgTemplate);
+				System.out.println("Explorer msgReceived: " + msgReceived);
+
+				if (msgReceived != null) {
+					String msgagentName = (String) msgReceived.getContent();
+					System.out.println(this.myAgent.getLocalName() + " received the message --> " + msgagentName);
+					if (msgagentName.contains("Tanker")){
+						CoallParticipant.remove("Tanker"); //Removing the agent from the coallitions list
+					} else if (msgagentName.contains("Collector")) {
+						CoallParticipant.remove("Collector");
+					}
+				}
+			} else{
+				// Go to calculate the treasures path
+
+				this.myAgent.addBehaviour(new sendShortestPath((AbstractDedaleAgent) this.myAgent, this.myMap, this.treasures));
+				stop();
+//				finished = true;
+			}
+
 		}
 
-			msg.setContent("Exploration finished, route plan done!");
-			System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContent());
-			((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
-
-			this.myAgent.addBehaviour(new sendShortestPath((AbstractDedaleAgent) this.myAgent, this.myMap, this.treasures));
-			finished = true;
-		}
-
-		@Override
-		public boolean done() {
-			System.out.println("Entering to DONE!!!!!!");
-			return finished;
-		}
+//		@Override
+//		public boolean done() {
+//			System.out.println("Entering to DONE!!!!!!");
+//			return finished;
+//		}
 
 	}
 

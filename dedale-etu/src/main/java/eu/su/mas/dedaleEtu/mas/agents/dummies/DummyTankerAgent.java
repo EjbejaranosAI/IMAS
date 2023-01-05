@@ -73,7 +73,7 @@ public class DummyTankerAgent extends AbstractDedaleAgent{
  **************************************/
 
 
-class TankerBehaviour extends SimpleBehaviour{
+class TankerBehaviour extends TickerBehaviour{
 	/**
 	 * When an agent choose to migrate all its components should be serializable
 	 *
@@ -83,62 +83,78 @@ class TankerBehaviour extends SimpleBehaviour{
 	private boolean finished = false;
 
 	public TankerBehaviour (final AbstractDedaleAgent myagent) {
-		super(myagent);
+		super(myagent,600);
 	}
 
 	@Override
-	public void action() {
-		System.out.println("Entering to tanker action!!!!!!");
+	public void onTick() {
+		System.out.println("Entering to TankerBehaviour!!!!!!");
 
-		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
-		System.out.println("Position:" + myPosition);
 
-//			 Send position to the explorer
-		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-		msg.setProtocol("SHARE-TOPO");
-		msg.setSender(this.myAgent.getAID());
+		// Listening to confirmation message of agent name being accepted
+		MessageTemplate msgTemplateconf = MessageTemplate.and(
+				MessageTemplate.MatchProtocol("SHARE-TOPO"),
+				MessageTemplate.MatchPerformative(ACLMessage.INFORM));
+		ACLMessage msgconf = this.myAgent.receive(msgTemplateconf);
+		System.out.println("Tankerbehaviour conf msgReceived: " + msgconf);
+
+		if (msgconf != null) {
+			String msgconfir = (String) msgconf.getContent();
+			System.out.println(this.myAgent.getLocalName() + " received the message --> " + msgconfir);
+			if (msgconfir.contains("Accepted member of coallition")){
+				String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
+				System.out.println("Position:" + myPosition);
+
+				//	Send position to the explorer
+				ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+				msg.setProtocol("SHARE-TOPO");
+				msg.setSender(this.myAgent.getAID());
 //		System.out.println("Senders name:  "+ this.myAgent.getAID());
-		ArrayList<String> receivers = new ArrayList<>(Arrays.asList("Explo1", "Explo2"));
-		for (String agentName : receivers) {
-			msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
+				ArrayList<String> receivers = new ArrayList<>(Arrays.asList("Explo1", "Explo2"));
+				for (String agentName : receivers) {
+					msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
 //			System.out.println("Recievers name:  "+ agentName + AID.ISLOCALNAME);
-		}
-
-		msg.setContent(myPosition);
-		System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContent());
-		((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
-
-		ACLMessage msgReceived = null;
-		while (msgReceived == null) {
-			// Receive path from explorer
-			MessageTemplate msgTemplate = MessageTemplate.and(
-					MessageTemplate.MatchProtocol("SHARE-TOPO"),
-					MessageTemplate.MatchPerformative(ACLMessage.INFORM));
-			msgReceived = this.myAgent.receive(msgTemplate);
-			System.out.println("msgReceived: " + msgReceived);
-			ArrayList<List<String>> paths = new ArrayList<>();
-			if (msgReceived != null) {
-				try {
-					paths = (ArrayList<List<String>>) msgReceived.getContentObject();
-				} catch (UnreadableException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 
-				for (List path : paths) {
-					for(Object p:path){
-						((AbstractDedaleAgent) this.myAgent).moveTo((String) p);
-						System.out.println(this.myAgent.getLocalName() + " ---- Moving to:  " + p);
+				msg.setContent(myPosition);
+				System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContent());
+				((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+
+				ACLMessage msgReceived = null;
+				while (msgReceived == null) {
+					// Receive path from explorer
+					MessageTemplate msgTemplate = MessageTemplate.and(
+							MessageTemplate.MatchProtocol("SHARE-TOPO"),
+							MessageTemplate.MatchPerformative(ACLMessage.INFORM));
+					msgReceived = this.myAgent.receive(msgTemplate);
+					System.out.println("TankerBehaviour msgReceived: " + msgReceived);
+					ArrayList<List<String>> paths = new ArrayList<>();
+					if (msgReceived != null) {
 						try {
-							this.myAgent.doWait(1000);
-						} catch (Exception e) {
+							paths = (ArrayList<List<String>>) msgReceived.getContentObject();
+						} catch (UnreadableException e) {
+							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-					}
 
+						for (List path : paths) {
+							for (Object p : path) {
+								((AbstractDedaleAgent) this.myAgent).moveTo((String) p);
+								System.out.println(this.myAgent.getLocalName() + " ---- Moving to:  " + p);
+								try {
+									this.myAgent.doWait(1000);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							}
+
+						}
+					}
 				}
 			}
 		}
+
+
 
 		// Dummy message with path
 //		ArrayList<List<String>> paths = new ArrayList<>();
@@ -160,14 +176,15 @@ class TankerBehaviour extends SimpleBehaviour{
 //			}
 //
 //		}
-		finished = true;
+//		finished = true;
+		stop();
 	}
 
-	@Override
-	public boolean done() {
-		System.out.println("Entering to DONE!!!!!!");
-		return finished;
-	}
+//	@Override
+//	public boolean done() {
+//		System.out.println("Entering to DONE!!!!!!");
+//		return finished;
+//	}
 
 }
 
@@ -197,17 +214,33 @@ class RandomTankerBehaviour extends TickerBehaviour{
 			System.out.println(this.myAgent.getLocalName()+" ---- Moving to:  "+lobs.get(moveId).getLeft());
 			((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
 
-//			 Receive exploration finished message
+//		Receive exploration finished message
 		MessageTemplate msgTemplate=MessageTemplate.and(
 				MessageTemplate.MatchProtocol("SHARE-TOPO"),
 				MessageTemplate.MatchPerformative(ACLMessage.INFORM));
 		ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
-//		System.out.println("msgReceived: " + msgReceived);
+		System.out.println("Tanker msgReceived: " + msgReceived);
 
 			if (msgReceived!=null) {
 				String message = (String) msgReceived.getContent();
 				System.out.println(this.myAgent.getLocalName() + " received the message --> " + message);
 				if (message.equals("Exploration finished, route plan done!")){
+
+					// Send message agent type to any explorer
+						ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+						msg.setProtocol("SHARE-TOPO");
+						msg.setSender(this.myAgent.getAID());
+						ArrayList<String> receivers = new ArrayList<>(Arrays.asList("Explo1", "Explo2"));
+						for (String agentName : receivers) {
+							msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
+						}
+
+						msg.setContent(this.myAgent.getLocalName()); // The message is the agent name in a String
+						System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContent());
+						((AbstractDedaleAgent)this.myAgent).sendMessage(msg); // Sending the message
+
+
+					// Go to tanker Behaviour
 					this.myAgent.addBehaviour(new TankerBehaviour((AbstractDedaleAgent) this.myAgent));
 					stop();
 				}

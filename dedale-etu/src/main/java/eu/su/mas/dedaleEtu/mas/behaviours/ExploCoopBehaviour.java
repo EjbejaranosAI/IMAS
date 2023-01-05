@@ -125,6 +125,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 				//Explo finished
 				finished=true;
 				System.out.println(this.myAgent.getLocalName()+" - Exploration successufully done, behaviour removed.");
+
 				this.myAgent.addBehaviour(new ExploreCoopAgent.HelloPath((AbstractDedaleAgent) this.myAgent, this.myMap, this.treasures));
 			}else{
 				//4) select next move.
