@@ -17,24 +17,25 @@ What things you need to install the software and how to install them
 - IntelliJ IDEA https://www.jetbrains.com/idea/
 
 
-### 💻 Installing
+### 🛠️ Installation Steps 
+1.Clone the repository
 
-A step by step series of examples that tell you how to get a development env running
-
+'''
+https://github.com/EjbejaranosAI/IMAS.git
+'''
+2. For each OS:
 - For MacOs
-
-
 Hombrew install jdk
 ```
 ```
 Hombrew install maven
 
-
 - For Windows
 
 - For Linux
 
-### 💻 Installing
+### 💻 Run the code
+
 Go for your terminal and write the following commands
 
 ```
@@ -45,15 +46,4 @@ cd dedale-etu
 mvn install java exec:
 ```
 
-<img src="https://raw.githubusercontent.com/sagar-viradiya/sagar-viradiya/master/resources/banner.png" alt="Welcome to IMAS Treasures">
-
-<p align="center"> 
-  Visitor count<br>
-  <img src="https://profile-counter.glitch.me/sagar-viradiya/count.svg" />
-</p>
-
-
-
-
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=EjbejaranosAI&layout=compact)]([[https://github.com/anuraghazra/github-readme-stats](https://github.com/EjbejaranosAI/IMAS)](https://github.com/EjbejaranosAI/IMAS/tree/main/dedale-etu))
 
