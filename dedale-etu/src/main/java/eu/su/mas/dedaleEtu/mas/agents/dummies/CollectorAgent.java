@@ -72,15 +72,20 @@ public class CollectorAgent extends AbstractDedaleAgent{
             String next_node = lobs.get(moveId).getLeft();
 
             if (!this.nodeBuffer.contains(next_node)){
+				System.out.println("Selected node : " + next_node);
                 return next_node;
             } else {
                 for (int i = 1; i < lobs.size(); i++) {
                     next_node = lobs.get(i).getLeft();
                     if (!this.nodeBuffer.contains(next_node)){
+						System.out.println("Selected node : " + i + " " + next_node);
                         return next_node;
                     }
                 }
             }
+			System.out.println("All nodes in the buffer: " + next_node);
+			moveId=1+r.nextInt(lobs.size()-1); //removing the current position from the list of target to accelerate the tests, but not necessary as to stay is an action
+			next_node = lobs.get(moveId).getLeft();
             return next_node;  // Even if all nodes are visited, it will eventually use one.
         }
 
@@ -88,11 +93,7 @@ public class CollectorAgent extends AbstractDedaleAgent{
 		public void onTick() {
 			//Example to retrieve the current position
 			String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
-            if (this.nodeBuffer.size() == this.BUFFER_SIZE){
-                this.nodeBuffer.remove(0);
-            }
-            // TODO: change this. It adds inconsistency: multiple instances of the same node, when forced to be repeated
-            this.nodeBuffer.add(myPosition);
+
 
 			if (myPosition!=""){
 				List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
@@ -136,6 +137,15 @@ public class CollectorAgent extends AbstractDedaleAgent{
 
 				//Random move from the current position
                 String next_node = chooseNextNode(lobs);
+
+				if (!this.nodeBuffer.contains(next_node)){
+
+					if (this.nodeBuffer.size() == this.BUFFER_SIZE){
+						this.nodeBuffer.remove(0);
+					}
+
+					this.nodeBuffer.add(next_node);
+				}
 
 				//The move action (if any) should be the last action of your behaviour
 				((AbstractDedaleAgent)this.myAgent).moveTo(next_node);

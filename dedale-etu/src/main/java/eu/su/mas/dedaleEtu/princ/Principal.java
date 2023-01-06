@@ -348,7 +348,7 @@ public class Principal {
 //		ag=createNewDedaleAgent(c, agentName,DummyMovingAgent.class.getName(), entityParametersExplo1);
 		ag=createNewDedaleAgent(c, agentName,ExploreSoloAgent.class.getName(), entityParametersExplo1);
 		//ag=createNewDedaleAgent(c, agentName, ExploreSoloAgent.class.getName(), entityParametersExplo1);//ExploreSoloAgent
-		agentList.add(ag);
+		// agentList.add(ag);
 
 
 
@@ -510,7 +510,7 @@ public class Principal {
 
 				//4) Give the class name of your agent to let the system instantiate it
 				ag=createNewDedaleAgent(c, agentName, DummyTankerAgent.class.getName(), entityParametersT1);
-				agentList.add(ag);
+				// agentList.add(ag);
 		/***************
 		 * AGENT Tanker 2
 		 ***************/
@@ -526,7 +526,7 @@ public class Principal {
 
 				//4) Give the class name of your agent to let the system instantiate it
 				ag=createNewDedaleAgent(c, agentName, DummyTankerAgent.class.getName(), entityParametersT2);
-				agentList.add(ag);
+				// agentList.add(ag);
 
 
 		 /***************
@@ -548,7 +548,7 @@ public class Principal {
 
 				//4) Give the class name of your agent to let the system instantiate it
 				ag=createNewDedaleAgent(c, agentName, ExploreCoopAgent.class.getName(), entityParametersCE);
-				agentList.add(ag);
+				// agentList.add(ag);
 		/***************
 		 * Tanker Coordinator
 		 ***************/
@@ -564,7 +564,7 @@ public class Principal {
 
 				//4) Give the class name of your agent to let the system instantiate it
 				ag=createNewDedaleAgent(c, agentName, TankerCoorAgent.class.getName(), entityParametersM);
-				agentList.add(ag);
+				// agentList.add(ag);
 
 		/***************
 		 * Collector Coordinator
@@ -586,7 +586,7 @@ public class Principal {
 //
 //				//4) Give the class name of your agent to let the system instantiate it
 				ag=createNewDedaleAgent(c, agentName, GeneralManagerAgent.class.getName(), entityParametersC6);
-				agentList.add(ag);
+				// agentList.add(ag);
 
 		//1) Get the container where the agent will appear
 		//		c = containerList.get(ConfigurationFile.LOCAL_CONTAINER2_NAME);
