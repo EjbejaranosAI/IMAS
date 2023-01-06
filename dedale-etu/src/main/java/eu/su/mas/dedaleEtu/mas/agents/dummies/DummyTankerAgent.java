@@ -20,6 +20,7 @@ import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 
 import jade.lang.acl.UnreadableException;
+import jade.core.AID;
 
 
 /**
@@ -152,6 +153,14 @@ class RandomTankerBehaviour extends TickerBehaviour{
 		//Example to retrieve the current position
 		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 
+        ACLMessage msg = myAgent.receive();
+        if (msg != null) {
+            String content = msg.getContent();
+            AID sender = msg.getSender();
+            // System.out.println("Tanker received message: " + content + " - from: " + sender.getLocalName());
+        }
+
+
 		if (myPosition!=""){
 			//List of observable from the agent's current position
 			List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
@@ -176,6 +185,7 @@ class RandomTankerBehaviour extends TickerBehaviour{
 			int moveId=1+r.nextInt(lobs.size()-1);
 //			System.out.println(this.myAgent.getLocalName()+" ---- Moving to:  "+lobs.get(moveId).getLeft());
 			((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
+
 
 //			if (path!= null) {
 //				for (String p : path) {
