@@ -67,31 +67,47 @@ public class CollectorAgent extends AbstractDedaleAgent{
         private HashMap<String, String> treasureType = new HashMap<String, String>();
 
 		public CollectorBehaviour (final AbstractDedaleAgent myagent) {
-			super(myagent, 600);
+			super(myagent, 60);
 		}
 
-        private String chooseNextNode(List<Couple<String,List<Couple<Observation,Integer>>>> lobs){
+        private String moveToNextNode(List<Couple<String,List<Couple<Observation,Integer>>>> lobs){
             //Random move from the current position
             Random r= new Random();
             int moveId=1+r.nextInt(lobs.size()-1); //removing the current position from the list of target to accelerate the tests, but not necessary as to stay is an action
             String next_node = lobs.get(moveId).getLeft();
+            String goal_node = next_node; // select the initial random by default if the following checks fail
 
             if (!this.nodeBuffer.contains(next_node)){
 				// System.out.println("Selected node : " + next_node);
-                return next_node;
+                goal_node = next_node;
             } else {
                 for (int i = 1; i < lobs.size(); i++) {
                     next_node = lobs.get(i).getLeft();
                     if (!this.nodeBuffer.contains(next_node)){
 						// System.out.println("Selected node : " + i + " " + next_node);
-                        return next_node;
+                        goal_node = next_node;
+                        break;
                     }
                 }
             }
+
+			Boolean moved = ((AbstractDedaleAgent)this.myAgent).moveTo(goal_node);
+            Integer i = 1;
+            while (!moved && i < lobs.size()) {
+                goal_node = lobs.get(i).getLeft();
+                moved = ((AbstractDedaleAgent)this.myAgent).moveTo(goal_node);
+                i = i+1;
+                // If it enters this loop it means that the agent is blocked. Clearing the buffer will help him move more freely.
+                this.nodeBuffer.clear();
+            }
+
+            if (!moved) {
+                return null;
+                
+            }
+
 			// System.out.println("All nodes in the buffer: " + next_node);
-			moveId=1+r.nextInt(lobs.size()-1); //removing the current position from the list of target to accelerate the tests, but not necessary as to stay is an action
-			next_node = lobs.get(moveId).getLeft();
-            return next_node;  // Even if all nodes are visited, it will eventually use one.
+            return goal_node;
         }
 
 		@Override
@@ -169,13 +185,10 @@ public class CollectorAgent extends AbstractDedaleAgent{
                 }
 
 				//Random move from the current position
-                String next_node = chooseNextNode(lobs);
+                String next_node = moveToNextNode(lobs);
 
-
-				//The move action (if any) should be the last action of your behaviour
-				Boolean moved = ((AbstractDedaleAgent)this.myAgent).moveTo(next_node);
                 // Update buffer only if the agent moved and if the new node is not in the buffer
-				if (!this.nodeBuffer.contains(next_node) && moved){
+				if (next_node != null && !this.nodeBuffer.contains(next_node)){
 
 					if (this.nodeBuffer.size() == this.BUFFER_SIZE){
 						this.nodeBuffer.remove(0);
@@ -188,7 +201,6 @@ public class CollectorAgent extends AbstractDedaleAgent{
 
                 // Some messaging tests
 		        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                // msg.setProtocol("SHARE-TOPO");
                 msg.setSender(this.myAgent.getAID());
 			    msg.addReceiver(new AID("Tanker1",AID.ISLOCALNAME));
                 msg.setContent("Panardo");
