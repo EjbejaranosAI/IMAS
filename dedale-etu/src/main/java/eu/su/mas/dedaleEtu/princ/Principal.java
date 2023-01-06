@@ -21,6 +21,7 @@ import jade.wrapper.StaleProxyException;
 
 import org.junit.Assert;
 import jade.wrapper.AgentContainer;
+import eu.su.mas.dedale.env.InGameConfigurationFile;
 
 
 /**
@@ -40,7 +41,10 @@ public class Principal {
 	private static List<AgentController> agentList;// agents's ref
 	private static Runtime rt;
 
+
 	public static void main(String[] args){
+
+        InGameConfigurationFile.PERCENTAGE_TREASURE_LOSS = 0d;
 
 		if(ConfigurationFile.COMPUTERisMAIN){
 			//Whe should create the Platform and the GateKeeper, whether the platform is distributed or not 

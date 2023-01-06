@@ -7,6 +7,7 @@ import eu.su.mas.dedale.mas.agent.behaviours.startMyBehaviours;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -62,6 +63,8 @@ public class CollectorAgent extends AbstractDedaleAgent{
 		private static final int BUFFER_SIZE = 8;
 
         private List<String> nodeBuffer = new ArrayList<>(BUFFER_SIZE);
+        private HashMap<String, Integer> treasureQuant = new HashMap<String, Integer>();
+        private HashMap<String, String> treasureType = new HashMap<String, String>();
 
 		public CollectorBehaviour (final AbstractDedaleAgent myagent) {
 			super(myagent, 600);
@@ -110,20 +113,34 @@ public class CollectorAgent extends AbstractDedaleAgent{
 					switch (o.getLeft()) {
 					case DIAMOND:case GOLD:
 
-						// System.out.println(this.myAgent.getLocalName()+" - My treasure type is : "+((AbstractDedaleAgent) this.myAgent).getMyTreasureType());
-						// System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
+                        System.out.println("Treasure history: " + this.treasureType + ", " + this.treasureQuant);
+
 						System.out.println(this.myAgent.getLocalName()+" - Value of the treasure on the current position: "+o.getLeft() +": "+ o.getRight());
 
-                        Boolean g_unlock = ((AbstractDedaleAgent) this.myAgent).openLock(Observation.GOLD);
-                        Boolean d_unlock = ((AbstractDedaleAgent) this.myAgent).openLock(Observation.DIAMOND);
-                        if (g_unlock || d_unlock) {
-						    System.out.println(this.myAgent.getLocalName()+" - The agent unlocked : " + myPosition);
+                        // Try to unlock only if is the agent type of treasure
+                        if (o.getLeft() == ((AbstractDedaleAgent) this.myAgent).getMyTreasureType()){
+                            Boolean unlock = ((AbstractDedaleAgent) this.myAgent).openLock(Observation.GOLD);
+                            if (unlock) {
+                                System.out.println(this.myAgent.getLocalName()+" - The agent unlocked : " + myPosition);
+                            }
                         }
+
                         int grabbed = ((AbstractDedaleAgent) this.myAgent).pick();
                         if (grabbed > 0) {
                             System.out.println(this.myAgent.getLocalName()+" - The agent grabbed :"+ grabbed);
                             System.out.println(this.myAgent.getLocalName()+" - the remaining backpack capacity is: "+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
 						    b=true;
+                        }
+
+                        // Add treasure to list if new. Do it after picking to avoid having outdated info
+                        if (!this.treasureQuant.containsKey(myPosition)) {
+                            this.treasureQuant.put(myPosition, o.getRight() - grabbed);
+                            this.treasureType.put(myPosition, o.getLeft().toString());
+                        } else { 
+                            // Update quantity if it has been modified
+                            if (this.treasureQuant.get(myPosition) != o.getRight() - grabbed) {
+                                this.treasureQuant.put(myPosition, o.getRight() - grabbed);
+                            }
                         }
 						break;
 					default:
@@ -138,8 +155,16 @@ public class CollectorAgent extends AbstractDedaleAgent{
 				}
 
 				//Trying to store everything in the tankers
-                Boolean delivered = ((AbstractDedaleAgent)this.myAgent).emptyMyBackPack("Tanker1") || ((AbstractDedaleAgent)this.myAgent).emptyMyBackPack("Tanker2");
-                if (delivered) {
+                List<Couple<Observation, Integer>> backpack_before = ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace();
+                Boolean contacted = ((AbstractDedaleAgent)this.myAgent).emptyMyBackPack("Tanker1") || ((AbstractDedaleAgent)this.myAgent).emptyMyBackPack("Tanker2");
+                List<Couple<Observation, Integer>> backpack_after = ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace();
+                Boolean delivered = false;
+                for (int i = 0; i < backpack_after.size(); i++) {
+                    if (backpack_after.get(i).getRight() > backpack_before.get(i).getRight()){
+                        delivered = true;
+                    }
+                }
+                if (delivered && contacted) {
 				    System.out.println(this.myAgent.getLocalName()+" - The agent delivered his treasure. Backpack at " + ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace() + " of capacity");
                 }
 
