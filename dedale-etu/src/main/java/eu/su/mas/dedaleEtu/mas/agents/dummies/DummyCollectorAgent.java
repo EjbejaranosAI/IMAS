@@ -87,19 +87,23 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 		 */
 		private static final long serialVersionUID = 9088209402507795289L;
 
+
 		public RandomWalkExchangeBehaviour (final AbstractDedaleAgent myagent) {
 			super(myagent, 600);
 			//super(myagent);
 		}
 
+
 		@Override
 		public void onTick() {
 			//Example to retrieve the current position
 			String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
+            System.out.println("My current position is: " + myPosition);
 
 			if (myPosition!=""){
 				List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
-//				System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
+
+			    System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
 
 				//Little pause to allow you to follow what is going on
 				//try {
@@ -150,6 +154,9 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 				//Random move from the current position
 				Random r= new Random();
 				int moveId=1+r.nextInt(lobs.size()-1); //removing the current position from the list of target to accelerate the tests, but not necessary as to stay is an action
+
+                String next_node = lobs.get(moveId).getLeft();
+                // TODO: create a function to update the node buffer and choose the next random node to expandr
 
 				//The move action (if any) should be the last action of your behaviour
 				((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
