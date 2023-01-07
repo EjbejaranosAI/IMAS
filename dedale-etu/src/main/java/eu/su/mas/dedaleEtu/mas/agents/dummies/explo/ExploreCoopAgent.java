@@ -233,7 +233,22 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 
 		@Override
 		public void onTick() {
-			//			 Receive exploration finished message
+			System.out.println("Entered to shortestPath");
+
+			// Send message confirming an agent as part of the coallition
+			ACLMessage msgC = new ACLMessage(ACLMessage.INFORM);
+			msgC.setProtocol("SHARE-TOPO");
+			msgC.setSender(this.myAgent.getAID());
+			ArrayList<String> receiversC = new ArrayList<>(Arrays.asList("Tanker1", "Tanker2"));
+			for (String agentName : receiversC) {
+				msgC.addReceiver(new AID(agentName,AID.ISLOCALNAME));
+			}
+
+			msgC.setContent("Accepted member of coallition"); // The message is the agent name in a String
+			System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msgC.getContent());
+			((AbstractDedaleAgent)this.myAgent).sendMessage(msgC); // Sending the message
+
+			// Receive exploration finished message
 			MessageTemplate msgTemplate=MessageTemplate.and(
 					MessageTemplate.MatchProtocol("SHARE-TOPO"),
 					MessageTemplate.MatchPerformative(ACLMessage.INFORM));
@@ -273,7 +288,9 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 					} catch (UnreadableException e) {
 						throw new RuntimeException(e);
 					}
+					System.out.println("Sent Message Explo path: "+ msg);
 					((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+
 				}
 			}
 		}

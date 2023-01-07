@@ -89,7 +89,7 @@ class TankerBehaviour extends TickerBehaviour{
 	@Override
 	public void onTick() {
 		System.out.println("Entering to TankerBehaviour!!!!!!");
-
+		String out = String.valueOf(false);
 
 		// Listening to confirmation message of agent name being accepted
 		MessageTemplate msgTemplateconf = MessageTemplate.and(
@@ -115,7 +115,6 @@ class TankerBehaviour extends TickerBehaviour{
 					msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
 //			System.out.println("Recievers name:  "+ agentName + AID.ISLOCALNAME);
 				}
-
 				msg.setContent(myPosition);
 				System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContent());
 				((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
@@ -127,27 +126,35 @@ class TankerBehaviour extends TickerBehaviour{
 							MessageTemplate.MatchProtocol("SHARE-TOPO"),
 							MessageTemplate.MatchPerformative(ACLMessage.INFORM));
 					msgReceived = this.myAgent.receive(msgTemplate);
-					System.out.println("TankerBehaviour msgReceived: " + msgReceived);
-					ArrayList<List<String>> paths = new ArrayList<>();
+//					System.out.println("TankerBehaviour msgReceived: " + msgReceived);
+					ArrayList<List> paths = new ArrayList<>();
 					if (msgReceived != null) {
+//						System.out.println("TankerBehaviour msgReceived INDISE: " + msgReceived);
 						try {
-							paths = (ArrayList<List<String>>) msgReceived.getContentObject();
-						} catch (UnreadableException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-
-						for (List path : paths) {
-							for (Object p : path) {
-								((AbstractDedaleAgent) this.myAgent).moveTo((String) p);
-								System.out.println(this.myAgent.getLocalName() + " ---- Moving to:  " + p);
-								try {
-									this.myAgent.doWait(1000);
-								} catch (Exception e) {
-									e.printStackTrace();
+							paths = (ArrayList<List>) msgReceived.getContentObject();
+							System.out.println(this.myAgent.getLocalName() + " received the message --> " + paths);
+							for (List path : paths) {
+								out = String.valueOf(true);
+								for (Object p : path) {
+									((AbstractDedaleAgent) this.myAgent).moveTo((String) p);
+									System.out.println(this.myAgent.getLocalName() + " ---- Moving to:  " + p);
+									try {
+										this.myAgent.doWait(1000);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
 								}
 							}
-
+//							if (out == String.valueOf(true)){
+//								stop();
+//								System.out.println("Out of Tanker behaiour!");
+//							}
+							stop();
+						} catch (UnreadableException e) {
+							// TODO Auto-generated catch block
+//							e.printStackTrace();
+							String ms = (String) msgReceived.getContent();
+							System.out.println(this.myAgent.getLocalName() + " received the message --> " + ms);
 						}
 					}
 				}
@@ -177,7 +184,7 @@ class TankerBehaviour extends TickerBehaviour{
 //
 //		}
 //		finished = true;
-		stop();
+//		stop();
 	}
 
 //	@Override
@@ -202,18 +209,7 @@ class RandomTankerBehaviour extends TickerBehaviour{
 
 	@Override
 	public void onTick() {
-		//Example to retrieve the current position
-		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
-
-		if (myPosition!=""){
-			//List of observable from the agent's current position
-			List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
-			//The move action (if any) should be the last action of your behaviour
-			Random r= new Random();
-			int moveId=1+r.nextInt(lobs.size()-1);
-			System.out.println(this.myAgent.getLocalName()+" ---- Moving to:  "+lobs.get(moveId).getLeft());
-			((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
-
+		String out = String.valueOf(false);
 //		Receive exploration finished message
 		MessageTemplate msgTemplate=MessageTemplate.and(
 				MessageTemplate.MatchProtocol("SHARE-TOPO"),
@@ -243,12 +239,23 @@ class RandomTankerBehaviour extends TickerBehaviour{
 					// Go to tanker Behaviour
 					this.myAgent.addBehaviour(new TankerBehaviour((AbstractDedaleAgent) this.myAgent));
 					stop();
+					out = String.valueOf(true);
 				}
 			}
+
+		if (out == String.valueOf(false)){
+			//Example to retrieve the current position
+			String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
+
+			if (myPosition!=""){
+				//List of observable from the agent's current position
+				List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
+				//The move action (if any) should be the last action of your behaviour
+				Random r= new Random();
+				int moveId=1+r.nextInt(lobs.size()-1);
+				System.out.println(this.myAgent.getLocalName()+" ---- Moving to:  "+lobs.get(moveId).getLeft());
+				((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
+			}
 		}
-
 	}
-
-
-
 }
