@@ -12,11 +12,15 @@ import java.util.List;
 import java.util.Random;
 
 import dataStructures.tuple.Couple;
-
+import def.HashCodeUtil;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.core.AID;
+import java.util.Arrays;
+import java.io.Serializable;
+import jade.lang.acl.MessageTemplate;
+import jade.lang.acl.UnreadableException;
 
 /**
  * Main class for the CollectorAgent
@@ -110,6 +114,81 @@ public class CollectorAgent extends AbstractDedaleAgent{
             return goal_node;
         }
 
+        private void shareTreasureInfo(){
+            ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+            msg.setSender(this.myAgent.getAID());
+			List<String> receivers = new ArrayList<>(Arrays.asList("Tanker1", "Tanker2", "Collect1", "Collect2", "Collect3", "Collect4"));
+            receivers.remove(this.myAgent.getLocalName());
+            for (String agentName : receivers) {
+                msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
+            }
+            try {
+                msg.setContentObject((Serializable) this.treasureType);
+                msg.setConversationId("Type");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+			((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+            try {
+                msg.setContentObject((Serializable) this.treasureQuant);
+                msg.setConversationId("Quant");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+			((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+        }
+
+        private void mergeTreasureInfo(){
+			MessageTemplate msgTemplate=MessageTemplate.MatchPerformative(ACLMessage.INFORM);
+			ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
+
+			if (msgReceived!=null) {
+                Boolean updated = false;
+				String msg_id = (String) msgReceived.getConversationId();
+                if (msg_id == "Type") {
+                    HashMap<String, String> treasureType;
+					try {
+						treasureType = (HashMap<String, String>) msgReceived.getContentObject();
+
+                        for (HashMap.Entry<String, String> set : treasureType.entrySet()) {
+                            if (!this.treasureType.containsKey(set.getKey())) {
+                                this.treasureType.put(set.getKey(), set.getValue());
+                                updated = true;
+                            }
+                        }
+
+					} catch (UnreadableException e) {
+						e.printStackTrace();
+					}
+
+                } else if (msg_id == "Quant") {
+                    HashMap<String, Integer> treasureQuant;
+
+					try {
+						treasureQuant = (HashMap<String, Integer>) msgReceived.getContentObject();
+
+                        for (HashMap.Entry<String, Integer> set : treasureQuant.entrySet()) {
+
+                            if (!this.treasureQuant.containsKey(set.getKey())) {
+                                this.treasureQuant.put(set.getKey(), set.getValue());
+                                updated = true;
+
+                            } else if (this.treasureQuant.get(set.getKey()) > set.getValue()) {
+                                this.treasureQuant.put(set.getKey(), set.getValue());
+                                updated = true;
+                            }
+                        }
+
+					} catch (UnreadableException e) {
+						e.printStackTrace();
+					}
+                }
+                if (updated){
+                    System.out.println(this.myAgent.getLocalName() + " merged treasure list from " + msgReceived.getSender().getLocalName());
+                }
+            }
+        }
+
 		@Override
 		public void onTick() {
 			//Example to retrieve the current position
@@ -199,13 +278,10 @@ public class CollectorAgent extends AbstractDedaleAgent{
 
 				// System.out.println(this.myAgent.getLocalName()+" - nodebuffer: " + this.nodeBuffer);
 
-                // Some messaging tests
-		        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                msg.setSender(this.myAgent.getAID());
-			    msg.addReceiver(new AID("Tanker1",AID.ISLOCALNAME));
-                msg.setContent("Panardo");
+                // Before iteration ends, share and merge TreasureInfo with nearby agents
+                shareTreasureInfo();
+                mergeTreasureInfo();
 
-		        ((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
 			}
 
 		}
