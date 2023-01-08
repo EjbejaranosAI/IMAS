@@ -159,7 +159,8 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					System.out.println("Mensajeeee! Recibido: " + sgreceived);
+					//System.out.println("Mensajeeee! Recibido: " + sgreceived);
+					System.out.println(this.myAgent.getLocalName()+" -- received a graph from "+msgReceived.getSender().getLocalName());
 					this.myMap.mergeMap(sgreceived);
 				}
 
