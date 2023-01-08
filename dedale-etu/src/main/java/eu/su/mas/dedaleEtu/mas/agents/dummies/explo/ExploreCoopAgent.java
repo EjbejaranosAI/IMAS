@@ -14,7 +14,6 @@ import eu.su.mas.dedaleEtu.mas.behaviours.ExploCoopBehaviour;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
 
 import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.SimpleBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 
 import jade.core.AID;
@@ -126,7 +125,7 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 			this.myMap=myMap;
 			this.myAgent=myagent;
 			this.treasures=treasures;
-			this.CoallParticipant=new ArrayList<>(Arrays.asList("Tanker"));
+			this.CoallParticipant=new ArrayList<>(Arrays.asList("Tanker","Collector"));
 		}
 
 
@@ -191,19 +190,41 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 					String msgagentName = (String) msgReceived.getContent();
 					System.out.println(this.myAgent.getLocalName() + " received the message --> " + msgagentName);
 					if (msgagentName.contains("Tanker")){
-						CoallParticipant.remove("Tanker"); //Removing the agent from the coallitions list
+						if (CoallParticipant.remove("Tanker")){ //Removing the agent from the coalitions list
+							System.out.println("--------------------------Tanker included in the coalition");
+						} else {
+							// Notify negation to enter the coalition
+							CoalitionAcceptance(msg, msgagentName);
+						}
 					} else if (msgagentName.contains("Collector")) {
-						CoallParticipant.remove("Collector");
+						if (CoallParticipant.remove("Collector")){ //Removing the agent from the coalitions list
+							System.out.println("Collector included in the coalition");
+						} else {
+							// Notify negation to enter the coalition
+							CoalitionAcceptance(msg, msgagentName);
+						}
 					}
 				}
 			} else{
 				// Go to calculate the treasures path
-
 				this.myAgent.addBehaviour(new sendShortestPath((AbstractDedaleAgent) this.myAgent, this.myMap, this.treasures));
 				stop();
 //				finished = true;
 			}
 
+		}
+
+		private void CoalitionAcceptance(ACLMessage msg, String msgagentName) {
+			ACLMessage Rmsg = new ACLMessage(ACLMessage.INFORM);
+			Rmsg.setProtocol("SHARE-TOPO");
+			Rmsg.setSender(this.myAgent.getAID());
+			ArrayList<String> receivers = new ArrayList<>(Arrays.asList(msgagentName));
+			for (String agentName : receivers) {
+				Rmsg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
+			}
+			Rmsg.setContent("No place in this coalition for you!");
+			System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ Rmsg.getContent()+" - To: "+ msgagentName);
+			((AbstractDedaleAgent)this.myAgent).sendMessage(Rmsg);
 		}
 
 //		@Override
@@ -259,8 +280,11 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 				String message = (String) msgReceived.getContent();
 				System.out.println(this.myAgent.getLocalName() + " received the message --> " + message);
 				if (message.contains("_")){
+					String[] SpltMsg = message.split(":", 2);
+					String AgName = SpltMsg[0];
+					String Pos = SpltMsg[1];
 					ArrayList<List> newPath=new ArrayList<>();
-					newPath.add(this.myMap.getShortestPath(message,this.treasures.get(0).getLeft()));
+					newPath.add(this.myMap.getShortestPath(Pos,this.treasures.get(0).getLeft()));
 					for (Integer i = 0; i < (this.treasures.size()-1)/2; i++ ) {
 						newPath.add(this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
 						System.out.println("Path " + i +": "+ this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
@@ -273,7 +297,7 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 					ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
 					msg.setProtocol("SHARE-TOPO");
 					msg.setSender(this.myAgent.getAID());
-					ArrayList<String> receivers = new ArrayList<>(Arrays.asList("Tanker1", "Tanker2"));
+					ArrayList<String> receivers = new ArrayList<>(Arrays.asList(AgName));
 					for (String agentName : receivers) {
 						msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
 					}

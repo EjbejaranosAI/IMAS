@@ -80,7 +80,7 @@ class TankerBehaviour extends TickerBehaviour{
 	 */
 	private static final long serialVersionUID = 9088209402507795289L;
 
-	private boolean finished = false;
+	private boolean accepted = false;
 
 	public TankerBehaviour (final AbstractDedaleAgent myagent) {
 		super(myagent,600);
@@ -102,6 +102,7 @@ class TankerBehaviour extends TickerBehaviour{
 			String msgconfir = (String) msgconf.getContent();
 			System.out.println(this.myAgent.getLocalName() + " received the message --> " + msgconfir);
 			if (msgconfir.contains("Accepted member of coallition")){
+				accepted = true;
 				String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 				System.out.println("Position:" + myPosition);
 
@@ -115,7 +116,7 @@ class TankerBehaviour extends TickerBehaviour{
 					msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
 //			System.out.println("Recievers name:  "+ agentName + AID.ISLOCALNAME);
 				}
-				msg.setContent(myPosition);
+				msg.setContent(this.myAgent.getLocalName()+":"+myPosition);
 				System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContent());
 				((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
 
@@ -150,6 +151,7 @@ class TankerBehaviour extends TickerBehaviour{
 //								System.out.println("Out of Tanker behaiour!");
 //							}
 							stop();
+							System.out.println("Out of Tanker behaviour!");
 						} catch (UnreadableException e) {
 							// TODO Auto-generated catch block
 //							e.printStackTrace();
@@ -158,6 +160,18 @@ class TankerBehaviour extends TickerBehaviour{
 						}
 					}
 				}
+			} else if (msgconfir.contains("No place in this coalition for you!")) {
+					System.out.println(this.myAgent.getLocalName() + " going back to random walk");
+					for (int i=0; i<=3; i++){
+						List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
+						//The move action (if any) should be the last action of your behaviour
+						Random r= new Random();
+						int moveId=1+r.nextInt(lobs.size()-1);
+						System.out.println(this.myAgent.getLocalName()+" ---- Moving to:  "+lobs.get(moveId).getLeft());
+						((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
+					}
+					this.myAgent.addBehaviour(new RandomTankerBehaviour((AbstractDedaleAgent) this.myAgent));
+					stop();
 			}
 		}
 
@@ -215,7 +229,7 @@ class RandomTankerBehaviour extends TickerBehaviour{
 				MessageTemplate.MatchProtocol("SHARE-TOPO"),
 				MessageTemplate.MatchPerformative(ACLMessage.INFORM));
 		ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
-		System.out.println("Tanker msgReceived: " + msgReceived);
+		System.out.println("RandomTanker msgReceived: " + msgReceived);
 
 			if (msgReceived!=null) {
 				String message = (String) msgReceived.getContent();

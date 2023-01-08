@@ -66,9 +66,6 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 		this.myMap=myMap;
 		this.list_agentNames=agentNames;
 		this.treasures=treasures;
-
-
-
 	}
 
 	@Override
