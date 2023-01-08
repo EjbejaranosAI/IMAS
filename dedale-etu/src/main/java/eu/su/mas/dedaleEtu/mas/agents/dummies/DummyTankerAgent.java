@@ -107,7 +107,7 @@ class TankerBehaviour extends SimpleBehaviour{
 				((AbstractDedaleAgent) this.myAgent).moveTo(p);
 				System.out.println(this.myAgent.getLocalName() + " ---- Moving to:  " + p);
 				try {
-					this.myAgent.doWait(1000);
+					this.myAgent.doWait(60);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -119,7 +119,7 @@ class TankerBehaviour extends SimpleBehaviour{
 				((AbstractDedaleAgent) this.myAgent).moveTo(p2);
 				System.out.println(this.myAgent.getLocalName() + " ---- Moving to:  " + p2);
 				try {
-					this.myAgent.doWait(1000);
+					this.myAgent.doWait(60);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -145,7 +145,7 @@ class RandomTankerBehaviour extends TickerBehaviour{
 	private static final long serialVersionUID = 9088209402507795289L;
 
 	public RandomTankerBehaviour (final AbstractDedaleAgent myagent) {
-		super(myagent, 600);
+		super(myagent, 60);
 	}
 
 	@Override

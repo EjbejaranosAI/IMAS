@@ -208,9 +208,9 @@ public class CollectorAgent extends AbstractDedaleAgent{
 					switch (o.getLeft()) {
 					case DIAMOND:case GOLD:
 
-                        System.out.println("Treasure history: " + this.treasureType + ", " + this.treasureQuant);
+                        // System.out.println("Treasure history: " + this.treasureType + ", " + this.treasureQuant);
 
-						System.out.println(this.myAgent.getLocalName()+" - Value of the treasure on the current position: "+o.getLeft() +": "+ o.getRight());
+						// System.out.println(this.myAgent.getLocalName()+" - Value of the treasure on the current position: "+o.getLeft() +": "+ o.getRight());
 
                         // Try to unlock only if is the agent type of treasure
                         if (o.getLeft() == ((AbstractDedaleAgent) this.myAgent).getMyTreasureType()){
