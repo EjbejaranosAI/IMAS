@@ -182,7 +182,7 @@
 			<artifactId>tools</artifactId>
 			<version>-SNAPSHOT</version>
 		</dependency>
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>

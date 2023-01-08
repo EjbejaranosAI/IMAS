@@ -124,12 +124,12 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 
 //						System.out.println(this.myAgent.getLocalName()+" - My treasure type is : "+((AbstractDedaleAgent) this.myAgent).getMyTreasureType());
 //						System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
-							System.out.println(this.myAgent.getLocalName()+" - Value of the treasure on the current position: "+o.getLeft() +": "+ o.getRight());
+						System.out.println(this.myAgent.getLocalName()+" - Value of the treasure on the current position: "+o.getLeft() +": "+ o.getRight());
 //						System.out.println(this.myAgent.getLocalName()+" - The agent unlocked :"+((AbstractDedaleAgent) this.myAgent).openLock(Observation.GOLD));
-							((AbstractDedaleAgent) this.myAgent).openLock(Observation.GOLD);
+						((AbstractDedaleAgent) this.myAgent).openLock(Observation.GOLD);
 //						System.out.println(this.myAgent.getLocalName()+" - The agent unlocked :"+((AbstractDedaleAgent) this.myAgent).openLock(Observation.DIAMOND));
-							((AbstractDedaleAgent) this.myAgent).openLock(Observation.DIAMOND);
-							System.out.println(this.myAgent.getLocalName()+" - The agent grabbed :"+((AbstractDedaleAgent) this.myAgent).pick());
+						((AbstractDedaleAgent) this.myAgent).openLock(Observation.DIAMOND);
+						System.out.println(this.myAgent.getLocalName()+" - The agent grabbed :"+((AbstractDedaleAgent) this.myAgent).pick());
 //						System.out.println(this.myAgent.getLocalName()+" - the remaining backpack capacity is: "+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
 
 							b=true;
@@ -142,7 +142,7 @@ public class DummyCollectorAgent extends AbstractDedaleAgent{
 				//If the agent picked (part of) the treasure
 				if (b){
 					List<Couple<String,List<Couple<Observation,Integer>>>> lobs2=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
-					System.out.println("State of the observations after picking "+lobs2);
+//					System.out.println("State of the observations after picking "+lobs2);
 				}
 
 				//Trying to store everything in the tankers
