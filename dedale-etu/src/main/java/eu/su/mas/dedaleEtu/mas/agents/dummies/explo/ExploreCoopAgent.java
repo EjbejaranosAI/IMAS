@@ -77,6 +77,8 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 		 ************************************************/
 
 		lb.add(new ExploCoopBehaviour(this,this.myMap,list_agentNames));
+		//add the behaviours to comunicate the path to the other agents
+		lb.add(new SendPathBehaviour(this,this.myMap,list_agentNames));
 
 
 
@@ -93,5 +95,45 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 	}
 
 
+
+}
+
+
+
+// new class to send the path to the other agents
+public class SendPathBehaviour extends SimpleBehaviour{
+
+	private static final long serialVersionUID = 8567689731496787661L;
+	private boolean finished = false;
+	private MapRepresentation myMap;
+	private List<String> list_agentNames;
+
+	public SendPathBehaviour(final AbstractDedaleAgent myagent, MapRepresentation myMap, List<String> list_agentNames) {
+		super(myagent);
+		this.myMap=myMap;
+		this.list_agentNames=list_agentNames;
+	}
+
+	@Override
+	public void action() {
+		//send the path to the other agents
+		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+		msg.setSender(this.myAgent.getAID());
+		msg.setProtocol("PATH");
+		msg.setLanguage("English");
+		msg.setOntology("PATH");
+		msg.setContent(this.myMap.getPath().toString());
+		for (String agentName : list_agentNames) {
+			msg.addReceiver(new AID(agentName, AID.ISLOCALNAME));
+		}
+		this.myAgent.send(msg);
+		finished = true;
+	}
+
+	@Override
+	public boolean done() {
+		
+		return finished;
+	}
 
 }

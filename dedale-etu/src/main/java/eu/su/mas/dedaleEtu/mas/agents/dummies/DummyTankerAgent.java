@@ -20,6 +20,7 @@ import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 
 import jade.lang.acl.UnreadableException;
+import jade.core.AID;
 
 
 /**
@@ -106,7 +107,7 @@ class TankerBehaviour extends SimpleBehaviour{
 				((AbstractDedaleAgent) this.myAgent).moveTo(p);
 				System.out.println(this.myAgent.getLocalName() + " ---- Moving to:  " + p);
 				try {
-					this.myAgent.doWait(1000);
+					this.myAgent.doWait(60);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -118,7 +119,7 @@ class TankerBehaviour extends SimpleBehaviour{
 				((AbstractDedaleAgent) this.myAgent).moveTo(p2);
 				System.out.println(this.myAgent.getLocalName() + " ---- Moving to:  " + p2);
 				try {
-					this.myAgent.doWait(1000);
+					this.myAgent.doWait(60);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -144,13 +145,21 @@ class RandomTankerBehaviour extends TickerBehaviour{
 	private static final long serialVersionUID = 9088209402507795289L;
 
 	public RandomTankerBehaviour (final AbstractDedaleAgent myagent) {
-		super(myagent, 600);
+		super(myagent, 60);
 	}
 
 	@Override
 	public void onTick() {
 		//Example to retrieve the current position
 		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
+
+        ACLMessage msg = myAgent.receive();
+        if (msg != null) {
+            String content = msg.getContent();
+            AID sender = msg.getSender();
+            // System.out.println("Tanker received message: " + content + " - from: " + sender.getLocalName());
+        }
+
 
 		if (myPosition!=""){
 			//List of observable from the agent's current position
@@ -176,6 +185,7 @@ class RandomTankerBehaviour extends TickerBehaviour{
 			int moveId=1+r.nextInt(lobs.size()-1);
 //			System.out.println(this.myAgent.getLocalName()+" ---- Moving to:  "+lobs.get(moveId).getLeft());
 			((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
+
 
 //			if (path!= null) {
 //				for (String p : path) {
