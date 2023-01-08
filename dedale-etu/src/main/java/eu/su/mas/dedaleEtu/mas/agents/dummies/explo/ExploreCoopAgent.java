@@ -128,7 +128,7 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 			this.myMap=myMap;
 			this.myAgent=myagent;
 			this.treasures=treasures;
-			this.CoallParticipant=new ArrayList<>(Arrays.asList("Tanker","Collector"));
+			this.CoallParticipant=new ArrayList<>(Arrays.asList("Tanker")); // add collector
 			this.DoneReceivers= new ArrayList<>(Arrays.asList("Tanker1", "Tanker2","Collector1","Collector2"));
 
 		}
@@ -142,72 +142,46 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 			this.treasures.clear();
 			this.treasures.addAll((Collection<? extends Couple<String, List<Couple<Observation, Integer>>>>) set);
 
-			String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
-			System.out.println(this.myAgent.getLocalName()+" HolaTothom");
-			System.out.println("Treasures List: "+this.treasures);
-			System.out.println("Current position: "+myPosition);
 
-			ArrayList<List> newPath=new ArrayList<>();
-			newPath.add(this.myMap.getShortestPath(myPosition,this.treasures.get(0).getLeft()));
-			for (Integer i = 0; i < (this.treasures.size()-1)/2; i++ ) {
-				newPath.add(this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
-				System.out.println("Path " + i +": "+ this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
-			}
+			// Pruebas de path, desde explorer position
+//			String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
+//			System.out.println(this.myAgent.getLocalName()+" HolaTothom");
+//			System.out.println("Treasures List: "+this.treasures);
+//			System.out.println("Current position: "+myPosition);
+//
+//			ArrayList<List> newPath=new ArrayList<>();
+//			newPath.add(this.myMap.getShortestPath(myPosition,this.treasures.get(0).getLeft()));
+//			for (Integer i = 0; i < (this.treasures.size()-1)/2; i++ ) {
+//				newPath.add(this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
+//				System.out.println("Path " + i +": "+ this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
+//			}
+//
+//			System.out.println("NewPath: "+newPath);
 
-			System.out.println("NewPath: "+newPath);
-
-
-////	 Send exploration finished message  - ESCUCHANDO
-			// TODO Repetir hasta que alguien lo escuche
-//		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-//		msg.setProtocol("SHARE-TOPO");
-//		msg.setSender(this.myAgent.getAID());
-//		ArrayList<String> receivers = new ArrayList<>(Arrays.asList("Tanker1", "Tanker2"));
-//		for (String agentName : receivers) {
-//			msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
-//		}
-//		msg.setContent("Exploration finished, route plan done!");
-//		System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContent());
-//		((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
-		// Sending order to stop until a coallition is formed
 
 			if(!this.CoallParticipant.isEmpty()){
 				// Notify to stop, waiting the responses
-				ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-				msg.setProtocol("SHARE-TOPO");
-				msg.setSender(this.myAgent.getAID());
-				// TODO Make receivers list dynamic
-				//ArrayList<String> receivers = new ArrayList<>(Arrays.asList("Tanker1", "Tanker2","Collector1","Collector2"));
-				for (String agentName : DoneReceivers) {
-					msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
-				}
-				msg.setContent(this.myAgent.getLocalName()+":Exploration finished, route plan done!");
-				System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContent());
-				((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+				// TODO Make DoneReceiver dynamic list
+				SendStringMessage(DoneReceivers,this.myAgent.getLocalName()+":Exploration finished, route plan done!");
 
 				// Listening to messages until list is finished, (waiting for agents names)
-				MessageTemplate msgTemplate = MessageTemplate.and(
-						MessageTemplate.MatchProtocol("SHARE-TOPO"),
-						MessageTemplate.MatchPerformative(ACLMessage.INFORM));
-				ACLMessage msgReceived = this.myAgent.receive(msgTemplate);
-				System.out.println("Explorer msgReceived: " + msgReceived);
+				String NameReceived = ReceiveStringMessage();
 
-				if (msgReceived != null) {
-					String msgagentName = (String) msgReceived.getContent();
-					System.out.println(this.myAgent.getLocalName() + " received the message --> " + msgagentName);
-					if (msgagentName.contains("Tanker")){
+				if (NameReceived != null) {
+					ArrayList<String> confirmationReceiver= new ArrayList<>(Arrays.asList(NameReceived));
+					if (NameReceived.contains("Tanker")){
 						if (CoallParticipant.remove("Tanker")){ //Removing the agent from the coalitions list
 							System.out.println("--------------------------Tanker included in the coalition");
 						} else {
 							// Notify negation to enter the coalition
-							CoalitionAcceptance(msg, msgagentName);
+							SendStringMessage(confirmationReceiver,"No place in this coalition for you!");
 						}
-					} else if (msgagentName.contains("Collector")) {
+					} else if (NameReceived.contains("Collector")) {
 						if (CoallParticipant.remove("Collector")){ //Removing the agent from the coalitions list
 							System.out.println("Collector included in the coalition");
 						} else {
 							// Notify negation to enter the coalition
-							CoalitionAcceptance(msg, msgagentName);
+							SendStringMessage(confirmationReceiver,"No place in this coalition for you!");
 						}
 					}
 				}
@@ -215,12 +189,37 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 				// Go to calculate the treasures path
 				this.myAgent.addBehaviour(new sendShortestPath((AbstractDedaleAgent) this.myAgent, this.myMap, this.treasures));
 				stop();
-//				finished = true;
 			}
 
 		}
 
-		private void CoalitionAcceptance(ACLMessage msg, String msgagentName) {
+		private void SendStringMessage(ArrayList<String> Receivers, String message) {
+			ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+			msg.setProtocol("SHARE-TOPO");
+			msg.setSender(this.myAgent.getAID());
+			for (String agentName : Receivers) {
+				msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
+			}
+			msg.setContent(message);
+			System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContent()+" - To: "+ Receivers);
+			((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+		}
+
+		private String ReceiveStringMessage() {
+			MessageTemplate msgTemplate=MessageTemplate.and(
+					MessageTemplate.MatchProtocol("SHARE-TOPO"),
+					MessageTemplate.MatchPerformative(ACLMessage.INFORM));
+			ACLMessage msgStringReceived=this.myAgent.receive(msgTemplate);
+
+			if (msgStringReceived!=null) {
+			String message = msgStringReceived.getContent();
+			System.out.println(this.myAgent.getLocalName() + " received the message --> " + message+" by: "+msgStringReceived.getSender().getName());
+			return message;
+			}
+			return null;
+		}
+
+		private void CoalitionAcceptance(String msgagentName) {
 			ACLMessage Rmsg = new ACLMessage(ACLMessage.INFORM);
 			Rmsg.setProtocol("SHARE-TOPO");
 			Rmsg.setSender(this.myAgent.getAID());
@@ -263,66 +262,99 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 			System.out.println("Entered to shortestPath");
 
 			// Send message confirming an agent as part of the coallition
-			ACLMessage msgC = new ACLMessage(ACLMessage.INFORM);
-			msgC.setProtocol("SHARE-TOPO");
-			msgC.setSender(this.myAgent.getAID());
 			ArrayList<String> receiversC = new ArrayList<>(Arrays.asList("Tanker1", "Tanker2"));
-			for (String agentName : receiversC) {
-				msgC.addReceiver(new AID(agentName,AID.ISLOCALNAME));
-			}
+			SendStringMessage(receiversC, this.myAgent.getLocalName()+":Accepted member of coallition");
 
-			msgC.setContent("Accepted member of coallition"); // The message is the agent name in a String
-			System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msgC.getContent());
-			((AbstractDedaleAgent)this.myAgent).sendMessage(msgC); // Sending the message
+			// Receive position of an agent in the coalition
+			String message = ReceiveStringMessage();
 
-			// Receive exploration finished message
-			MessageTemplate msgTemplate=MessageTemplate.and(
-					MessageTemplate.MatchProtocol("SHARE-TOPO"),
-					MessageTemplate.MatchPerformative(ACLMessage.INFORM));
-			ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
-//			System.out.println("msgReceived: " + msgReceived);
-
-			if (msgReceived!=null) {
-				String message = (String) msgReceived.getContent();
-				System.out.println(this.myAgent.getLocalName() + " received the message --> " + message);
-				if (message.contains("_")){
-					String[] SpltMsg = message.split(":", 2);
+			if (message!=null) {
+				System.out.println("Busca la palabra node:"+message.contains("node"));
+				if (message.contains("node")){
+					String[] SpltMsg = message.split(":", 3);
+					System.out.println("splt var"+SpltMsg);
 					String AgName = SpltMsg[0];
-					String Pos = SpltMsg[1];
-					ArrayList<List> newPath=new ArrayList<>();
-					newPath.add(this.myMap.getShortestPath(Pos,this.treasures.get(0).getLeft()));
+					String Pos = SpltMsg[2];
+					ArrayList<List> TreasuresPath =new ArrayList<>();
+					TreasuresPath.add(this.myMap.getShortestPath(Pos,this.treasures.get(0).getLeft()));
 					for (Integer i = 0; i < (this.treasures.size()-1)/2; i++ ) {
-						newPath.add(this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
-						System.out.println("Path " + i +": "+ this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
+						TreasuresPath.add(this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
+//						System.out.println("Path " + i +": "+ this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
 					}
+					System.out.println("Path to treasures in the list: "+ TreasuresPath);
 
-					System.out.println("NewPath: "+newPath);
-
-
-					////			 Send exploration finished message
-					ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-					msg.setProtocol("SHARE-TOPO");
-					msg.setSender(this.myAgent.getAID());
-					ArrayList<String> receivers = new ArrayList<>(Arrays.asList(AgName));
-					for (String agentName : receivers) {
-						msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
-					}
-
-					try {
-						msg.setContentObject((Serializable) newPath);
-					} catch (IOException e) {
-						throw new RuntimeException(e);
-					}
-					try {
-						System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContentObject());
-					} catch (UnreadableException e) {
-						throw new RuntimeException(e);
-					}
-					System.out.println("Sent Message Explo path: "+ msg);
-					((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+					//Send path to the coalition agent
+					ArrayList<String> pathReceiver = new ArrayList<>(Arrays.asList(AgName));
+					SendObjectMessage(pathReceiver, TreasuresPath);
+//					ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+//					msg.setProtocol("SHARE-TOPO");
+//					msg.setSender(this.myAgent.getAID());
+//
+//					for (String agentName : receivers) {
+//						msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
+//					}
+//
+//					try {
+//						msg.setContentObject((Serializable) TreasuresPath);
+//					} catch (IOException e) {
+//						throw new RuntimeException(e);
+//					}
+//					try {
+//						System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContentObject());
+//					} catch (UnreadableException e) {
+//						throw new RuntimeException(e);
+//					}
+//					System.out.println("Sent Message Explo path: "+ msg);
+//					((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
 
 				}
 			}
+		}
+
+		private void SendObjectMessage(ArrayList<String> Receivers, Object message) {
+			ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+			msg.setProtocol("SHARE-TOPO");
+			msg.setSender(this.myAgent.getAID());
+			for (String agentName : Receivers) {
+				msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
+			}
+			try {
+				msg.setContentObject((Serializable) message);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+			try {
+				System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContentObject());
+			} catch (UnreadableException e) {
+				throw new RuntimeException(e);
+			}
+			((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+		}
+
+		private void SendStringMessage(ArrayList<String> Receivers, String message) {
+			ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+			msg.setProtocol("SHARE-TOPO");
+			msg.setSender(this.myAgent.getAID());
+			for (String agentName : Receivers) {
+				msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
+			}
+			msg.setContent(message);
+			System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContent()+" - To: "+ Receivers);
+			((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+		}
+
+		private String ReceiveStringMessage() {
+			MessageTemplate msgTemplate=MessageTemplate.and(
+					MessageTemplate.MatchProtocol("SHARE-TOPO"),
+					MessageTemplate.MatchPerformative(ACLMessage.INFORM));
+			ACLMessage msgStringReceived=this.myAgent.receive(msgTemplate);
+
+			if (msgStringReceived!=null) {
+				String message = msgStringReceived.getContent();
+				System.out.println(this.myAgent.getLocalName() + " received the message --> " + message+" by: "+msgStringReceived.getSender().getName());
+				return message;
+			}
+			return null;
 		}
 	}
 }

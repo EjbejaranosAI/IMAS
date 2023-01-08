@@ -53,7 +53,7 @@ public final class ConfigurationFile {
 	/**
 	 * The environment is either manually designed, or generated with a specific generator
 	 */
-	public static GeneratorType GENERATOR_TYPE=GeneratorType.MANUAL;
+	public static GeneratorType GENERATOR_TYPE=GeneratorType.GS_GRID;
 
 	/**
 	 * 	The GateKeeper is in charge of the Platform and of the agents within, do not change its name.

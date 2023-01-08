@@ -122,7 +122,6 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 				//Explo finished
 				finished=true;
 				System.out.println(this.myAgent.getLocalName()+" - Exploration successufully done, behaviour removed.");
-
 				this.myAgent.addBehaviour(new ExploreCoopAgent.HelloPath((AbstractDedaleAgent) this.myAgent, this.myMap, this.treasures));
 			}else{
 				//4) select next move.
@@ -211,7 +210,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 							e.printStackTrace();
 						}
 
-						//					System.out.println("Mensajeeee Treasure! Recibido: " + tlreceived);
+						//	System.out.println("Mensajeeee Treasure! Recibido: " + tlreceived);
 						this.treasures.addAll(tlreceived);
 						Set<Couple<String, List<Couple<Observation, Integer>>>> set = new HashSet<>(this.treasures);
 						this.treasures.clear();
@@ -228,7 +227,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 	@Override
 	public boolean done() {
-		return finished;
+	return finished;
 	}
 
 }
