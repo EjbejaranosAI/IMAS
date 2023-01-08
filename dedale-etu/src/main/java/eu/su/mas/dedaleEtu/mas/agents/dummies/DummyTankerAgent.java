@@ -234,13 +234,16 @@ class RandomTankerBehaviour extends TickerBehaviour{
 			if (msgReceived!=null) {
 				String message = (String) msgReceived.getContent();
 				System.out.println(this.myAgent.getLocalName() + " received the message --> " + message);
+				String[] Splt= message.split(":",2);
+				String spltagent = Splt[0];
+				message = Splt[1];
 				if (message.equals("Exploration finished, route plan done!")){
 
 					// Send message agent type to any explorer
 						ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
 						msg.setProtocol("SHARE-TOPO");
 						msg.setSender(this.myAgent.getAID());
-						ArrayList<String> receivers = new ArrayList<>(Arrays.asList("Explo1", "Explo2"));
+						ArrayList<String> receivers = new ArrayList<>(Arrays.asList(spltagent));
 						for (String agentName : receivers) {
 							msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
 						}

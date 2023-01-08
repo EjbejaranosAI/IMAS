@@ -120,12 +120,17 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 		private final List<Couple<String, List<Couple<Observation, Integer>>>> treasures;
 		private ArrayList<String> CoallParticipant;
 
+		private ArrayList<String> DoneReceivers;
+
+
 		public HelloPath (final AbstractDedaleAgent myagent, MapRepresentation myMap, List<Couple<String, List<Couple<Observation, Integer>>>> treasures) {
 			super(myagent,600);
 			this.myMap=myMap;
 			this.myAgent=myagent;
 			this.treasures=treasures;
 			this.CoallParticipant=new ArrayList<>(Arrays.asList("Tanker","Collector"));
+			this.DoneReceivers= new ArrayList<>(Arrays.asList("Tanker1", "Tanker2","Collector1","Collector2"));
+
 		}
 
 
@@ -171,11 +176,12 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 				ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
 				msg.setProtocol("SHARE-TOPO");
 				msg.setSender(this.myAgent.getAID());
-				ArrayList<String> receivers = new ArrayList<>(Arrays.asList("Tanker1", "Tanker2"));
-				for (String agentName : receivers) {
+				// TODO Make receivers list dynamic
+				//ArrayList<String> receivers = new ArrayList<>(Arrays.asList("Tanker1", "Tanker2","Collector1","Collector2"));
+				for (String agentName : DoneReceivers) {
 					msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
 				}
-				msg.setContent("Exploration finished, route plan done!");
+				msg.setContent(this.myAgent.getLocalName()+":Exploration finished, route plan done!");
 				System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContent());
 				((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
 
