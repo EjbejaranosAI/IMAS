@@ -89,9 +89,9 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 		 *
 		 ************************************************/
 
-		lb.add(new ExploCoopBehaviour(this,this.myMap,list_agentNames));
+		// lb.add(new ExploCoopBehaviour(this,this.myMap,list_agentNames));
 		//add the behaviours to comunicate the path to the other agents
-		lb.add(new SendPathBehaviour(this,this.myMap,list_agentNames));
+		// lb.add(new SendPathBehaviour(this,this.myMap,list_agentNames));
 
 
 
@@ -206,7 +206,7 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 			} else{
 				// Go to calculate the treasures path
 
-				this.myAgent.addBehaviour(new sendShortestPath((AbstractDedaleAgent) this.myAgent, this.myMap, this.treasures));
+				// this.myAgent.addBehaviour(new sendShortestPath((AbstractDedaleAgent) this.myAgent, this.myMap, this.treasures));
 				stop();
 //				finished = true;
 			}
