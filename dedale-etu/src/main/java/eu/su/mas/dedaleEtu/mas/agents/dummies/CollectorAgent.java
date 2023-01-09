@@ -77,6 +77,9 @@ public class CollectorAgent extends AbstractDedaleAgent{
         private int conflict_counter = 0; // Count how many iterations we spend blocked. If reached limit, leave mission.
         private List<String> conflict_path = new ArrayList<>();
 
+        private boolean stop_for_help = false;
+        private int stop_patiente = 0;
+
         private List<String> mission_path = new ArrayList<>(Arrays.asList("-116657", "-116656", "-116655", "-116654", "-116653", "-116652", "-116071", "-121367", "-121366", "-121365", "-121364", "-121363", "-121362", "-121361", "-121360", "-121359", "-121358", "-117834"));
         // private List<String> mission_path = new ArrayList<>(Arrays.asList(
         //     "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
@@ -137,6 +140,42 @@ public class CollectorAgent extends AbstractDedaleAgent{
                 }
             }
             this.potentialTreasures = treasures;
+        }
+
+        private void receiveMission() {
+            MessageTemplate msgTemplate=MessageTemplate.and(
+                    MessageTemplate.MatchConversationId("Mission"),
+                    MessageTemplate.MatchPerformative(ACLMessage.INFORM));
+            ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
+
+            if (msgReceived!=null) {
+			    List<String> mission;
+				try {
+					mission = (List<String>) msgReceived.getContentObject();
+
+                    this.mission_path = mission;
+                    this.stop_for_help = false;
+                    this.stop_patiente = 0;
+                    this.on_mission = true;
+
+				} catch (UnreadableException e) {
+					e.printStackTrace();
+				}
+            }
+        }
+
+        private boolean GetStopMessage() {
+            MessageTemplate msgTemplate=MessageTemplate.and(
+                    MessageTemplate.MatchConversationId("STOP"),
+                    MessageTemplate.MatchPerformative(ACLMessage.INFORM));
+            ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
+
+            if (msgReceived!=null) {
+                this.stop_for_help = true;
+                this.stop_patiente = 5;
+                return true;
+            }
+            return false;
         }
 
         private void requestExplorerHelp(){
@@ -302,6 +341,22 @@ public class CollectorAgent extends AbstractDedaleAgent{
 
         private String moveToNode(List<Couple<String,List<Couple<Observation,Integer>>>> lobs){
             String next_node = this.mission_path.get(this.mission_step);
+            boolean valid = false;
+            for (int i = 0; i < lobs.size(); i++) {
+                if (lobs.get(i).getLeft() == next_node){
+                    valid = true;
+                    break;
+                }
+            }
+
+            // Just in case due random tick behaviours the agent gets out of bounds, instead of dying, go back to random movement.
+            if (!valid){
+                System.out.println(this.myAgent.getLocalName() + " - The following node from the mission is not valid!! Aborting");
+                this.on_mission = false;
+                this.mission_step = 0;
+                this.mission_path = null;
+            }
+
 			Boolean moved = ((AbstractDedaleAgent)this.myAgent).moveTo(next_node);
             if (!moved) {
                 solveBlockedPath();
@@ -440,6 +495,11 @@ public class CollectorAgent extends AbstractDedaleAgent{
                 this.backoff_wait -= 1;
                 return;
             }
+            if (this.stop_patiente > 0){
+                this.stop_patiente -= 1;
+            }else if (this.stop_patiente == 0){
+                this.stop_for_help = false;
+            }
 			//Example to retrieve the current position
 			String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 
@@ -517,12 +577,14 @@ public class CollectorAgent extends AbstractDedaleAgent{
 
 				//Random move from the current position
                 String next_node = null;
-                if (this.backing_up){
-                    next_node = backOff(lobs);
-                } else if (this.on_mission && !this.backing_up){
-                    next_node = moveToNode(lobs);
-                } else {
-                    next_node = moveToNextNodeRandom(lobs);
+                if (!this.stop_for_help){
+                    if (this.backing_up){
+                        next_node = backOff(lobs);
+                    } else if (this.on_mission && !this.backing_up){
+                        next_node = moveToNode(lobs);
+                    } else {
+                        next_node = moveToNextNodeRandom(lobs);
+                    }
                 }
 
                 if (next_node != null){
@@ -548,14 +610,16 @@ public class CollectorAgent extends AbstractDedaleAgent{
 
                 updatePotentialTreasures();
                 // Ask for help to explorers if they are nearby and there is info to be sent
-                if (!this.potentialTreasures.isEmpty()){
-                    requestExplorerHelp();
-                    sendTreasureRequest(lobs.get(0).getLeft());
+                if (!this.on_mission){
+                    if (!this.potentialTreasures.isEmpty()){
+                        requestExplorerHelp();
+                        if (GetStopMessage()){
+                            sendTreasureRequest(lobs.get(0).getLeft());
+                        }
+                    }
+                    receiveMission();
                 }
-
 			}
-
 		}
-
 	}
 }
