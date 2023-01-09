@@ -116,46 +116,30 @@ class TankerBehaviour extends TickerBehaviour {
 		String out = String.valueOf(false);
 
 		// Listening to confirmation message of agent name being accepted
-		String msgconf = ReceiveStringMessage();
-//		MessageTemplate msgTemplateconf = MessageTemplate.and(
-//				MessageTemplate.MatchProtocol("SHARE-TOPO"),
-//				MessageTemplate.MatchPerformative(ACLMessage.INFORM));
-//		ACLMessage msgconf = this.myAgent.receive(msgTemplateconf);
-//		System.out.println("Tankerbehaviour conf msgReceived: " + msgconf);
+		String msgconf = ReceiveStringMessage("SHARE-CONFI");
 
 		if (msgconf != null) {
 //			String msgconfir = msgconf.getContent();
 //			System.out.println(this.myAgent.getLocalName() + " received the message --> " + msgconfir);
-			String[] SpltMsg = msgconf.split(":", 2);
-			String AgName = SpltMsg[0];
-			String Conf = SpltMsg[1];
-			if (Conf.contains("Accepted member of coallition")) {
+
+			if (msgconf.contains("Accepted member of coalition")) {
+				String[] SpltMsg = msgconf.split(":", 2);
+				String AgName = SpltMsg[0];
+				String Conf = SpltMsg[1];
 				accepted = true;
 				String myPosition = ((AbstractDedaleAgent) this.myAgent).getCurrentPosition();
 				System.out.println("Position:" + myPosition);
 
 				//	Send position to the explorer
 				ArrayList<String> receivers = new ArrayList<>(Arrays.asList(AgName));
-				SendStringMessage(receivers, this.myAgent.getLocalName() + ":node:" + myPosition);
-//				ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-//				msg.setProtocol("SHARE-TOPO");
-//				msg.setSender(this.myAgent.getAID());
-//		System.out.println("Senders name:  "+ this.myAgent.getAID());
-
-//				for (String agentName : receivers) {
-//					msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
-//			System.out.println("Recievers name:  "+ agentName + AID.ISLOCALNAME);
-//			}
-//				msg.setContent(this.myAgent.getLocalName()+":node:"+myPosition);
-//				System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContent());
-//				((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+				SendStringMessage(receivers, this.myAgent.getLocalName() + ":node53146546:" + myPosition,"SHARE-POS");
 
 				ACLMessage msgReceived = null;
 				while (msgReceived == null) {
 					// Receive path from explorer
 
 					MessageTemplate msgTemplate = MessageTemplate.and(
-							MessageTemplate.MatchProtocol("SHARE-TOPO"),
+							MessageTemplate.MatchProtocol("SHARE-PATH"),
 							MessageTemplate.MatchPerformative(ACLMessage.INFORM));
 					msgReceived = this.myAgent.receive(msgTemplate);
 	//					System.out.println("TankerBehaviour msgReceived: " + msgReceived);
@@ -236,9 +220,9 @@ class TankerBehaviour extends TickerBehaviour {
 		((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
 	}
 
-	private void SendStringMessage(ArrayList<String> Receivers, String message) {
+	private void SendStringMessage(ArrayList<String> Receivers, String message, String protocol) {
 		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-		msg.setProtocol("SHARE-TOPO");
+		msg.setProtocol(protocol);
 		msg.setSender(this.myAgent.getAID());
 		for (String agentName : Receivers) {
 			msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
@@ -248,9 +232,9 @@ class TankerBehaviour extends TickerBehaviour {
 		((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
 	}
 
-	private String ReceiveStringMessage() {
+	private String ReceiveStringMessage(String protocol) {
 		MessageTemplate msgTemplate=MessageTemplate.and(
-				MessageTemplate.MatchProtocol("SHARE-TOPO"),
+				MessageTemplate.MatchProtocol(protocol),
 				MessageTemplate.MatchPerformative(ACLMessage.INFORM));
 		ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
 
@@ -308,7 +292,7 @@ class RandomTankerBehaviour extends TickerBehaviour{
 	public void onTick() {
 		String out = String.valueOf(false);
 //		Receive exploration finished message
-		String StopMessage = ReceiveStringMessage();
+		String StopMessage = ReceiveStringMessage("DONE");
 
 			if (StopMessage!=null) {
 				String[] Splt= StopMessage.split(":",2);
@@ -318,7 +302,7 @@ class RandomTankerBehaviour extends TickerBehaviour{
 
 					// Send message agent type to the explorer who asked to stop
 					ArrayList<String> typereceiver = new ArrayList<>(Arrays.asList(spltagent));
-					SendStringMessage(typereceiver,this.myAgent.getLocalName());
+					SendStringMessage(typereceiver,this.myAgent.getLocalName(),"SHARE-NAME");
 
 					// Go to tanker Behaviour
 					this.myAgent.addBehaviour(new TankerBehaviour((AbstractDedaleAgent) this.myAgent));
@@ -342,9 +326,9 @@ class RandomTankerBehaviour extends TickerBehaviour{
 		}
 	}
 
-	private void SendStringMessage(ArrayList<String> Receivers, String message) {
+	private void SendStringMessage(ArrayList<String> Receivers, String message, String protocol) {
 		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-		msg.setProtocol("SHARE-TOPO");
+		msg.setProtocol(protocol);
 		msg.setSender(this.myAgent.getAID());
 		for (String agentName : Receivers) {
 			msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
@@ -354,15 +338,15 @@ class RandomTankerBehaviour extends TickerBehaviour{
 		((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
 	}
 
-	private String ReceiveStringMessage() {
+	private String ReceiveStringMessage(String protocol) {
 		MessageTemplate msgTemplate=MessageTemplate.and(
-				MessageTemplate.MatchProtocol("SHARE-TOPO"),
+				MessageTemplate.MatchProtocol(protocol),
 				MessageTemplate.MatchPerformative(ACLMessage.INFORM));
-		ACLMessage msgStringReceived=this.myAgent.receive(msgTemplate);
+		ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
 
-		if (msgStringReceived!=null) {
-			String message = msgStringReceived.getContent();
-			System.out.println(this.myAgent.getLocalName() + " received the message --> " + message+" by: "+msgStringReceived.getSender().getName());
+		if (msgReceived!=null) {
+			String message = msgReceived.getContent();
+			System.out.println(this.myAgent.getLocalName() + " received the message --> " + message+" by: "+msgReceived.getSender().getName());
 			return message;
 		}
 		return null;

@@ -76,7 +76,6 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 			this.myAgent.addBehaviour(new ShareMapBehaviour(this.myAgent,500,this.myMap,list_agentNames));
 			this.myAgent.addBehaviour(new ShareTreasuresLocBehaviour(this.myAgent, 500, this.treasures,list_agentNames));
 		}
-
 		//0) Retrieve the current position
 		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 
@@ -135,24 +134,6 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 				}else {
 					//System.out.println("nextNode notNUll - "+this.myAgent.getLocalName()+"-- list= "+this.myMap.getOpenNodes()+"\n -- nextNode: "+nextNode);
 				}
-				//4) At each time step, the agent blindly send all its graph to its surrounding to illustrate how to share its knowledge (the topology currently) with the the others agents.
-				// If it was written properly, this sharing action should be in a dedicated behaviour set, the receivers be automatically computed, and only a subgraph would be shared.
-
-//				ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-//				msg.setProtocol("SHARE-TOPO");
-//				msg.setSender(this.myAgent.getAID());
-//				if (this.myAgent.getLocalName().equals("1stAgent")) {
-//					msg.addReceiver(new AID("2ndAgent",false));
-//				}else {
-//					msg.addReceiver(new AID("1stAgent",false));
-//				}
-//				SerializableSimpleGraph<String, MapAttribute> sg=this.myMap.getSerializableGraph();
-//				try {
-//					msg.setContentObject(sg);
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//				((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
 
 				//5) At each time step, the agent check if he received a graph from a teammate.
 				// If it was written properly, this sharing action should be in a dedicated behaviour set.
@@ -160,31 +141,25 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 						MessageTemplate.MatchProtocol("SHARE-TOPO"),
 						MessageTemplate.MatchPerformative(ACLMessage.INFORM));
 				ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
-//				System.out.println("msgReceived: " + msgReceived);
 				if (msgReceived!=null) {
 					String mclass;
 					try {
 						mclass = msgReceived.getContentObject().getClass().getName();
-
 					} catch (UnreadableException e) {
 						throw new RuntimeException(e);
 					}
-
 					if (mclass == "dataStructures.serializableGraph.SerializableSimpleGraph") {
 						SerializableSimpleGraph<String, MapAttribute> sgreceived = null;
 						try {
-
 							sgreceived = (SerializableSimpleGraph<String, MapAttribute>) msgReceived.getContentObject();
 						} catch (UnreadableException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-
 //						System.out.println("Mensajeeee! Recibido: " + sgreceived);
 						this.myMap.mergeMap(sgreceived);
 					}
 				}
-
 				MessageTemplate msgTreasure=MessageTemplate.and(
 						MessageTemplate.MatchProtocol("SHARE-TOPO"),
 						MessageTemplate.MatchPerformative(ACLMessage.INFORM));
