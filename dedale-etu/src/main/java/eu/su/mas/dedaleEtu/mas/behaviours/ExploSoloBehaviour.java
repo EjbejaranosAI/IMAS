@@ -71,7 +71,7 @@ public class ExploSoloBehaviour extends SimpleBehaviour {
 			 * Just added here to let you see what the agent is doing, otherwise he will be too quick
 			 */
 			try {
-				this.myAgent.doWait(60);
+				this.myAgent.doWait(200);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -114,7 +114,7 @@ public class ExploSoloBehaviour extends SimpleBehaviour {
 					//chose one, compute the path and take the first step.
 					nextNode=this.myMap.getShortestPath(myPosition, this.openNodes.get(0)).get(0);
 				}
-				System.out.println("The explorer is going to move to "+ nextNode );
+				// System.out.println("The explorer is going to move to "+ nextNode );
 				
 				
 				
@@ -124,7 +124,7 @@ public class ExploSoloBehaviour extends SimpleBehaviour {
 
 				//list of observations associated to the currentPosition
 				List<Couple<Observation,Integer>> lObservations= lobs.get(0).getRight();
-				System.out.println(this.myAgent.getLocalName()+" - State of the observations : "+lobs);
+				// System.out.println(this.myAgent.getLocalName()+" - State of the observations : "+lobs);
 				
 				//example related to the use of the backpack for the treasure hunt
 				Boolean b=false;
@@ -136,6 +136,7 @@ public class ExploSoloBehaviour extends SimpleBehaviour {
 						System.out.println(this.myAgent.getLocalName()+" - My current backpack capacity is:"+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
 						System.out.println(this.myAgent.getLocalName()+" - My expertise is: "+((AbstractDedaleAgent) this.myAgent).getMyExpertise());
 						System.out.println(this.myAgent.getLocalName()+" - I try to open the safe: "+((AbstractDedaleAgent) this.myAgent).openLock(Observation.GOLD));
+						System.out.println(this.myAgent.getLocalName()+" - I try to open the safe: "+((AbstractDedaleAgent) this.myAgent).openLock(Observation.DIAMOND));
 						System.out.println(this.myAgent.getLocalName()+" - Value of the treasure on the current position: "+o.getLeft() +": "+ o.getRight());
 						System.out.println(this.myAgent.getLocalName()+" - The agent grabbed : "+((AbstractDedaleAgent) this.myAgent).pick());
 						System.out.println(this.myAgent.getLocalName()+" - the remaining backpack capacity is: "+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
@@ -167,7 +168,7 @@ public class ExploSoloBehaviour extends SimpleBehaviour {
 				/************************************************
 				 * 				END API CALL ILUSTRATION
 				 *************************************************/
-				System.out.println("The explorer "+this.myAgent+"is going to move to "+ nextNode );
+				// System.out.println("The explorer "+this.myAgent+"is going to move to "+ nextNode );
 				((AbstractDedaleAgent)this.myAgent).moveTo(nextNode);
 			}
 

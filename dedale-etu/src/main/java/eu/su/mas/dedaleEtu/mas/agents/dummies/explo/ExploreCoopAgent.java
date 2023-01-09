@@ -98,6 +98,7 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 		System.out.println("++++++++++++++++The  agent "+this.getLocalName()+ " is started++++++++++++++++++++++++");
 
 
+
 	}
 
 	/**************************************

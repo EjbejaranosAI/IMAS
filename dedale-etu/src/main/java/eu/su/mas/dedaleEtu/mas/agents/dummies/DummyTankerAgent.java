@@ -46,6 +46,7 @@ public class DummyTankerAgent extends AbstractDedaleAgent{
 		super.setup();
 
 		List<Behaviour> lb=new ArrayList<Behaviour>();
+//		lb.add(new TankerBehaviour(this));
 		lb.add(new RandomTankerBehaviour(this));
 
 		addBehaviour(new startMyBehaviours(this,lb));
@@ -67,117 +68,6 @@ public class DummyTankerAgent extends AbstractDedaleAgent{
  * 				BEHAVIOUR
  **************************************/
 
-/**************************************
- *       RandomTankerBehaviour
- *       call Tanker behaviour
- *************************************/
-
-class RandomTankerBehaviour extends TickerBehaviour{
-	/**
-	 * When an agent choose to migrate all its components should be serializable
-	 *
-	 */
-	private static final long serialVersionUID = 9088209402507795289L;
-	private static final int BUFFER_SIZE = 80;
-
-	private List<String> nodeBuffer = new ArrayList<>(BUFFER_SIZE);
-
-	public RandomTankerBehaviour (final AbstractDedaleAgent myagent) {
-		super(myagent, 600);
-	}
-
-	private String chooseNextNode(List<Couple<String,List<Couple<Observation,Integer>>>> lobs){
-		//Random move from the current position
-		Random r= new Random();
-		int moveId=1+r.nextInt(lobs.size()-1); //removing the current position from the list of target to accelerate the tests, but not necessary as to stay is an action
-		String next_node = lobs.get(moveId).getLeft();
-
-		if (!this.nodeBuffer.contains(next_node)){
-			return next_node;
-		} else {
-			for (int i = 1; i < lobs.size(); i++) {
-				next_node = lobs.get(i).getLeft();
-				if (!this.nodeBuffer.contains(next_node)){
-					return next_node;
-				}
-			}
-		}
-		return next_node;  // Even if all nodes are visited, it will eventually use one.
-	}
-
-	@Override
-	public void onTick() {
-		String out = String.valueOf(false);
-//		Receive exploration finished message
-		String StopMessage = ReceiveStringMessage("DONE");
-
-		if (StopMessage!=null) {
-			String[] Splt= StopMessage.split(":",2);
-			String spltagent = Splt[0];
-			StopMessage = Splt[1];
-			if (StopMessage.equals("Exploration finished, route plan done!")){
-
-				// Send message agent type to the explorer who asked to stop
-				ArrayList<String> typereceiver = new ArrayList<>(Arrays.asList(spltagent));
-				SendStringMessage(typereceiver,this.myAgent.getLocalName(),"SHARE-NAME");
-
-				// Go to tanker Behaviour
-				this.myAgent.addBehaviour(new TankerBehaviour((AbstractDedaleAgent) this.myAgent));
-				stop();
-				out = String.valueOf(true);
-			}
-		}
-
-		if (out.equals(String.valueOf(false))){
-			//Example to retrieve the current position
-			String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
-
-			if (myPosition!=""){
-				//List of observable from the agent's current position
-				List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
-				//Random move from the current position
-				String next_node = chooseNextNode(lobs);
-				//The move action (if any) should be the last action of your behaviour
-				((AbstractDedaleAgent)this.myAgent).moveTo(next_node);
-			}
-		}
-	}
-
-	private void SendStringMessage(ArrayList<String> Receivers, String message, String protocol) {
-		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-		msg.setProtocol(protocol);
-		msg.setSender(this.myAgent.getAID());
-		for (String agentName : Receivers) {
-			msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
-		}
-		msg.setContent(message);
-		System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContent()+" - To: "+ Receivers);
-		((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
-	}
-
-	private String ReceiveStringMessage(String protocol) {
-		MessageTemplate msgTemplate=MessageTemplate.and(
-				MessageTemplate.MatchProtocol(protocol),
-				MessageTemplate.MatchPerformative(ACLMessage.INFORM));
-		ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
-
-		if (msgReceived!=null) {
-			String message = msgReceived.getContent();
-			System.out.println(this.myAgent.getLocalName() + " received the message --> " + message+" by: "+msgReceived.getSender().getName());
-			return message;
-		}
-		return null;
-	}
-}
-
-
-/**************************************
- *         Tanker behaviour
- *  start whenn the random tanker
- *    behaviour is stopped
- *************************************/
-
-
 
 class TankerBehaviour extends TickerBehaviour {
 	/**
@@ -187,7 +77,7 @@ class TankerBehaviour extends TickerBehaviour {
 
 	private boolean accepted = false;
 
-	private static final int BUFFER_SIZE = 80;
+	private static final int BUFFER_SIZE = 8;
 
 	private List<String> nodeBuffer = new ArrayList<>(BUFFER_SIZE);
 
@@ -196,22 +86,42 @@ class TankerBehaviour extends TickerBehaviour {
 	}
 
 	private String chooseNextNode(List<Couple<String, List<Couple<Observation, Integer>>>> lobs) {
-		//Random move from the current position
-		Random r = new Random();
-		int moveId = 1 + r.nextInt(lobs.size() - 1); //removing the current position from the list of target to accelerate the tests, but not necessary as to stay is an action
-		String next_node = lobs.get(moveId).getLeft();
+        //Random move from the current position
+        Random r= new Random();
+        int moveId=1+r.nextInt(lobs.size()-1); //removing the current position from the list of target to accelerate the tests, but not necessary as to stay is an action
+        String next_node = lobs.get(moveId).getLeft();
+        String goal_node = next_node; // select the initial random by default if the following checks fail
 
-		if (!this.nodeBuffer.contains(next_node)) {
-			return next_node;
-		} else {
-			for (int i = 1; i < lobs.size(); i++) {
-				next_node = lobs.get(i).getLeft();
-				if (!this.nodeBuffer.contains(next_node)) {
-					return next_node;
-				}
-			}
-		}
-		return next_node;  // Even if all nodes are visited, it will eventually use one.
+        if (!this.nodeBuffer.contains(next_node)){
+            // System.out.println("Selected node : " + next_node);
+            goal_node = next_node;
+        } else {
+            for (int i = 1; i < lobs.size(); i++) {
+                next_node = lobs.get(i).getLeft();
+                if (!this.nodeBuffer.contains(next_node)){
+                    // System.out.println("Selected node : " + i + " " + next_node);
+                    goal_node = next_node;
+                    break;
+                }
+            }
+        }
+
+        Boolean moved = ((AbstractDedaleAgent)this.myAgent).moveTo(goal_node);
+        Integer i = 1;
+        while (!moved && i < lobs.size()) {
+            goal_node = lobs.get(i).getLeft();
+            moved = ((AbstractDedaleAgent)this.myAgent).moveTo(goal_node);
+            i = i+1;
+            // If it enters this loop it means that the agent is blocked. Clearing the buffer will help him move more freely.
+            this.nodeBuffer.clear();
+        }
+
+        if (!moved) {
+            return null;
+            
+        }
+
+        return goal_node;
 	}
 
 	@Override
@@ -246,10 +156,10 @@ class TankerBehaviour extends TickerBehaviour {
 							MessageTemplate.MatchProtocol("SHARE-PATH"),
 							MessageTemplate.MatchPerformative(ACLMessage.INFORM));
 					msgReceived = this.myAgent.receive(msgTemplate);
-					//					System.out.println("TankerBehaviour msgReceived: " + msgReceived);
+	//					System.out.println("TankerBehaviour msgReceived: " + msgReceived);
 					ArrayList<List> paths;
 					if (msgReceived != null) {
-						//					System.out.println("TankerBehaviour msgReceived INDISE: " + msgReceived);
+	//					System.out.println("TankerBehaviour msgReceived INDISE: " + msgReceived);
 						try {
 							paths = (ArrayList<List>) msgReceived.getContentObject();
 							System.out.println(this.myAgent.getLocalName() + " received the message --> " + paths);
@@ -265,15 +175,15 @@ class TankerBehaviour extends TickerBehaviour {
 									}
 								}
 							}
-							//							if (out == String.valueOf(true)){
-							//								stop();
-							//								System.out.println("Out of Tanker behaiour!");
-							//							}
-							stop();
-							System.out.println("Out of Tanker behaviour!");
+	//							if (out == String.valueOf(true)){
+	//								stop();
+	//								System.out.println("Out of Tanker behaiour!");
+	//							}
+								stop();
+								System.out.println("Out of Tanker behaviour!");
 						} catch (UnreadableException e) {
 							// TODO Auto-generated catch block
-							//							e.printStackTrace();
+	//							e.printStackTrace();
 							String ms = msgReceived.getContent();
 							System.out.println(this.myAgent.getLocalName() + " received the message --> " + ms);
 						}
@@ -283,17 +193,25 @@ class TankerBehaviour extends TickerBehaviour {
 				System.out.println(this.myAgent.getLocalName() + " going back to random walk");
 				for (int i = 0; i <= 3; i++) {
 					List<Couple<String, List<Couple<Observation, Integer>>>> lobs = ((AbstractDedaleAgent) this.myAgent).observe();//myPosition
-					//						//The move action (if any) should be the last action of your behaviour
-					//						Random r= new Random();
-					//						int moveId=1+r.nextInt(lobs.size()-1);
+	//						//The move action (if any) should be the last action of your behaviour
+	//						Random r= new Random();
+	//						int moveId=1+r.nextInt(lobs.size()-1);
 					//Random move from the current position
 					String next_node = chooseNextNode(lobs);
+                    if (next_node != null && !this.nodeBuffer.contains(next_node)){
+
+                        if (this.nodeBuffer.size() == this.BUFFER_SIZE){
+                            this.nodeBuffer.remove(0);
+                        }
+
+                        this.nodeBuffer.add(next_node);
+                    }
 
 					//The move action (if any) should be the last action of your behaviour
-					((AbstractDedaleAgent) this.myAgent).moveTo(next_node);
-					//						System.out.println(this.myAgent.getLocalName()+" - nodebuffer: " + this.nodeBuffer);
-					//						System.out.println(this.myAgent.getLocalName()+" ---- Moving to:  "+lobs.get(moveId).getLeft());
-					//						((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
+					// ((AbstractDedaleAgent) this.myAgent).moveTo(next_node);
+	//						System.out.println(this.myAgent.getLocalName()+" - nodebuffer: " + this.nodeBuffer);
+	//						System.out.println(this.myAgent.getLocalName()+" ---- Moving to:  "+lobs.get(moveId).getLeft());
+	//						((AbstractDedaleAgent)this.myAgent).moveTo(lobs.get(moveId).getLeft());
 				}
 				this.myAgent.addBehaviour(new RandomTankerBehaviour((AbstractDedaleAgent) this.myAgent));
 				stop();
@@ -359,13 +277,148 @@ class TankerBehaviour extends TickerBehaviour {
 }
 
 
+class RandomTankerBehaviour extends TickerBehaviour{
+	/**
+	 * When an agent choose to migrate all its components should be serializable
+	 *
+	 */
+	private static final long serialVersionUID = 9088209402507795289L;
+	private static final int BUFFER_SIZE = 8;
 
+	private List<String> nodeBuffer = new ArrayList<>(BUFFER_SIZE);
 
+	public RandomTankerBehaviour (final AbstractDedaleAgent myagent) {
+		super(myagent, 600);
+	}
 
+	private String chooseNextNode(List<Couple<String,List<Couple<Observation,Integer>>>> lobs){
+		//Random move from the current position
+		Random r= new Random();
+		int moveId=1+r.nextInt(lobs.size()-1); //removing the current position from the list of target to accelerate the tests, but not necessary as to stay is an action
+		String next_node = lobs.get(moveId).getLeft();
 
+		if (!this.nodeBuffer.contains(next_node)){
+			return next_node;
+		} else {
+			for (int i = 1; i < lobs.size(); i++) {
+				next_node = lobs.get(i).getLeft();
+				if (!this.nodeBuffer.contains(next_node)){
+					return next_node;
+				}
+			}
+		}
+		return next_node;  // Even if all nodes are visited, it will eventually use one.
+	}
 
+	private String chooseNextNode(List<Couple<String,List<Couple<Observation,Integer>>>> lobs){
+        //Random move from the current position
+        Random r= new Random();
+        int moveId=1+r.nextInt(lobs.size()-1); //removing the current position from the list of target to accelerate the tests, but not necessary as to stay is an action
+        String next_node = lobs.get(moveId).getLeft();
+        String goal_node = next_node; // select the initial random by default if the following checks fail
 
+        if (!this.nodeBuffer.contains(next_node)){
+            // System.out.println("Selected node : " + next_node);
+            goal_node = next_node;
+        } else {
+            for (int i = 1; i < lobs.size(); i++) {
+                next_node = lobs.get(i).getLeft();
+                if (!this.nodeBuffer.contains(next_node)){
+                    // System.out.println("Selected node : " + i + " " + next_node);
+                    goal_node = next_node;
+                    break;
+                }
+            }
+        }
 
+        Boolean moved = ((AbstractDedaleAgent)this.myAgent).moveTo(goal_node);
+        Integer i = 1;
+        while (!moved && i < lobs.size()) {
+            goal_node = lobs.get(i).getLeft();
+            moved = ((AbstractDedaleAgent)this.myAgent).moveTo(goal_node);
+            i = i+1;
+            // If it enters this loop it means that the agent is blocked. Clearing the buffer will help him move more freely.
+            this.nodeBuffer.clear();
+        }
 
+        if (!moved) {
+            return null;
+            
+        }
 
+        return goal_node;
+	}
 
+	@Override
+	public void onTick() {
+		String out = String.valueOf(false);
+//		Receive exploration finished message
+		String StopMessage = ReceiveStringMessage("DONE");
+
+        if (StopMessage!=null) {
+            String[] Splt= StopMessage.split(":",2);
+            String spltagent = Splt[0];
+            StopMessage = Splt[1];
+            if (StopMessage.equals("Exploration finished, route plan done!")){
+
+                // Send message agent type to the explorer who asked to stop
+                ArrayList<String> typereceiver = new ArrayList<>(Arrays.asList(spltagent));
+                SendStringMessage(typereceiver,this.myAgent.getLocalName(),"SHARE-NAME");
+
+                // Go to tanker Behaviour
+                this.myAgent.addBehaviour(new TankerBehaviour((AbstractDedaleAgent) this.myAgent));
+                stop();
+                out = String.valueOf(true);
+            }
+        }
+
+		if (out.equals(String.valueOf(false))){
+			//Example to retrieve the current position
+			String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
+
+			if (myPosition!=""){
+				//List of observable from the agent's current position
+				List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
+				//Random move from the current position
+				String next_node = chooseNextNode(lobs);
+                // System.out.println(this.myAgent.getLocalName() + " - " + next_node);
+				//The move action (if any) should be the last action of your behaviour
+				// ((AbstractDedaleAgent)this.myAgent).moveTo(next_node);
+				if (next_node != null && !this.nodeBuffer.contains(next_node)){
+
+					if (this.nodeBuffer.size() == this.BUFFER_SIZE){
+						this.nodeBuffer.remove(0);
+					}
+
+					this.nodeBuffer.add(next_node);
+				}
+			}
+		}
+	}
+
+	private void SendStringMessage(ArrayList<String> Receivers, String message, String protocol) {
+		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+		msg.setProtocol(protocol);
+		msg.setSender(this.myAgent.getAID());
+		for (String agentName : Receivers) {
+			msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
+		}
+		msg.setContent(message);
+		System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContent()+" - To: "+ Receivers);
+		((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+	}
+
+	private String ReceiveStringMessage(String protocol) {
+		MessageTemplate msgTemplate=MessageTemplate.and(
+				MessageTemplate.MatchProtocol(protocol),
+				MessageTemplate.MatchPerformative(ACLMessage.INFORM));
+		ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
+
+		if (msgReceived!=null) {
+			String message = msgReceived.getContent();
+			System.out.println(this.myAgent.getLocalName() + " received the message --> " + message+" by: "+msgReceived.getSender().getName());
+			return message;
+		}
+		return null;
+	}
+}
