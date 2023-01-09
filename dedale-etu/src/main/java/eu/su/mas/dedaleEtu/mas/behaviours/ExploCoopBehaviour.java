@@ -15,6 +15,7 @@ import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation.MapAttribute;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
 import eu.su.mas.dedaleEtu.mas.behaviours.ShareMapBehaviour;
 import eu.su.mas.dedaleEtu.mas.behaviours.ShareTreasuresLocBehaviour;
+import eu.su.mas.dedaleEtu.mas.behaviours.SharePath;
 
 
 import jade.core.AID;
@@ -57,7 +58,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 	private List<Couple<String, List<Couple<Observation, Integer>>>> treasures = new ArrayList<>();
 
-    private static final int TICK_TIME = 300;
+    private static final int TICK_TIME = 100;
     private int blocked_counter = 0;
     private int random_tmp_steps = 0;
 
@@ -139,6 +140,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 			this.myMap= new MapRepresentation();
 			this.myAgent.addBehaviour(new ShareMapBehaviour(this.myAgent, TICK_TIME,this.myMap,list_agentNames));
 			this.myAgent.addBehaviour(new ShareTreasuresLocBehaviour(this.myAgent, TICK_TIME, this.treasures,list_agentNames));
+			this.myAgent.addBehaviour(new SharePath(this.myAgent, this.myMap));
 		}
 		//0) Retrieve the current position
 		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
@@ -157,7 +159,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 			 * Just added here to let you see what the agent is doing, otherwise he will be too quick
 			 */
 			try {
-				this.myAgent.doWait(300);
+				this.myAgent.doWait(100);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

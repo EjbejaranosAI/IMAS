@@ -82,7 +82,7 @@ class TankerBehaviour extends TickerBehaviour {
 	private List<String> nodeBuffer = new ArrayList<>(BUFFER_SIZE);
 
 	public TankerBehaviour(final AbstractDedaleAgent myagent) {
-		super(myagent, 300);
+		super(myagent, 100);
 	}
 
 	private String chooseNextNode(List<Couple<String, List<Couple<Observation, Integer>>>> lobs) {
@@ -288,7 +288,7 @@ class RandomTankerBehaviour extends TickerBehaviour{
 	private List<String> nodeBuffer = new ArrayList<>(BUFFER_SIZE);
 
 	public RandomTankerBehaviour (final AbstractDedaleAgent myagent) {
-		super(myagent, 300);
+		super(myagent, 100);
 	}
 
 	private String chooseNextNode(List<Couple<String,List<Couple<Observation,Integer>>>> lobs){

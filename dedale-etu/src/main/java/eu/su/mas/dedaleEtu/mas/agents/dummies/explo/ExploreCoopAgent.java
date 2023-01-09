@@ -87,6 +87,7 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 		 ************************************************/
 
 		lb.add(new ExploCoopBehaviour(this,this.myMap,list_agentNames, treasures));
+		// lb.add(new PathSharing(this,this.myMap));
 		/***
 		 * MANDATORY TO ALLOW YOUR AGENT TO BE DEPLOYED CORRECTLY
 		 */
@@ -117,48 +118,44 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 
 		private boolean finished = false;
 		private final MapRepresentation myMap;
-		private final List<Couple<String, List<Couple<Observation, Integer>>>> treasures;
-		private ArrayList<String> CoallParticipant;
 
-		private ArrayList<String> DoneReceivers;
+        ArrayList<String> last_sender;
 
 
-		public PathSharing (final AbstractDedaleAgent myagent, MapRepresentation myMap, List<Couple<String, List<Couple<Observation, Integer>>>> treasures) {
-			super(myagent,600);
+		public PathSharing (final AbstractDedaleAgent myagent, MapRepresentation myMap) {
+			super(myagent,100);
 			this.myMap=myMap;
 			this.myAgent=myagent;
-			this.treasures=treasures;
-			this.CoallParticipant=new ArrayList<>(Arrays.asList("Tanker")); // add collector
-			this.DoneReceivers= new ArrayList<>(Arrays.asList("Tanker1", "Tanker2","Collector1","Collector2"));
 
 		}
-
-
 
 		@Override
 		public void onTick() {
 
 			//Handshake
 			ArrayList<String> greet = ReceiveStringMessage("HELLO");
-			ArrayList<String> name = new ArrayList<>(Arrays.asList(greet.get(1)));
-			SendStringMessage(name,"I'm Here","STOP");
-
+            if (greet != null){
+                this.last_sender = new ArrayList<>(Arrays.asList(greet.get(1)));
+                SendStringMessage(this.last_sender,"I'm Here","STOP");
+            }
 			//Listen to a path request
 			ArrayList<String> points = (ArrayList<String>) ReceiveObjectMessage("SHARE-POINTS",ACLMessage.REQUEST);
-			List<String> TreasuresPath =new ArrayList<>();
-			List<String> temporalPath = new ArrayList<>();
-			Integer minSize = 500;
-			for (Integer i = 0; i < points.size()-1; i++ ) {
-				temporalPath =this.myMap.getShortestPath(points.get(0),points.get(i+1));
-				if(minSize >= temporalPath.size()){
-					TreasuresPath = temporalPath;
-					minSize = temporalPath.size();
-				}
-			}
-			System.out.println("Path to treasures in the list: "+ TreasuresPath);
+            if (points != null){
+                List<String> TreasuresPath =new ArrayList<>();
+                List<String> temporalPath = new ArrayList<>();
+                Integer minSize = 500;
+                for (Integer i = 0; i < points.size()-1; i++ ) {
+                    temporalPath =this.myMap.getShortestPath(points.get(0),points.get(i+1));
+                    if(minSize >= temporalPath.size()){
+                        TreasuresPath = temporalPath;
+                        minSize = temporalPath.size();
+                    }
+                }
+                System.out.println("Path to treasures in the list: "+ TreasuresPath);
 
-			//Send path to agent
-			SendObjectMessage(name, TreasuresPath,ACLMessage.INFORM);
+                //Send path to agent
+                SendObjectMessage(this.last_sender, TreasuresPath,ACLMessage.INFORM);
+            }
 
 		}
 

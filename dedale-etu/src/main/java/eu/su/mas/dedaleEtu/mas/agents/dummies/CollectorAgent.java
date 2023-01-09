@@ -62,7 +62,9 @@ public class CollectorAgent extends AbstractDedaleAgent{
 	class CollectorBehaviour extends TickerBehaviour{
 		private static final long serialVersionUID = 9088209402507795289L;
 		private static final int BUFFER_SIZE = 8;
-        private static final int TICK_TIME = 300;
+        private static final int TICK_TIME = 100;
+
+        private String current_position;
 
         private List<String> nodeBuffer = new ArrayList<>(BUFFER_SIZE);
         private List<String> potentialTreasures = new ArrayList<>();
@@ -81,20 +83,6 @@ public class CollectorAgent extends AbstractDedaleAgent{
         private int stop_patiente = 0;
 
         private List<String> mission_path = new ArrayList<>(Arrays.asList("-116657", "-116656", "-116655", "-116654", "-116653", "-116652", "-116071", "-121367", "-121366", "-121365", "-121364", "-121363", "-121362", "-121361", "-121360", "-121359", "-121358", "-117834"));
-        // private List<String> mission_path = new ArrayList<>(Arrays.asList(
-        //     "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0"
-        // ));
 
 
 		public CollectorBehaviour (final AbstractDedaleAgent myagent) {
@@ -102,23 +90,6 @@ public class CollectorAgent extends AbstractDedaleAgent{
             // TODO: remove this. Debugging purposes
             if (this.myAgent.getLocalName().toString().contains("2")){
                 this.mission_path = new ArrayList<>(Arrays.asList("-117834", "-121358", "-121359", "-121360", "-121361", "-121362", "-121363", "-121364", "-121365", "-121366", "-121367", "-116071", "-116652", "-116653", "-116654", "-116655", "-116656", "-116657"));
-                // this.mission_path = new ArrayList<>(Arrays.asList(
-                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4",
-                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4",
-                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4",
-                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4"
-                // ));
             }
 		}
 
@@ -144,7 +115,7 @@ public class CollectorAgent extends AbstractDedaleAgent{
 
         private void receiveMission() {
             MessageTemplate msgTemplate=MessageTemplate.and(
-                    MessageTemplate.MatchConversationId("Mission"),
+                    MessageTemplate.MatchProtocol("SHARE-PATH"),
                     MessageTemplate.MatchPerformative(ACLMessage.INFORM));
             ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
 
@@ -152,6 +123,7 @@ public class CollectorAgent extends AbstractDedaleAgent{
 			    List<String> mission;
 				try {
 					mission = (List<String>) msgReceived.getContentObject();
+                    System.out.println(this.myAgent.getLocalName() + " - Got the mission: " + mission);
 
                     this.mission_path = mission;
                     this.stop_for_help = false;
@@ -166,27 +138,27 @@ public class CollectorAgent extends AbstractDedaleAgent{
 
         private boolean GetStopMessage() {
             MessageTemplate msgTemplate=MessageTemplate.and(
-                    MessageTemplate.MatchConversationId("STOP"),
+                    MessageTemplate.MatchProtocol("STOP"),
                     MessageTemplate.MatchPerformative(ACLMessage.INFORM));
             ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
 
             if (msgReceived!=null) {
                 this.stop_for_help = true;
-                this.stop_patiente = 5;
+                this.stop_patiente = 4;
                 return true;
             }
             return false;
         }
 
         private void requestExplorerHelp(){
-            ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+            ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
             msg.setSender(this.myAgent.getAID());
 			List<String> receivers = new ArrayList<>(Arrays.asList("Explo1", "Explo2", "Explo3"));
             for (String agentName : receivers) {
                 msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
             }
 			msg.setContent("NeedHelp");
-            msg.setConversationId("RequestHelp");
+            msg.setProtocol("HELLO");
 			((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
 
         }
@@ -208,7 +180,7 @@ public class CollectorAgent extends AbstractDedaleAgent{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-            msg.setConversationId("RequestPath");
+            msg.setProtocol("SHARE-POINTS");
 			((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
         }
 
@@ -343,7 +315,7 @@ public class CollectorAgent extends AbstractDedaleAgent{
             String next_node = this.mission_path.get(this.mission_step);
             boolean valid = false;
             for (int i = 0; i < lobs.size(); i++) {
-                if (lobs.get(i).getLeft() == next_node){
+                if (lobs.get(i).getLeft().equals(next_node)){
                     valid = true;
                     break;
                 }
@@ -355,6 +327,7 @@ public class CollectorAgent extends AbstractDedaleAgent{
                 this.on_mission = false;
                 this.mission_step = 0;
                 this.mission_path = null;
+                return null;
             }
 
 			Boolean moved = ((AbstractDedaleAgent)this.myAgent).moveTo(next_node);
@@ -502,6 +475,12 @@ public class CollectorAgent extends AbstractDedaleAgent{
             }
 			//Example to retrieve the current position
 			String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
+            this.current_position = myPosition;
+
+            if (this.stop_for_help){
+                System.out.println(this.myAgent.getLocalName() + "Stopped waiting at " + myPosition);
+            }
+
 
 			if (myPosition!=""){
 				List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
@@ -590,6 +569,8 @@ public class CollectorAgent extends AbstractDedaleAgent{
                 if (next_node != null){
                     // This means we moved
                     this.conflict_counter = 0;
+                    this.current_position = next_node;
+                    // System.out.println(this.myAgent.getLocalName() + " - Moved to position: " + this.current_position);
                 }
 
                 // Update buffer only if the agent moved and if the new node is not in the buffer
@@ -601,6 +582,7 @@ public class CollectorAgent extends AbstractDedaleAgent{
 
 					this.nodeBuffer.add(next_node);
 				}
+
 
 				// System.out.println(this.myAgent.getLocalName()+" - nodebuffer: " + this.nodeBuffer);
 
@@ -614,7 +596,7 @@ public class CollectorAgent extends AbstractDedaleAgent{
                     if (!this.potentialTreasures.isEmpty()){
                         requestExplorerHelp();
                         if (GetStopMessage()){
-                            sendTreasureRequest(lobs.get(0).getLeft());
+                            sendTreasureRequest(this.current_position);
                         }
                     }
                     receiveMission();
