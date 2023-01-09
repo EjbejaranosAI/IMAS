@@ -55,7 +55,12 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 	private List<Couple<String, List<Couple<Observation, Integer>>>> treasures = new ArrayList<>();
 
-    private static final int TICK_TIME = 60;
+    private static final int TICK_TIME = 300;
+    private int blocked_counter = 0;
+    private int random_tmp_steps = 0;
+
+    private static final int BUFFER_SIZE = 8;
+    private List<String> nodeBuffer = new ArrayList<>(BUFFER_SIZE);
 
 	/**
 	 *
@@ -69,6 +74,62 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 		this.list_agentNames=agentNames;
 		this.treasures=treasures;
 	}
+
+    private void tmpRandomMovement(List<Couple<String,List<Couple<Observation,Integer>>>> lobs){
+        String next_node = moveToNextNodeRandom(lobs);
+        System.out.println("This is random movement step: " + this.random_tmp_steps);
+
+        // Update buffer only if the agent moved and if the new node is not in the buffer
+        if (next_node != null && !this.nodeBuffer.contains(next_node)){
+
+            if (this.nodeBuffer.size() == this.BUFFER_SIZE){
+                this.nodeBuffer.remove(0);
+            }
+
+            this.nodeBuffer.add(next_node);
+        }
+        this.random_tmp_steps -= 1;
+    }
+
+    private String moveToNextNodeRandom(List<Couple<String,List<Couple<Observation,Integer>>>> lobs){
+        //Random move from the current position
+        Random r= new Random();
+        int moveId=1+r.nextInt(lobs.size()-1); //removing the current position from the list of target to accelerate the tests, but not necessary as to stay is an action
+        String next_node = lobs.get(moveId).getLeft();
+        String goal_node = next_node; // select the initial random by default if the following checks fail
+
+        if (!this.nodeBuffer.contains(next_node)){
+            // System.out.println("Selected node : " + next_node);
+            goal_node = next_node;
+        } else {
+            for (int i = 1; i < lobs.size(); i++) {
+                next_node = lobs.get(i).getLeft();
+                if (!this.nodeBuffer.contains(next_node)){
+                    // System.out.println("Selected node : " + i + " " + next_node);
+                    goal_node = next_node;
+                    break;
+                }
+            }
+        }
+
+        Boolean moved = ((AbstractDedaleAgent)this.myAgent).moveTo(goal_node);
+        Integer i = 1;
+        while (!moved && i < lobs.size()) {
+            goal_node = lobs.get(i).getLeft();
+            moved = ((AbstractDedaleAgent)this.myAgent).moveTo(goal_node);
+            i = i+1;
+            // If it enters this loop it means that the agent is blocked. Clearing the buffer will help him move more freely.
+            this.nodeBuffer.clear();
+        }
+
+        if (!moved) {
+            return null;
+            
+        }
+
+        // System.out.println("All nodes in the buffer: " + next_node);
+        return goal_node;
+    }
 
 	@Override
 	public void action() {
@@ -84,6 +145,11 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 		if (myPosition!=null){
 			//List of observable from the agent's current position
 			List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
+            
+            if (this.random_tmp_steps > 0){
+                tmpRandomMovement(lobs);
+                return;
+            }
 			//System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
 
 			/**
@@ -105,7 +171,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
                 System.out.println(this.myAgent.getLocalName()+" - I try to open the safe : " + treasure_observed + ", " +((AbstractDedaleAgent) this.myAgent).openLock(treasure_observed));
 
 				this.treasures.add(lobs.get(0));
-				System.out.println(this.myAgent.getLocalName()+ ":    "+this.treasures);
+				// System.out.println(this.myAgent.getLocalName()+ ":    "+this.treasures);
 			}
 
 			String nextNode=null;
@@ -207,7 +273,19 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 					}
 				}
 
-				((AbstractDedaleAgent)this.myAgent).moveTo(nextNode);
+				if (!((AbstractDedaleAgent)this.myAgent).moveTo(nextNode)){
+                    this.blocked_counter += 1;
+                    System.out.println("Blocked during: " + this.blocked_counter);
+                    if (this.blocked_counter > 5){
+                        System.out.println("I am too sad and blocked");
+                        this.blocked_counter = 0;
+                        this.random_tmp_steps = 10;
+
+                        // After 5 cycles blocked, Do random walk during 10 steps                    
+                    }
+                } else {
+                    this.blocked_counter = 0;
+                }
 			}
 
 		}
