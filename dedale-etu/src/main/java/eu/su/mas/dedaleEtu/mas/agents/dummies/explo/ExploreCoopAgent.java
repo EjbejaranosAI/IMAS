@@ -145,10 +145,15 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 
 			//Listen to a path request
 			ArrayList<String> points = (ArrayList<String>) ReceiveObjectMessage("SHARE-POINTS",ACLMessage.REQUEST);
-			ArrayList<List> TreasuresPath =new ArrayList<>();
-
+			List<String> TreasuresPath =new ArrayList<>();
+			List<String> temporalPath = new ArrayList<>();
+			Integer minSize = 500;
 			for (Integer i = 0; i < points.size()-1; i++ ) {
-				TreasuresPath.add(this.myMap.getShortestPath(points.get(i),points.get(i+1)));
+				temporalPath =this.myMap.getShortestPath(points.get(0),points.get(i+1));
+				if(minSize >= temporalPath.size()){
+					TreasuresPath = temporalPath;
+					minSize = temporalPath.size();
+				}
 			}
 			System.out.println("Path to treasures in the list: "+ TreasuresPath);
 
