@@ -251,9 +251,6 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 //						System.out.println("Mensajeeee! Recibido: " + sgreceived);
 						this.myMap.mergeMap(sgreceived);
 					}
-					//System.out.println("Mensajeeee! Recibido: " + sgreceived);
-					System.out.println(this.myAgent.getLocalName()+" -- received a graph from "+msgReceived.getSender().getLocalName());
-					this.myMap.mergeMap(sgreceived);
 				}
 
 				MessageTemplate msgTreasure=MessageTemplate.and(
