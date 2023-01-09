@@ -155,7 +155,116 @@ public class MapRepresentation implements Serializable {
 		}
 		return shortestPath;
 	}
+	/** The findAlternativePath function is an implementation of the A* search algorithm for finding the shortest
+	 * path between two nodes in a graph. It takes as input the IDs of the start node and the goal node, and returns
+	 * a list of nodes representing the shortest path from the start node to the goal node.
+	 *
+	 *
+	 * The function works by maintaining three data structures: the openSet, which contains the nodes \
+	 * that have been discovered but not yet fully explored, the closedSet, which contains the nodes that have
+	 * been fully explored, and the cameFrom map, which stores the preceding node in the path for each node.
+	 *****/
+	/**
+	public synchronized List<String> findAlternativePath(String idFrom, String idTo) {
+		Node start = g.getNode(idFrom);
+		Node goal = g.getNode(idTo);
 
+		Set<Node> closedSet = new HashSet<>();
+		Set<Node> openSet = new HashSet<>();
+		openSet.add(start);
+
+		Map<Node, Node> cameFrom = new HashMap<>();
+		Map<Node, Double> gScore = new HashMap<>();
+		gScore.put(start, 0.0);
+		Map<Node, Double> fScore = new HashMap<>();
+		fScore.put(start, heuristicCostEstimate(start, goal));
+
+		while (!openSet.isEmpty()) {
+			Node current = getLowestFScore(openSet, fScore);
+			if (current.equals(goal)) {
+				List<Node> path = reconstructPath(cameFrom, current);
+				List<String> alternativePath = new ArrayList<>();
+				for (Node node : path) {
+					alternativePath.add(node.getId());
+				}
+				return alternativePath;
+			}
+
+			openSet.remove(current);
+			closedSet.add(current);
+
+			for (Node neighbor : current.getNeighbors()) {
+				if (closedSet.contains(neighbor)) {
+					continue;
+				}
+
+				double tentativeGScore = gScore.get(current) + current.getDistanceTo(neighbor);
+				if (!openSet.contains(neighbor) || tentativeGScore < gScore.get(neighbor)) {
+					cameFrom.put(neighbor, current);
+					gScore.put(neighbor, tentativeGScore);
+					fScore.put(neighbor, gScore.get(neighbor) + heuristicCostEstimate(neighbor, goal));
+					if (!openSet.contains(neighbor)) {
+						openSet.add(neighbor);
+					}
+				}
+			}
+		}
+		return new ArrayList<>();
+	}
+
+
+	private Node getLowestFScore(Set<Node> openSet, Map<Node, Double> fScore) {
+		Node lowest = null;
+		for (Node node : openSet) {
+			if (lowest == null || fScore.get(node) < fScore.get(lowest)) {
+				lowest = node;
+			}
+		}
+		return lowest;
+	}
+
+	private double heuristicCostEstimate(Node start, Node goal) {
+		// Get the x and y coordinates of the start and goal nodes
+		double startX = start.getAttribute("x");
+		double startY = start.getAttribute("y");
+		double goalX = goal.getAttribute("x");
+		double goalY = goal.getAttribute("y");
+
+		// Calculate the Euclidean distance between the start and goal nodes
+		double distance = Math.sqrt(Math.pow(startX - goalX, 2) + Math.pow(startY - goalY, 2));
+
+		return distance;
+	}
+	private List<Node> reconstructPath(Map<Node, Node> cameFrom, Node current) {
+		List<Node> path = new ArrayList<>();
+		path.add(current);
+		while (cameFrom.containsKey(current)) {
+			current = cameFrom.get(current);
+			path.add(current);
+		}
+		Collections.reverse(path);
+		return path;
+
+	public List<String> getShortestPathToClosestOpenNode2(String myPosition) {
+		// 1) Get all openNodes
+		List<String> openNodes = getOpenNodes();
+
+		// 2) Select the closest one
+		List<Couple<String,Integer>> lc = openNodes.stream()
+				.map(on -> (getShortestPath(myPosition, on) != null)
+						? new Couple<String, Integer>(on, getShortestPath(myPosition, on).size())
+						: new Couple<String, Integer>(on, Integer.MAX_VALUE))
+				.collect(Collectors.toList());
+		Optional<Couple<String,Integer>> closest = lc.stream().min(Comparator.comparing(Couple::getRight));
+
+		// 3) Compute shorterPath
+		List<String> shortestPath = getShortestPath(myPosition, closest.get().getLeft());
+		if (shortestPath == null) {
+			shortestPath = findAlternativePath(myPosition, closest.get().getLeft());
+		}
+		return shortestPath;
+	}
+	*/
 	public List<String> getShortestPathToClosestOpenNode(String myPosition) {
 		//1) Get all openNodes
 		List<String> opennodes=getOpenNodes();
@@ -174,7 +283,13 @@ public class MapRepresentation implements Serializable {
 
 
 
-	public List<String> getOpenNodes(){
+
+
+
+
+
+
+		public List<String> getOpenNodes(){
 		return this.g.nodes()
 				.filter(x ->x .getAttribute("ui.class")==MapAttribute.open.toString())
 				.map(Node::getId)

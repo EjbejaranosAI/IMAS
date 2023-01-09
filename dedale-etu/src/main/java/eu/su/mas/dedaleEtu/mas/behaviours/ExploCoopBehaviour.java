@@ -31,8 +31,8 @@ import jade.lang.acl.UnreadableException;
  * This behaviour allows an agent to explore the environment and learn the associated topological map.
  * The algorithm is a pseudo - DFS computationally consuming because its not optimised at all.
  *
- * When all the nodes around him are visited, the agent randomly select an open node and go there to restart its dfs. 
- * This (non optimal) behaviour is done until all nodes are explored. 
+ * When all the nodes around him are visited, the agent randomly select an open node and go there to restart its dfs.
+ * This (non optimal) behaviour is done until all nodes are explored.
  *
  * Warning, this behaviour does not save the content of visited nodes, only the topology.
  * Warning, the sub-behaviour ShareMap periodically share the whole map
@@ -66,9 +66,6 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 		this.myMap=myMap;
 		this.list_agentNames=agentNames;
 		this.treasures=treasures;
-
-
-
 	}
 
 	@Override
@@ -92,7 +89,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 			 * Just added here to let you see what the agent is doing, otherwise he will be too quick
 			 */
 			try {
-				this.myAgent.doWait(60);
+				this.myAgent.doWait(100);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -125,7 +122,6 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 				//Explo finished
 				finished=true;
 				System.out.println(this.myAgent.getLocalName()+" - Exploration successufully done, behaviour removed.");
-
 				this.myAgent.addBehaviour(new ExploreCoopAgent.HelloPath((AbstractDedaleAgent) this.myAgent, this.myMap, this.treasures));
 			}else{
 				//4) select next move.
@@ -135,8 +131,10 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 					//no directly accessible openNode
 					//chose one, compute the path and take the first step.
 					nextNode=this.myMap.getShortestPathToClosestOpenNode(myPosition).get(0);//getShortestPath(myPosition,this.openNodes.get(0)).get(0);
-					System.out.println(this.myAgent.getLocalName()+"-- list= "+this.myMap.getOpenNodes()+"| nextNode: "+nextNode);
+					//System.out.println(this.myAgent.getLocalName()+"-- list= "+this.myMap.getOpenNodes()+"| nextNode: "+nextNode);
 				}else {
+					// return until the node that have other open nodes
+					System.out.println(this.myAgent.getLocalName()+"-- nextNode: "+nextNode);
 					//System.out.println("nextNode notNUll - "+this.myAgent.getLocalName()+"-- list= "+this.myMap.getOpenNodes()+"\n -- nextNode: "+nextNode);
 				}
 				//4) At each time step, the agent blindly send all its graph to its surrounding to illustrate how to share its knowledge (the topology currently) with the the others agents.
@@ -214,7 +212,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 							e.printStackTrace();
 						}
 
-						//					System.out.println("Mensajeeee Treasure! Recibido: " + tlreceived);
+						//System.out.println("---------------------->Mensajeeee Treasure! Recibido: " + tlreceived);
 						this.treasures.addAll(tlreceived);
 						Set<Couple<String, List<Couple<Observation, Integer>>>> set = new HashSet<>(this.treasures);
 						this.treasures.clear();
