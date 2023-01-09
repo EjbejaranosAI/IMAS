@@ -55,6 +55,8 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 	private List<Couple<String, List<Couple<Observation, Integer>>>> treasures = new ArrayList<>();
 
+    private static final int TICK_TIME = 60;
+
 	/**
 	 *
 	 * @param myagent
@@ -73,8 +75,8 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 		if(this.myMap==null) {
 			this.myMap= new MapRepresentation();
-			this.myAgent.addBehaviour(new ShareMapBehaviour(this.myAgent,500,this.myMap,list_agentNames));
-			this.myAgent.addBehaviour(new ShareTreasuresLocBehaviour(this.myAgent, 500, this.treasures,list_agentNames));
+			this.myAgent.addBehaviour(new ShareMapBehaviour(this.myAgent, TICK_TIME,this.myMap,list_agentNames));
+			this.myAgent.addBehaviour(new ShareTreasuresLocBehaviour(this.myAgent, TICK_TIME, this.treasures,list_agentNames));
 		}
 		//0) Retrieve the current position
 		String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
@@ -88,7 +90,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 			 * Just added here to let you see what the agent is doing, otherwise he will be too quick
 			 */
 			try {
-				this.myAgent.doWait(100);
+				this.myAgent.doWait(60);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -98,10 +100,14 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 			//2) get the surrounding nodes and, if not in closedNodes, add them to open nodes.
 			if (!lobs.get(0).getRight().isEmpty()){
+                Observation treasure_observed = lobs.get(0).getRight().get(0).getLeft();
+
+                System.out.println(this.myAgent.getLocalName()+" - I try to open the safe : " + treasure_observed + ", " +((AbstractDedaleAgent) this.myAgent).openLock(treasure_observed));
 
 				this.treasures.add(lobs.get(0));
 				System.out.println(this.myAgent.getLocalName()+ ":    "+this.treasures);
 			}
+
 			String nextNode=null;
 			Iterator<Couple<String, List<Couple<Observation, Integer>>>> iter=lobs.iterator();
 			while(iter.hasNext()){
@@ -133,7 +139,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 					//System.out.println(this.myAgent.getLocalName()+"-- list= "+this.myMap.getOpenNodes()+"| nextNode: "+nextNode);
 				}else {
 					// return until the node that have other open nodes
-					System.out.println(this.myAgent.getLocalName()+"-- nextNode: "+nextNode);
+					// System.out.println(this.myAgent.getLocalName()+"-- nextNode: "+nextNode);
 					//System.out.println("nextNode notNUll - "+this.myAgent.getLocalName()+"-- list= "+this.myMap.getOpenNodes()+"\n -- nextNode: "+nextNode);
 				}
 
@@ -197,7 +203,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 						Set<Couple<String, List<Couple<Observation, Integer>>>> set = new HashSet<>(this.treasures);
 						this.treasures.clear();
 						this.treasures.addAll((Collection<? extends Couple<String, List<Couple<Observation, Integer>>>>) set);
-						System.out.println(this.myAgent.getLocalName()+ "----- Merged treasures list: " + this.treasures);
+						// System.out.println(this.myAgent.getLocalName()+ "----- Merged treasures list: " + this.treasures);
 					}
 				}
 

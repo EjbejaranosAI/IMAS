@@ -82,7 +82,7 @@ class TankerBehaviour extends TickerBehaviour {
 	private List<String> nodeBuffer = new ArrayList<>(BUFFER_SIZE);
 
 	public TankerBehaviour(final AbstractDedaleAgent myagent) {
-		super(myagent, 600);
+		super(myagent, 60);
 	}
 
 	private String chooseNextNode(List<Couple<String, List<Couple<Observation, Integer>>>> lobs) {
@@ -288,26 +288,7 @@ class RandomTankerBehaviour extends TickerBehaviour{
 	private List<String> nodeBuffer = new ArrayList<>(BUFFER_SIZE);
 
 	public RandomTankerBehaviour (final AbstractDedaleAgent myagent) {
-		super(myagent, 600);
-	}
-
-	private String chooseNextNode(List<Couple<String,List<Couple<Observation,Integer>>>> lobs){
-		//Random move from the current position
-		Random r= new Random();
-		int moveId=1+r.nextInt(lobs.size()-1); //removing the current position from the list of target to accelerate the tests, but not necessary as to stay is an action
-		String next_node = lobs.get(moveId).getLeft();
-
-		if (!this.nodeBuffer.contains(next_node)){
-			return next_node;
-		} else {
-			for (int i = 1; i < lobs.size(); i++) {
-				next_node = lobs.get(i).getLeft();
-				if (!this.nodeBuffer.contains(next_node)){
-					return next_node;
-				}
-			}
-		}
-		return next_node;  // Even if all nodes are visited, it will eventually use one.
+		super(myagent, 60);
 	}
 
 	private String chooseNextNode(List<Couple<String,List<Couple<Observation,Integer>>>> lobs){
