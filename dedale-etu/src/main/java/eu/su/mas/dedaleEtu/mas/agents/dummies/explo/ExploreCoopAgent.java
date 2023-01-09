@@ -87,7 +87,6 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 		 ************************************************/
 
 		lb.add(new ExploCoopBehaviour(this,this.myMap,list_agentNames, treasures));
-//		lb.add(new HelloPrint(this));
 		/***
 		 * MANDATORY TO ALLOW YOUR AGENT TO BE DEPLOYED CORRECTLY
 		 */
@@ -109,7 +108,7 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 	 *
 	 **************************************/
 
-	public static class HelloPath extends TickerBehaviour {
+	public static class PathSharing extends TickerBehaviour {
 		/**
 		 * When an agent choose to move
 		 *
@@ -124,7 +123,7 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 		private ArrayList<String> DoneReceivers;
 
 
-		public HelloPath (final AbstractDedaleAgent myagent, MapRepresentation myMap, List<Couple<String, List<Couple<Observation, Integer>>>> treasures) {
+		public PathSharing (final AbstractDedaleAgent myagent, MapRepresentation myMap, List<Couple<String, List<Couple<Observation, Integer>>>> treasures) {
 			super(myagent,600);
 			this.myMap=myMap;
 			this.myAgent=myagent;
@@ -138,65 +137,23 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 
 		@Override
 		public void onTick() {
-			//Example to retrieve the current position
-			Set<Couple<String, List<Couple<Observation, Integer>>>> set = new HashSet<>(this.treasures);
-			this.treasures.clear();
-			this.treasures.addAll((Collection<? extends Couple<String, List<Couple<Observation, Integer>>>>) set);
 
+			//Handshake
+			ArrayList<String> greet = ReceiveStringMessage("HELLO");
+			ArrayList<String> name = new ArrayList<>(Arrays.asList(greet.get(1)));
+			SendStringMessage(name,"I'm Here","STOP");
 
-			// Pruebas de path, desde explorer position
-//			String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
-//			System.out.println(this.myAgent.getLocalName()+" HolaTothom");
-//			System.out.println("Treasures List: "+this.treasures);
-//			System.out.println("Current position: "+myPosition);
-//
-//			ArrayList<List> newPath=new ArrayList<>();
-//			newPath.add(this.myMap.getShortestPath(myPosition,this.treasures.get(0).getLeft()));
-//			for (Integer i = 0; i < (this.treasures.size()-1)/2; i++ ) {
-//				newPath.add(this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
-//				System.out.println("Path " + i +": "+ this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
-//			}
-//
-//			System.out.println("NewPath: "+newPath);
+			//Listen to a path request
+			ArrayList<String> points = (ArrayList<String>) ReceiveObjectMessage("SHARE-POINTS",ACLMessage.REQUEST);
+			ArrayList<List> TreasuresPath =new ArrayList<>();
 
-
-			if(!this.CoallParticipant.isEmpty()){
-				// Notify to stop, waiting the responses
-				// TODO Make DoneReceiver dynamic list
-				SendStringMessage(DoneReceivers,this.myAgent.getLocalName()+":Exploration finished, route plan done!","DONE");
-
-				// Listening to messages until list is finished, (waiting for agents names)
-				String NameReceived = ReceiveStringMessage("SHARE-NAME");
-
-				if (NameReceived != null) {
-					ArrayList<String> confirmationReceiver= new ArrayList<>(Arrays.asList(NameReceived));
-					this.DoneReceivers.remove(NameReceived);
-					if (NameReceived.contains("Tanker")){
-						boolean removed = CoallParticipant.remove("Tanker");
-						System.out.println("REMOVED: "+ removed);
-						if (removed){ //Removing the agent from the coalitions list
-							System.out.println("--------------------------Tanker included in the coalition");
-							SendStringMessage(confirmationReceiver, this.myAgent.getLocalName()+":Accepted member of coalition","SHARE-CONFI");
-						} else {
-							// Notify negation to enter the coalition
-							System.out.println("--------------------------Tanker negated in the coalition");
-							SendStringMessage(confirmationReceiver,"No place in this coalition for you!","SHARE-CONFI");
-						}
-					} else if (NameReceived.contains("Collector")) {
-						if (CoallParticipant.remove("Collector")){ //Removing the agent from the coalitions list
-							System.out.println("Collector included in the coalition");
-							SendStringMessage(confirmationReceiver, this.myAgent.getLocalName()+":Accepted member of coalition","SHARE-CONFI");
-						} else {
-							// Notify negation to enter the coalition
-							SendStringMessage(confirmationReceiver,"No place in this coalition for you!","SHARE-CONFI");
-						}
-					}
-				}
-			} else{
-				// Go to calculate the treasures path
-				this.myAgent.addBehaviour(new sendShortestPath((AbstractDedaleAgent) this.myAgent, this.myMap, this.treasures));
-				stop();
+			for (Integer i = 0; i < points.size()-1; i++ ) {
+				TreasuresPath.add(this.myMap.getShortestPath(points.get(i),points.get(i+1)));
 			}
+			System.out.println("Path to treasures in the list: "+ TreasuresPath);
+
+			//Send path to agent
+			SendObjectMessage(name, TreasuresPath,ACLMessage.INFORM);
 
 		}
 
@@ -221,7 +178,9 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 		 * 	           RECEIVING MESSAGES
 		 * @return message
 		 *******************************************************/
-		private String ReceiveStringMessage(String protocol) {
+
+
+		private ArrayList<String> ReceiveStringMessage(String protocol) {
 			MessageTemplate msgTemplate=MessageTemplate.and(
 					MessageTemplate.MatchProtocol(protocol),
 					MessageTemplate.MatchPerformative(ACLMessage.INFORM));
@@ -230,84 +189,46 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 			if (msgReceived!=null) {
 				String message = msgReceived.getContent();
 				System.out.println(this.myAgent.getLocalName() + " received the message --> " + message+" by: "+msgReceived.getSender().getName());
-				return message;
+				ArrayList<String> res =new ArrayList<>(Arrays.asList(message,msgReceived.getSender().getLocalName()));
+				return res;
 			}
 			return null;
 		}
 
-		/*private void CoalitionAcceptance(String msgagentName) {
-			ACLMessage Rmsg = new ACLMessage(ACLMessage.INFORM);
-			Rmsg.setProtocol("SHARE-TOPO");
-			Rmsg.setSender(this.myAgent.getAID());
-			ArrayList<String> receivers = new ArrayList<>(Arrays.asList(msgagentName));
-			for (String agentName : receivers) {
-				Rmsg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
-			}
-			Rmsg.setContent("No place in this coalition for you!");
-			System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ Rmsg.getContent()+" - To: "+ msgagentName);
-			((AbstractDedaleAgent)this.myAgent).sendMessage(Rmsg);
-		}*/
-
-//		@Override
-//		public boolean done() {
-//			System.out.println("Entering to DONE!!!!!!");
-//			return finished;
-//		}
-
-	}
-
-	private static class sendShortestPath extends TickerBehaviour {
-		/**
-		 * When an agent choose to move
-		 *
-		 */
-		private static final long serialVersionUID = 9088209402507795289L;
-
-		private final MapRepresentation myMap;
-
-		private final List<Couple<String, List<Couple<Observation, Integer>>>> treasures;
-
-		public sendShortestPath (final AbstractDedaleAgent myagent, MapRepresentation myMap, List<Couple<String, List<Couple<Observation, Integer>>>> treasures) {
-			super(myagent,600);
-			this.myMap = myMap;
-			this.treasures = treasures;
-		}
-
-		@Override
-		public void onTick() {
-			System.out.println("Entered to shortestPath");
-
-//			// Send message confirming an agent as part of the coallition
-//			ArrayList<String> receiversC = new ArrayList<>(Arrays.asList("Tanker1", "Tanker2"));
-//			SendStringMessage(receiversC, this.myAgent.getLocalName()+":Accepted member of coallition");
-
-			// Receive position of an agent in the coalition
-			String message = ReceiveStringMessage("SHARE-POS");
-
-			if (message!=null) {
-				if (message.contains("node53146546")){
-					String[] SpltMsg = message.split(":", 3);
-					System.out.println("splt var"+SpltMsg);
-					String AgName = SpltMsg[0];
-					String Pos = SpltMsg[2];
-					ArrayList<List> TreasuresPath =new ArrayList<>();
-					TreasuresPath.add(this.myMap.getShortestPath(Pos,this.treasures.get(0).getLeft()));
-					for (Integer i = 0; i < (this.treasures.size()-1)/2; i++ ) {
-						TreasuresPath.add(this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
-//						System.out.println("Path " + i +": "+ this.myMap.getShortestPath(this.treasures.get(i).getLeft(),this.treasures.get(i+1).getLeft()));
-					}
-					System.out.println("Path to treasures in the list: "+ TreasuresPath);
-
-					//Send path to the coalition agent
-					ArrayList<String> pathReceiver = new ArrayList<>(Arrays.asList(AgName));
-					SendObjectMessage(pathReceiver, TreasuresPath);
+		/*********************************************************
+		 * 	           RECEIVING OBJECTS
+		 * @return message
+		 *******************************************************/
+		private Object ReceiveObjectMessage(String protocol, Object performative) {
+			// Receive path from explorer
+			MessageTemplate msgTemplate = MessageTemplate.and(
+					MessageTemplate.MatchProtocol(protocol),
+					MessageTemplate.MatchPerformative((Integer) performative));
+			ACLMessage msgReceived = this.myAgent.receive(msgTemplate);
+			//					System.out.println("TankerBehaviour msgReceived: " + msgReceived);
+			ArrayList<List> paths = null;
+			if (msgReceived != null) {
+				//					System.out.println("TankerBehaviour msgReceived INDISE: " + msgReceived);
+				try {
+					paths = (ArrayList<List>) msgReceived.getContentObject();
+					System.out.println(this.myAgent.getLocalName() + " received the message --> " + paths);
+				} catch (UnreadableException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
+				return paths;
 			}
+			return null;
 		}
 
-		private void SendObjectMessage(ArrayList<String> Receivers, Object message) {
+		/*********************************************************
+		 * 	           SENDING OBJECTS
+		 * @return message
+		 *******************************************************/
+		private void SendObjectMessage(ArrayList<String> Receivers, Object message, Object performative) {
 			ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
 			msg.setProtocol("SHARE-PATH");
+			msg.setPerformative((Integer) performative);
 			msg.setSender(this.myAgent.getAID());
 			for (String agentName : Receivers) {
 				msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
@@ -323,32 +244,6 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 				throw new RuntimeException(e);
 			}
 			((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
-		}
-
-		private void SendStringMessage(ArrayList<String> Receivers, String message, String protocol) {
-			ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-			msg.setProtocol(protocol);
-			msg.setSender(this.myAgent.getAID());
-			for (String agentName : Receivers) {
-				msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
-			}
-			msg.setContent(message);
-			System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContent()+" - To: "+ Receivers);
-			((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
-		}
-
-		private String ReceiveStringMessage(String protocol) {
-			MessageTemplate msgTemplate=MessageTemplate.and(
-					MessageTemplate.MatchProtocol(protocol),
-					MessageTemplate.MatchPerformative(ACLMessage.INFORM));
-			ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
-
-			if (msgReceived!=null) {
-				String message = msgReceived.getContent();
-				System.out.println(this.myAgent.getLocalName() + " received the message --> " + message+" by: "+msgReceived.getSender().getName());
-				return message;
-			}
-			return null;
 		}
 	}
 }
