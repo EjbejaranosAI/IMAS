@@ -347,8 +347,8 @@ class RandomTankerBehaviour extends TickerBehaviour{
                 SendStringMessage(typereceiver,this.myAgent.getLocalName(),"SHARE-NAME");
 
                 // Go to tanker Behaviour
-                this.myAgent.addBehaviour(new TankerBehaviour((AbstractDedaleAgent) this.myAgent));
-                stop();
+                // this.myAgent.addBehaviour(new TankerBehaviour((AbstractDedaleAgent) this.myAgent));
+                // stop();
                 out = String.valueOf(true);
             }
         }

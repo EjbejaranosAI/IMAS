@@ -46,6 +46,8 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 	private boolean finished = false;
 
+	private boolean explored = false;
+
 	/**
 	 * Current knowledge of the agent regarding the environment
 	 */
@@ -77,7 +79,6 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
     private void tmpRandomMovement(List<Couple<String,List<Couple<Observation,Integer>>>> lobs){
         String next_node = moveToNextNodeRandom(lobs);
-        System.out.println("This is random movement step: " + this.random_tmp_steps);
 
         // Update buffer only if the agent moved and if the new node is not in the buffer
         if (next_node != null && !this.nodeBuffer.contains(next_node)){
@@ -189,11 +190,21 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 			}
 
 			//3) while openNodes is not empty, continues.
-			if (!this.myMap.hasOpenNode()){
+			if (!this.myMap.hasOpenNode() || explored){
 				//Explo finished
-				finished=true;
-				System.out.println(this.myAgent.getLocalName()+" - Exploration successufully done, behaviour removed.");
-				this.myAgent.addBehaviour(new ExploreCoopAgent.HelloPath((AbstractDedaleAgent) this.myAgent, this.myMap, this.treasures));
+				explored=true;
+				// System.out.println(this.myAgent.getLocalName()+" - Exploration successufully done, behaviour removed.");
+                nextNode = moveToNextNodeRandom(lobs);
+                if (nextNode != null && !this.nodeBuffer.contains(nextNode)){
+
+                    if (this.nodeBuffer.size() == this.BUFFER_SIZE){
+                        this.nodeBuffer.remove(0);
+                    }
+
+                    this.nodeBuffer.add(nextNode);
+                }
+                // TODO: Add this behaviour back somehow without stopping
+				// this.myAgent.addBehaviour(new ExploreCoopAgent.HelloPath((AbstractDedaleAgent) this.myAgent, this.myMap, this.treasures));
 			}else{
 				//4) select next move.
 				//4.1 If there exist one open node directly reachable, go for it,
@@ -273,9 +284,9 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 					}
 				}
 
-				if (!((AbstractDedaleAgent)this.myAgent).moveTo(nextNode)){
+				if (!explored && !((AbstractDedaleAgent)this.myAgent).moveTo(nextNode)){
                     this.blocked_counter += 1;
-                    System.out.println("Blocked during: " + this.blocked_counter);
+                    // System.out.println("Blocked during: " + this.blocked_counter);
                     if (this.blocked_counter > 5){
                         System.out.println("I am too sad and blocked");
                         this.blocked_counter = 0;
