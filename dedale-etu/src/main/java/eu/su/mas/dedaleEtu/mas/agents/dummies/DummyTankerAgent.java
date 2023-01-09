@@ -145,7 +145,7 @@ class RandomTankerBehaviour extends TickerBehaviour{
 	private static final long serialVersionUID = 9088209402507795289L;
 
 	public RandomTankerBehaviour (final AbstractDedaleAgent myagent) {
-		super(myagent, 60);
+		super(myagent, 200);
 	}
 
 	@Override

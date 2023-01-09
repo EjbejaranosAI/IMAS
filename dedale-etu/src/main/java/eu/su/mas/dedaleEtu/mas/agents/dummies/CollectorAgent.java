@@ -62,13 +62,13 @@ public class CollectorAgent extends AbstractDedaleAgent{
 	class CollectorBehaviour extends TickerBehaviour{
 		private static final long serialVersionUID = 9088209402507795289L;
 		private static final int BUFFER_SIZE = 8;
-        private static final int TICK_TIME = 50;
+        private static final int TICK_TIME = 200;
 
         private List<String> nodeBuffer = new ArrayList<>(BUFFER_SIZE);
         private HashMap<String, Integer> treasureQuant = new HashMap<String, Integer>();
         private HashMap<String, String> treasureType = new HashMap<String, String>();
 
-        private boolean on_mission = true;
+        private boolean on_mission = false;
         private boolean backing_up = false;
         private int backoff_wait = 0;
         private int mission_step = 0;
