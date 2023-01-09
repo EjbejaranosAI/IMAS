@@ -62,7 +62,7 @@ public class CollectorAgent extends AbstractDedaleAgent{
 	class CollectorBehaviour extends TickerBehaviour{
 		private static final long serialVersionUID = 9088209402507795289L;
 		private static final int BUFFER_SIZE = 8;
-        private static final int TICK_TIME = 200;
+        private static final int TICK_TIME = 60;
 
         private List<String> nodeBuffer = new ArrayList<>(BUFFER_SIZE);
         private HashMap<String, Integer> treasureQuant = new HashMap<String, Integer>();
@@ -419,7 +419,7 @@ public class CollectorAgent extends AbstractDedaleAgent{
 
                         // Try to unlock only if is the agent type of treasure
                         if (o.getLeft() == ((AbstractDedaleAgent) this.myAgent).getMyTreasureType()){
-                            Boolean unlock = ((AbstractDedaleAgent) this.myAgent).openLock(Observation.GOLD);
+                            Boolean unlock = ((AbstractDedaleAgent) this.myAgent).openLock(o.getLeft());
                             if (unlock) {
                                 System.out.println(this.myAgent.getLocalName()+" - The agent unlocked : " + myPosition);
                             }

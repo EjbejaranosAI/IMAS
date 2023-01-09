@@ -102,13 +102,13 @@ class TankerBehaviour extends TickerBehaviour {
         String goal_node = next_node; // select the initial random by default if the following checks fail
 
         if (!this.nodeBuffer.contains(next_node)){
-            System.out.println("Selected node : " + next_node);
+            // System.out.println("Selected node : " + next_node);
             goal_node = next_node;
         } else {
             for (int i = 1; i < lobs.size(); i++) {
                 next_node = lobs.get(i).getLeft();
                 if (!this.nodeBuffer.contains(next_node)){
-                    System.out.println("Selected node : " + i + " " + next_node);
+                    // System.out.println("Selected node : " + i + " " + next_node);
                     goal_node = next_node;
                     break;
                 }
@@ -130,7 +130,6 @@ class TankerBehaviour extends TickerBehaviour {
             
         }
 
-        System.out.println("All nodes in the buffer: " + next_node);
         return goal_node;
 	}
 
@@ -293,12 +292,12 @@ class RandomTankerBehaviour extends TickerBehaviour{
 	 *
 	 */
 	private static final long serialVersionUID = 9088209402507795289L;
-	private static final int BUFFER_SIZE = 80;
+	private static final int BUFFER_SIZE = 8;
 
 	private List<String> nodeBuffer = new ArrayList<>(BUFFER_SIZE);
 
 	public RandomTankerBehaviour (final AbstractDedaleAgent myagent) {
-		super(myagent, 200);
+		super(myagent, 60);
 	}
 
 	private String chooseNextNode(List<Couple<String,List<Couple<Observation,Integer>>>> lobs){
@@ -309,13 +308,13 @@ class RandomTankerBehaviour extends TickerBehaviour{
         String goal_node = next_node; // select the initial random by default if the following checks fail
 
         if (!this.nodeBuffer.contains(next_node)){
-            System.out.println("Selected node : " + next_node);
+            // System.out.println("Selected node : " + next_node);
             goal_node = next_node;
         } else {
             for (int i = 1; i < lobs.size(); i++) {
                 next_node = lobs.get(i).getLeft();
                 if (!this.nodeBuffer.contains(next_node)){
-                    System.out.println("Selected node : " + i + " " + next_node);
+                    // System.out.println("Selected node : " + i + " " + next_node);
                     goal_node = next_node;
                     break;
                 }
@@ -337,7 +336,6 @@ class RandomTankerBehaviour extends TickerBehaviour{
             
         }
 
-        System.out.println("All nodes in the buffer: " + next_node);
         return goal_node;
 	}
 
@@ -373,7 +371,7 @@ class RandomTankerBehaviour extends TickerBehaviour{
 				List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
 				//Random move from the current position
 				String next_node = chooseNextNode(lobs);
-                System.out.println(this.myAgent.getLocalName() + " - " + next_node);
+                // System.out.println(this.myAgent.getLocalName() + " - " + next_node);
 				//The move action (if any) should be the last action of your behaviour
 				// ((AbstractDedaleAgent)this.myAgent).moveTo(next_node);
 				if (next_node != null && !this.nodeBuffer.contains(next_node)){
