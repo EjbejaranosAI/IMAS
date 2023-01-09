@@ -162,26 +162,32 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 			if(!this.CoallParticipant.isEmpty()){
 				// Notify to stop, waiting the responses
 				// TODO Make DoneReceiver dynamic list
-				SendStringMessage(DoneReceivers,this.myAgent.getLocalName()+":Exploration finished, route plan done!");
+				SendStringMessage(DoneReceivers,this.myAgent.getLocalName()+":Exploration finished, route plan done!","DONE");
 
 				// Listening to messages until list is finished, (waiting for agents names)
-				String NameReceived = ReceiveStringMessage();
+				String NameReceived = ReceiveStringMessage("SHARE-NAME");
 
 				if (NameReceived != null) {
 					ArrayList<String> confirmationReceiver= new ArrayList<>(Arrays.asList(NameReceived));
+					this.DoneReceivers.remove(NameReceived);
 					if (NameReceived.contains("Tanker")){
-						if (CoallParticipant.remove("Tanker")){ //Removing the agent from the coalitions list
+						boolean removed = CoallParticipant.remove("Tanker");
+						System.out.println("REMOVED: "+ removed);
+						if (removed){ //Removing the agent from the coalitions list
 							System.out.println("--------------------------Tanker included in the coalition");
+							SendStringMessage(confirmationReceiver, this.myAgent.getLocalName()+":Accepted member of coalition","SHARE-CONFI");
 						} else {
 							// Notify negation to enter the coalition
-							SendStringMessage(confirmationReceiver,"No place in this coalition for you!");
+							System.out.println("--------------------------Tanker negated in the coalition");
+							SendStringMessage(confirmationReceiver,"No place in this coalition for you!","SHARE-CONFI");
 						}
 					} else if (NameReceived.contains("Collector")) {
 						if (CoallParticipant.remove("Collector")){ //Removing the agent from the coalitions list
 							System.out.println("Collector included in the coalition");
+							SendStringMessage(confirmationReceiver, this.myAgent.getLocalName()+":Accepted member of coalition","SHARE-CONFI");
 						} else {
 							// Notify negation to enter the coalition
-							SendStringMessage(confirmationReceiver,"No place in this coalition for you!");
+							SendStringMessage(confirmationReceiver,"No place in this coalition for you!","SHARE-CONFI");
 						}
 					}
 				}
@@ -198,9 +204,9 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 		 *    @param Receivers
 		 *    @param message
 		 **********************************************************/
-		private void SendStringMessage(ArrayList<String> Receivers, String message) {
+		private void SendStringMessage(ArrayList<String> Receivers, String message, String protocol) {
 			ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-			msg.setProtocol("SHARE-TOPO");
+			msg.setProtocol(protocol);
 			msg.setSender(this.myAgent.getAID());
 			for (String agentName : Receivers) {
 				msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
@@ -214,21 +220,21 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 		 * 	           RECEIVING MESSAGES
 		 * @return message
 		 *******************************************************/
-		private String ReceiveStringMessage() {
+		private String ReceiveStringMessage(String protocol) {
 			MessageTemplate msgTemplate=MessageTemplate.and(
-					MessageTemplate.MatchProtocol("SHARE-TOPO"),
+					MessageTemplate.MatchProtocol(protocol),
 					MessageTemplate.MatchPerformative(ACLMessage.INFORM));
-			ACLMessage msgStringReceived=this.myAgent.receive(msgTemplate);
+			ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
 
-			if (msgStringReceived!=null) {
-				String message = msgStringReceived.getContent();
-				System.out.println(this.myAgent.getLocalName() + " received the message --> " + message+" by: "+msgStringReceived.getSender().getName());
+			if (msgReceived!=null) {
+				String message = msgReceived.getContent();
+				System.out.println(this.myAgent.getLocalName() + " received the message --> " + message+" by: "+msgReceived.getSender().getName());
 				return message;
 			}
 			return null;
 		}
 
-		private void CoalitionAcceptance(String msgagentName) {
+		/*private void CoalitionAcceptance(String msgagentName) {
 			ACLMessage Rmsg = new ACLMessage(ACLMessage.INFORM);
 			Rmsg.setProtocol("SHARE-TOPO");
 			Rmsg.setSender(this.myAgent.getAID());
@@ -239,7 +245,7 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 			Rmsg.setContent("No place in this coalition for you!");
 			System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ Rmsg.getContent()+" - To: "+ msgagentName);
 			((AbstractDedaleAgent)this.myAgent).sendMessage(Rmsg);
-		}
+		}*/
 
 //		@Override
 //		public boolean done() {
@@ -270,16 +276,15 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 		public void onTick() {
 			System.out.println("Entered to shortestPath");
 
-			// Send message confirming an agent as part of the coallition
-			ArrayList<String> receiversC = new ArrayList<>(Arrays.asList("Tanker1", "Tanker2"));
-			SendStringMessage(receiversC, this.myAgent.getLocalName()+":Accepted member of coallition");
+//			// Send message confirming an agent as part of the coallition
+//			ArrayList<String> receiversC = new ArrayList<>(Arrays.asList("Tanker1", "Tanker2"));
+//			SendStringMessage(receiversC, this.myAgent.getLocalName()+":Accepted member of coallition");
 
 			// Receive position of an agent in the coalition
-			String message = ReceiveStringMessage();
+			String message = ReceiveStringMessage("SHARE-POS");
 
 			if (message!=null) {
-				System.out.println("Busca la palabra node:"+message.contains("node"));
-				if (message.contains("node")){
+				if (message.contains("node53146546")){
 					String[] SpltMsg = message.split(":", 3);
 					System.out.println("splt var"+SpltMsg);
 					String AgName = SpltMsg[0];
@@ -295,34 +300,13 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 					//Send path to the coalition agent
 					ArrayList<String> pathReceiver = new ArrayList<>(Arrays.asList(AgName));
 					SendObjectMessage(pathReceiver, TreasuresPath);
-//					ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-//					msg.setProtocol("SHARE-TOPO");
-//					msg.setSender(this.myAgent.getAID());
-//
-//					for (String agentName : receivers) {
-//						msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
-//					}
-//
-//					try {
-//						msg.setContentObject((Serializable) TreasuresPath);
-//					} catch (IOException e) {
-//						throw new RuntimeException(e);
-//					}
-//					try {
-//						System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContentObject());
-//					} catch (UnreadableException e) {
-//						throw new RuntimeException(e);
-//					}
-//					System.out.println("Sent Message Explo path: "+ msg);
-//					((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
-
 				}
 			}
 		}
 
 		private void SendObjectMessage(ArrayList<String> Receivers, Object message) {
 			ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-			msg.setProtocol("SHARE-TOPO");
+			msg.setProtocol("SHARE-PATH");
 			msg.setSender(this.myAgent.getAID());
 			for (String agentName : Receivers) {
 				msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
@@ -340,9 +324,9 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 			((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
 		}
 
-		private void SendStringMessage(ArrayList<String> Receivers, String message) {
+		private void SendStringMessage(ArrayList<String> Receivers, String message, String protocol) {
 			ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-			msg.setProtocol("SHARE-TOPO");
+			msg.setProtocol(protocol);
 			msg.setSender(this.myAgent.getAID());
 			for (String agentName : Receivers) {
 				msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
@@ -352,15 +336,15 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 			((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
 		}
 
-		private String ReceiveStringMessage() {
+		private String ReceiveStringMessage(String protocol) {
 			MessageTemplate msgTemplate=MessageTemplate.and(
-					MessageTemplate.MatchProtocol("SHARE-TOPO"),
+					MessageTemplate.MatchProtocol(protocol),
 					MessageTemplate.MatchPerformative(ACLMessage.INFORM));
-			ACLMessage msgStringReceived=this.myAgent.receive(msgTemplate);
+			ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
 
-			if (msgStringReceived!=null) {
-				String message = msgStringReceived.getContent();
-				System.out.println(this.myAgent.getLocalName() + " received the message --> " + message+" by: "+msgStringReceived.getSender().getName());
+			if (msgReceived!=null) {
+				String message = msgReceived.getContent();
+				System.out.println(this.myAgent.getLocalName() + " received the message --> " + message+" by: "+msgReceived.getSender().getName());
 				return message;
 			}
 			return null;
