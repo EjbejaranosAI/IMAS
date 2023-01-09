@@ -62,9 +62,10 @@ public class CollectorAgent extends AbstractDedaleAgent{
 	class CollectorBehaviour extends TickerBehaviour{
 		private static final long serialVersionUID = 9088209402507795289L;
 		private static final int BUFFER_SIZE = 8;
-        private static final int TICK_TIME = 60;
+        private static final int TICK_TIME = 300;
 
         private List<String> nodeBuffer = new ArrayList<>(BUFFER_SIZE);
+        private List<String> potentialTreasures = new ArrayList<>();
         private HashMap<String, Integer> treasureQuant = new HashMap<String, Integer>();
         private HashMap<String, String> treasureType = new HashMap<String, String>();
 
@@ -124,6 +125,47 @@ public class CollectorAgent extends AbstractDedaleAgent{
                remaining.add(this.mission_path.get(i));
             }
             return remaining;
+        }
+
+        private List<String> getPotentialTreasures(){
+            List<String> treasures = new ArrayList<>();
+            for (HashMap.Entry<String, String> node : this.treasureType.entrySet()) {
+               treasures.add(node.getKey());
+            }
+            return treasures;
+        }
+
+        private void requestExplorerHelp(){
+            ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+            msg.setSender(this.myAgent.getAID());
+			List<String> receivers = new ArrayList<>(Arrays.asList("Explo1", "Explo2", "Explo3"));
+            for (String agentName : receivers) {
+                msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
+            }
+            System.out.println("Asking for help");
+			msg.setContent("NeedHelp");
+            msg.setConversationId("RequestHelp");
+			((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
+
+        }
+
+        private void sendTreasureRequest(String current_node){
+            ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+            msg.setSender(this.myAgent.getAID());
+			List<String> receivers = new ArrayList<>(Arrays.asList("Explo1", "Explo2", "Explo3"));
+            List<String> treasures = getPotentialTreasures();
+            treasures.add(0, current_node);
+            System.out.println(treasures);
+            for (String agentName : receivers) {
+                msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
+            }
+            try {
+				msg.setContentObject((Serializable) treasures);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+            msg.setConversationId("RequestPath");
+			((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
         }
 
         private void sendBlockingInfo(){
@@ -498,6 +540,12 @@ public class CollectorAgent extends AbstractDedaleAgent{
                 // Before iteration ends, share and merge TreasureInfo with nearby agents
                 shareTreasureInfo();
                 mergeTreasureInfo();
+
+                // Ask for help to explorers if they are nearby and there is info to be sent
+                if (!this.treasureQuant.isEmpty()){
+                    sendTreasureRequest(lobs.get(0).getLeft());
+                    requestExplorerHelp();
+                }
 
 			}
 
