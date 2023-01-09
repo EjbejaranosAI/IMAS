@@ -76,43 +76,45 @@ public class CollectorAgent extends AbstractDedaleAgent{
         private int conflict_counter = 0; // Count how many iterations we spend blocked. If reached limit, leave mission.
         private List<String> conflict_path = new ArrayList<>();
 
-        private List<String> mission_path = new ArrayList<>(Arrays.asList(
-            "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-            "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-            "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-            "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-            "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-            "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-            "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-            "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-            "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-            "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-            "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
-            "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0"
-        ));
+        private List<String> mission_path = new ArrayList<>(Arrays.asList("-116657", "-116656", "-116655", "-116654", "-116653", "-116652", "-116071", "-121367", "-121366", "-121365", "-121364", "-121363", "-121362", "-121361", "-121360", "-121359", "-121358", "-117834"));
+        // private List<String> mission_path = new ArrayList<>(Arrays.asList(
+        //     "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
+        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
+        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
+        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
+        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
+        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
+        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
+        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
+        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
+        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
+        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0",
+        //     "0_1", "0_2", "0_3", "0_4", "1_4", "2_4", "3_4", "4_4", "4_3", "4_2", "4_1", "4_0", "3_0","2_0","1_0","0_0"
+        // ));
 
 
 		public CollectorBehaviour (final AbstractDedaleAgent myagent) {
 			super(myagent, TICK_TIME);
             // TODO: remove this. Debugging purposes
             if (this.myAgent.getLocalName().toString().contains("2")){
-                this.mission_path = new ArrayList<>(Arrays.asList(
-                    "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                    "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                    "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                    "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                    "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4",
-                    "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4",
-                    "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                    "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                    "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                    "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4",
-                    "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                    "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                    "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                    "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
-                    "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4"
-                ));
+                this.mission_path = new ArrayList<>(Arrays.asList("-117834", "-121358", "-121359", "-121360", "-121361", "-121362", "-121363", "-121364", "-121365", "-121366", "-121367", "-116071", "-116652", "-116653", "-116654", "-116655", "-116656", "-116657"));
+                // this.mission_path = new ArrayList<>(Arrays.asList(
+                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
+                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
+                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
+                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
+                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4",
+                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4",
+                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
+                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
+                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
+                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4",
+                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
+                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
+                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
+                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4", 
+                //     "0_4", "0_3", "0_2", "0_1", "0_0", "1_0", "2_0", "3_0", "4_0", "4_1", "4_2", "4_3", "4_4", "3_4", "2_4", "1_4"
+                // ));
             }
 		}
 
@@ -203,20 +205,25 @@ public class CollectorAgent extends AbstractDedaleAgent{
                     this.conflict_counter = 0;
                     this.backing_up = false;
                     this.conflict_node = null;
-                    this.mission_step -= 1;
+                    if (this.mission_step > 1){
+                        this.mission_step -= 1;
+                    } else {
+                        // Add nodes if we are in the beginning of the mission path
+                        this.mission_path.add(0, lobs.get(0).getLeft());
+                    }
                     this.backoff_wait = 3; // Wait two cycles to let the other agent pass
                     System.out.println("Som uns cracks! Ho hem solucionat anem cap al node " + node + ". Next step will be to go back at: " + this.mission_path.get(this.mission_step));
                     return node;
                 }
             }
-            System.out.println("I couldnt find any escape");
+            // System.out.println("I couldnt find any escape");
 
             // If all available nodes conflict: go back
             String prev_node = null;
             Boolean moved = false;
 
             // If no more mission path to backtrace, just move back where you can
-            if (this.mission_step == 0){
+            if (this.mission_step == 1){
                 for (int j = 1; j < lobs.size(); j++) {
                     String node = lobs.get(j).getLeft();
 			        if (((AbstractDedaleAgent)this.myAgent).moveTo(node)){
@@ -226,16 +233,16 @@ public class CollectorAgent extends AbstractDedaleAgent{
                     }
                 }
             } else {
-                prev_node = this.mission_path.get(this.mission_step-1);
-                System.out.println(this.myAgent.getLocalName() + " ------ current mission step : " + this.mission_step + " trying to go back one step: " + this.mission_path.get(this.mission_step-1) + " current node: " + lobs.get(0));
+                prev_node = this.mission_path.get(this.mission_step-2);
+                // System.out.println(this.myAgent.getLocalName() + " ------ current mission step : " + this.mission_step + " trying to go back one step: " + this.mission_path.get(this.mission_step-1) + " current node: " + lobs.get(0));
 			    moved = ((AbstractDedaleAgent)this.myAgent).moveTo(prev_node);
-                System.out.println("moved to " + prev_node + "? " + moved);
+                // System.out.println("moved to " + prev_node + "? " + moved);
             }
 
             if (moved) {
-                System.out.println("I could move back! " + prev_node);
+                // System.out.println("I could move back! " + prev_node);
                 this.conflict_node = lobs.get(0).getLeft(); // Setting the node we moved from as the current conflict node
-                if (this.mission_step == 0){
+                if (this.mission_step == 1){
                     // We reached end of path. Time to add extra nodes to the mission
                     this.mission_path.add(0, prev_node);
                 } else {
@@ -392,11 +399,12 @@ public class CollectorAgent extends AbstractDedaleAgent{
 			if (myPosition!=""){
 				List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
 				// System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
+				// System.out.println(this.myAgent.getLocalName()+" -- at: "+myPosition);
 				
 				//list of observations associated to the currentPosition
 				List<Couple<Observation,Integer>> lObservations= lobs.get(0).getRight();
                 if (this.mission_path != null){
-                    System.out.println(this.myAgent.getLocalName() + " ------ current mission step : " + this.mission_step + " next node to follow: " + this.mission_path.get(this.mission_step) + " current node: " + lobs.get(0));
+                    // System.out.println(this.myAgent.getLocalName() + " ------ current mission step : " + this.mission_step + " next node to follow: " + this.mission_path.get(this.mission_step) + " current node: " + lobs.get(0));
                 }
 
 				//example related to the use of the backpack for the treasure hunt
