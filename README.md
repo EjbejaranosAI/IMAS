@@ -57,6 +57,10 @@ This demo shows the general picture of how all agents combined behave in a real 
 
 https://user-images.githubusercontent.com/48654069/211533953-f39a0edf-bcde-422d-ba9b-56016bc33dda.mp4
 
+After some iterations, the agents are able to collect all the treasures present in the map. It would look like the following:
+
+![](img/rio_done.png)
+
 
 #### Backoff mechanism of collectors
 This demo demonstrates how collectors can backoff when they collide between them during a mission. Since they cannot improvise (no map knowledge), one of them needs to backtrack his path until he finds a node of escape and allow that way to the other collector to move on in his mission.
