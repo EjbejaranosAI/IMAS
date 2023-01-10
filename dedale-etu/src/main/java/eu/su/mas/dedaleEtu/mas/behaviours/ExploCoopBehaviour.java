@@ -65,6 +65,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
     private static final int BUFFER_SIZE = 8;
     private List<String> nodeBuffer = new ArrayList<>(BUFFER_SIZE);
 
+
 	/**
 	 *
 	 * @param myagent
@@ -136,7 +137,6 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 	@Override
 	public void action() {
-
 
 		if(this.myMap==null) {
 			this.myMap= new MapRepresentation();

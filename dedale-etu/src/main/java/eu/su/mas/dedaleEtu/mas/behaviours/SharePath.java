@@ -68,8 +68,7 @@ public class SharePath extends TickerBehaviour {
             if (!TreasuresPath.isEmpty()){
                 SendObjectMessage(this.last_sender, TreasuresPath,ACLMessage.INFORM);
             }
-        }
-
+        } 
     }
 
     /**********************************************************

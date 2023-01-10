@@ -80,7 +80,7 @@ public class CollectorAgent extends AbstractDedaleAgent{
         private List<String> conflict_path = new ArrayList<>();
 
         private boolean stop_for_help = false;
-        private int stop_patiente = 0;
+        private int stop_patience = 0;
 
         private List<String> mission_path = new ArrayList<>(Arrays.asList("-116657", "-116656", "-116655", "-116654", "-116653", "-116652", "-116071", "-121367", "-121366", "-121365", "-121364", "-121363", "-121362", "-121361", "-121360", "-121359", "-121358", "-117834"));
 
@@ -123,11 +123,11 @@ public class CollectorAgent extends AbstractDedaleAgent{
 			    List<String> mission;
 				try {
 					mission = (List<String>) msgReceived.getContentObject();
-                    System.out.println(this.myAgent.getLocalName() + " - Got the mission: " + mission);
+                    System.out.println(this.myAgent.getLocalName() + " - Got a mission! Starting it..");
 
                     this.mission_path = mission;
                     this.stop_for_help = false;
-                    this.stop_patiente = 0;
+                    this.stop_patience = 0;
                     this.on_mission = true;
 
 				} catch (UnreadableException e) {
@@ -144,7 +144,7 @@ public class CollectorAgent extends AbstractDedaleAgent{
 
             if (msgReceived!=null) {
                 this.stop_for_help = true;
-                this.stop_patiente = 4;
+                this.stop_patience = 4;
                 return true;
             }
             return false;
@@ -167,7 +167,6 @@ public class CollectorAgent extends AbstractDedaleAgent{
 			List<String> receivers = new ArrayList<>(Arrays.asList("Explo1", "Explo2", "Explo3"));
             List<String> request_nodes = new ArrayList<>(this.potentialTreasures);
             request_nodes.add(0, current_node);
-            System.out.println(request_nodes);
 
             ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
             msg.setSender(this.myAgent.getAID());
@@ -247,13 +246,12 @@ public class CollectorAgent extends AbstractDedaleAgent{
                 // if after 10 retries still blocked, leave mission
                 this.on_mission = false;
                 this.conflict_counter = 0; 
-                System.out.println("Im tired of this shit..");
+                System.out.println(this.myAgent.getLocalName() + " - Blocked for too long. Abandoning mission...");
             }
             return;
         }
 
         private String backOff(List<Couple<String,List<Couple<Observation,Integer>>>> lobs){
-            // System.out.println(this.myAgent.getLocalName() + " ------ current mission step : " + this.mission_step + " next node to follow: " + this.mission_path.get(this.mission_step) + " current node: " + lobs.get(0));
 
             // Check if there is any node that does not match the conflict path
             for (int i = 1; i < lobs.size(); i++) {
@@ -270,11 +268,10 @@ public class CollectorAgent extends AbstractDedaleAgent{
                         this.mission_path.add(0, lobs.get(0).getLeft());
                     }
                     this.backoff_wait = 3; // Wait two cycles to let the other agent pass
-                    System.out.println("Som uns cracks! Ho hem solucionat anem cap al node " + node + ". Next step will be to go back at: " + this.mission_path.get(this.mission_step));
+                    System.out.println(this.myAgent.getLocalName() + " - I successfully backed off! Resuming mission now.");
                     return node;
                 }
             }
-            // System.out.println("I couldnt find any escape");
 
             // If all available nodes conflict: go back
             String prev_node = null;
@@ -292,19 +289,15 @@ public class CollectorAgent extends AbstractDedaleAgent{
                 }
             } else {
                 prev_node = this.mission_path.get(this.mission_step-2);
-                // System.out.println(this.myAgent.getLocalName() + " ------ current mission step : " + this.mission_step + " trying to go back one step: " + this.mission_path.get(this.mission_step-1) + " current node: " + lobs.get(0));
 			    moved = ((AbstractDedaleAgent)this.myAgent).moveTo(prev_node);
-                // System.out.println("moved to " + prev_node + "? " + moved);
             }
 
             if (moved) {
-                // System.out.println("I could move back! " + prev_node);
                 this.conflict_node = lobs.get(0).getLeft(); // Setting the node we moved from as the current conflict node
                 if (this.mission_step == 1){
                     // We reached end of path. Time to add extra nodes to the mission
                     this.mission_path.add(0, prev_node);
                 } else {
-                    System.out.println("Decreased the mission step!");
                     this.mission_step -= 1;
                 }
             }
@@ -337,7 +330,7 @@ public class CollectorAgent extends AbstractDedaleAgent{
             }
             this.mission_step += 1;
             if (this.mission_step == mission_path.size()){
-                System.out.println(this.myAgent.getLocalName() + " -- Finished path: final node was a treasure.");
+                System.out.println(this.myAgent.getLocalName() + " -- Finished mission: final node was a treasure :)");
                 this.on_mission = false;
                 this.mission_step = 0;
                 this.mission_path = null;
@@ -354,13 +347,11 @@ public class CollectorAgent extends AbstractDedaleAgent{
             String goal_node = next_node; // select the initial random by default if the following checks fail
 
             if (!this.nodeBuffer.contains(next_node)){
-				// System.out.println("Selected node : " + next_node);
                 goal_node = next_node;
             } else {
                 for (int i = 1; i < lobs.size(); i++) {
                     next_node = lobs.get(i).getLeft();
                     if (!this.nodeBuffer.contains(next_node)){
-						// System.out.println("Selected node : " + i + " " + next_node);
                         goal_node = next_node;
                         break;
                     }
@@ -381,8 +372,6 @@ public class CollectorAgent extends AbstractDedaleAgent{
                 return null;
                 
             }
-
-			// System.out.println("All nodes in the buffer: " + next_node);
             return goal_node;
         }
 
@@ -456,7 +445,7 @@ public class CollectorAgent extends AbstractDedaleAgent{
 					}
                 }
                 if (updated){
-                    System.out.println(this.myAgent.getLocalName() + " merged treasure list from " + msgReceived.getSender().getLocalName());
+                    // System.out.println(this.myAgent.getLocalName() + " merged treasure list from " + msgReceived.getSender().getLocalName());
                 }
             }
         }
@@ -468,9 +457,9 @@ public class CollectorAgent extends AbstractDedaleAgent{
                 this.backoff_wait -= 1;
                 return;
             }
-            if (this.stop_patiente > 0){
-                this.stop_patiente -= 1;
-            }else if (this.stop_patiente == 0){
+            if (this.stop_patience > 0){
+                this.stop_patience -= 1;
+            }else if (this.stop_patience == 0){
                 this.stop_for_help = false;
             }
 			//Example to retrieve the current position
@@ -478,44 +467,33 @@ public class CollectorAgent extends AbstractDedaleAgent{
             this.current_position = myPosition;
 
             if (this.stop_for_help){
-                System.out.println(this.myAgent.getLocalName() + "Stopped waiting at " + myPosition);
+                // System.out.println(this.myAgent.getLocalName() + "Stopped waiting at " + myPosition);
             }
 
 
 			if (myPosition!=""){
 				List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
-				// System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
-				// System.out.println(this.myAgent.getLocalName()+" -- at: "+myPosition);
 				
 				//list of observations associated to the currentPosition
 				List<Couple<Observation,Integer>> lObservations= lobs.get(0).getRight();
-                if (this.mission_path != null){
-                    // System.out.println(this.myAgent.getLocalName() + " ------ current mission step : " + this.mission_step + " next node to follow: " + this.mission_path.get(this.mission_step) + " current node: " + lobs.get(0));
-                }
 
 				//example related to the use of the backpack for the treasure hunt
-				Boolean b=false;
 				for(Couple<Observation,Integer> o:lObservations){
 					switch (o.getLeft()) {
 					case DIAMOND:case GOLD:
 
-                        // System.out.println("Treasure history: " + this.treasureType + ", " + this.treasureQuant);
-
-						// System.out.println(this.myAgent.getLocalName()+" - Value of the treasure on the current position: "+o.getLeft() +": "+ o.getRight());
 
                         // Try to unlock only if is the agent type of treasure
                         if (o.getLeft() == ((AbstractDedaleAgent) this.myAgent).getMyTreasureType()){
                             Boolean unlock = ((AbstractDedaleAgent) this.myAgent).openLock(o.getLeft());
                             if (unlock) {
-                                System.out.println(this.myAgent.getLocalName()+" - The agent unlocked : " + myPosition);
+                                // System.out.println(this.myAgent.getLocalName()+" - The agent unlocked : " + myPosition);
                             }
                         }
 
                         int grabbed = ((AbstractDedaleAgent) this.myAgent).pick();
                         if (grabbed > 0) {
-                            System.out.println(this.myAgent.getLocalName()+" - The agent grabbed :"+ grabbed);
-                            System.out.println(this.myAgent.getLocalName()+" - the remaining backpack capacity is: "+ ((AbstractDedaleAgent) this.myAgent).getBackPackFreeSpace());
-						    b=true;
+                            System.out.println(this.myAgent.getLocalName()+" - The agent grabbed: "+ grabbed + " of " + o.getLeft() + " at " + myPosition);
                         }
 
                         // Add treasure to list if new. Do it after picking to avoid having outdated info
@@ -532,12 +510,6 @@ public class CollectorAgent extends AbstractDedaleAgent{
 					default:
 						break;
 					}
-				}
-
-				//If the agent picked (part of) the treasure
-				if (b){
-					List<Couple<String,List<Couple<Observation,Integer>>>> lobs2=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
-					System.out.println("State of the observations after picking "+lobs2);
 				}
 
 				//Trying to store everything in the tankers

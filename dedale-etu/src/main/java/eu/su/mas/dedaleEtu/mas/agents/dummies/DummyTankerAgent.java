@@ -299,13 +299,11 @@ class RandomTankerBehaviour extends TickerBehaviour{
         String goal_node = next_node; // select the initial random by default if the following checks fail
 
         if (!this.nodeBuffer.contains(next_node)){
-            // System.out.println("Selected node : " + next_node);
             goal_node = next_node;
         } else {
             for (int i = 1; i < lobs.size(); i++) {
                 next_node = lobs.get(i).getLeft();
                 if (!this.nodeBuffer.contains(next_node)){
-                    // System.out.println("Selected node : " + i + " " + next_node);
                     goal_node = next_node;
                     break;
                 }
