@@ -137,6 +137,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 	@Override
 	public void action() {
 
+
 		if(this.myMap==null) {
 			this.myMap= new MapRepresentation();
 			this.myAgent.addBehaviour(new ShareMapBehaviour(this.myAgent, TICK_TIME*2,this.myMap,list_agentNames));
@@ -168,9 +169,9 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 			this.myMap.addNode(myPosition, MapAttribute.closed);
 
 			//2) get the surrounding nodes and, if not in closedNodes, add them to open nodes.
-			if (!lobs.get(0).getRight().isEmpty()){
+			if (!lobs.get(0).getRight().isEmpty() && !lobs.get(0).getRight().get(0).getLeft().equals(Observation.LOCKSTATUS)){
                 Observation treasure_observed = lobs.get(0).getRight().get(0).getLeft();
-                System.out.println(this.myAgent.getLocalName()+" - I try to open the safe : " + treasure_observed + ", " +((AbstractDedaleAgent) this.myAgent).openLock(treasure_observed));
+                System.out.println(this.myAgent.getLocalName()+" - I try to open the safe" + lobs.get(0).getLeft() + " : " + treasure_observed + ", " +((AbstractDedaleAgent) this.myAgent).openLock(treasure_observed));
 			}
 
 			String nextNode=null;
@@ -234,7 +235,6 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 							e.printStackTrace();
 						}
 
-//						System.out.println("Mensajeeee! Recibido: " + sgreceived);
 						this.myMap.mergeMap(sgreceived);
 					}
 				}
