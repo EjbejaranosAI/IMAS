@@ -120,9 +120,6 @@ class RandomTankerBehaviour extends TickerBehaviour{
             List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
             //Random move from the current position
             String next_node = chooseNextNode(lobs);
-            // System.out.println(this.myAgent.getLocalName() + " - " + next_node);
-            //The move action (if any) should be the last action of your behaviour
-            // ((AbstractDedaleAgent)this.myAgent).moveTo(next_node);
             if (next_node != null && !this.nodeBuffer.contains(next_node)){
 
                 if (this.nodeBuffer.size() == this.BUFFER_SIZE){

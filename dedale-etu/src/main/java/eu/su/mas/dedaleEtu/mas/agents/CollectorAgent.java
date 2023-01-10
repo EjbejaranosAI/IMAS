@@ -467,10 +467,6 @@ public class CollectorAgent extends AbstractDedaleAgent{
 			String myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
             this.current_position = myPosition;
 
-            if (this.stop_for_help){
-                // System.out.println(this.myAgent.getLocalName() + "Stopped waiting at " + myPosition);
-            }
-
 
 			if (myPosition!=""){
 				List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
@@ -543,7 +539,6 @@ public class CollectorAgent extends AbstractDedaleAgent{
                     // This means we moved
                     this.conflict_counter = 0;
                     this.current_position = next_node;
-                    // System.out.println(this.myAgent.getLocalName() + " - Moved to position: " + this.current_position);
                 }
 
                 // Update buffer only if the agent moved and if the new node is not in the buffer
@@ -556,8 +551,6 @@ public class CollectorAgent extends AbstractDedaleAgent{
 					this.nodeBuffer.add(next_node);
 				}
 
-
-				// System.out.println(this.myAgent.getLocalName()+" - nodebuffer: " + this.nodeBuffer);
 
                 // Before iteration ends, share and merge TreasureInfo with nearby agents
                 shareTreasureInfo();
