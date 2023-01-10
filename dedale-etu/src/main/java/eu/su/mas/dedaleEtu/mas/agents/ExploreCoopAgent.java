@@ -1,11 +1,9 @@
-package eu.su.mas.dedaleEtu.mas.agents.dummies.explo;
+package eu.su.mas.dedaleEtu.mas.agents;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 
-import dataStructures.tuple.Couple;
-import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agent.behaviours.startMyBehaviours;
 
@@ -78,7 +76,6 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 
 
 		List<Behaviour> lb=new ArrayList<Behaviour>();
-		List<Couple<String, List<Couple<Observation, Integer>>>> treasures = new ArrayList<>();
 
 		/************************************************
 		 *
@@ -86,7 +83,7 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 		 *
 		 ************************************************/
 
-		lb.add(new ExploCoopBehaviour(this,this.myMap,list_agentNames, treasures));
+		lb.add(new ExploCoopBehaviour(this,this.myMap,list_agentNames));
 		// lb.add(new PathSharing(this,this.myMap));
 		/***
 		 * MANDATORY TO ALLOW YOUR AGENT TO BE DEPLOYED CORRECTLY

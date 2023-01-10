@@ -1,4 +1,4 @@
-package eu.su.mas.dedaleEtu.mas.agents.dummies;
+package eu.su.mas.dedaleEtu.mas.agents;
 
 
 import eu.su.mas.dedale.env.Observation;
@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Random;
 
 import dataStructures.tuple.Couple;
-import def.HashCodeUtil;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;

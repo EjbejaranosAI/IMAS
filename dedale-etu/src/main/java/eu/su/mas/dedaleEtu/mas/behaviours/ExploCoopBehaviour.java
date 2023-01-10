@@ -1,27 +1,17 @@
 package eu.su.mas.dedaleEtu.mas.behaviours;
 
-import java.io.IOException;
-import java.io.Serializable;
 import java.util.*;
-import java.io.ObjectInputStream;
 
 import dataStructures.serializableGraph.SerializableSimpleGraph;
 import dataStructures.tuple.Couple;
 import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 
-import eu.su.mas.dedaleEtu.mas.agents.dummies.explo.ExploreCoopAgent;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation.MapAttribute;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
-import eu.su.mas.dedaleEtu.mas.behaviours.ShareMapBehaviour;
-import eu.su.mas.dedaleEtu.mas.behaviours.ShareTreasuresLocBehaviour;
-import eu.su.mas.dedaleEtu.mas.behaviours.SharePath;
 
 
-import jade.core.AID;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
-import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
@@ -57,7 +47,6 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 	private List<String> list_agentNames;
 
-	private List<Couple<String, List<Couple<Observation, Integer>>>> treasures = new ArrayList<>();
 
     private static final int TICK_TIME = Globals.TICK_TIME;
     private int blocked_counter = 0;
@@ -73,11 +62,10 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 	 * @param myMap known map of the world the agent is living in
 	 * @param agentNames name of the agents to share the map with
 	 */
-	public ExploCoopBehaviour(final AbstractDedaleAgent myagent, MapRepresentation myMap,List<String> agentNames, List<Couple<String, List<Couple<Observation, Integer>>>> treasures) {
+	public ExploCoopBehaviour(final AbstractDedaleAgent myagent, MapRepresentation myMap,List<String> agentNames) {
 		super(myagent);
 		this.myMap=myMap;
 		this.list_agentNames=agentNames;
-		this.treasures=treasures;
 	}
 
     private void tmpRandomMovement(List<Couple<String,List<Couple<Observation,Integer>>>> lobs){
@@ -142,7 +130,6 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 		if(this.myMap==null) {
 			this.myMap= new MapRepresentation();
 			this.myAgent.addBehaviour(new ShareMapBehaviour(this.myAgent, TICK_TIME,this.myMap,list_agentNames));
-			// this.myAgent.addBehaviour(new ShareTreasuresLocBehaviour(this.myAgent, TICK_TIME, this.treasures,list_agentNames)); // Explorers no longer handle treasure positions. No need to have this
 			this.myAgent.addBehaviour(new SharePath(this.myAgent, this.myMap));
 		}
 		//0) Retrieve the current position

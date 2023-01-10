@@ -1,4 +1,4 @@
-package eu.su.mas.dedaleEtu.mas.agents.dummies;
+package eu.su.mas.dedaleEtu.mas.agents;
 
 
 import java.util.*;
@@ -19,7 +19,7 @@ import eu.su.mas.dedaleEtu.princ.Globals;
  * @author hc
  *
  */
-public class DummyTankerAgent extends AbstractDedaleAgent{
+public class TankerAgent extends AbstractDedaleAgent{
 
 	/**
 	 *
