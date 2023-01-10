@@ -142,7 +142,7 @@ This can be reproduced executing the "conflict_demo".
 https://user-images.githubusercontent.com/48654069/211534113-61abd842-f0a7-4545-a8bb-39bf75146068.mp4
 
 
-### Do you like it?
+### Some suggestion?
 
 Contact us: 
 * natalia.de.los.angeles.sanchez@estudiantat.upc.ed
