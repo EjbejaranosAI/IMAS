@@ -53,19 +53,32 @@ mvn install java exec:
 
 ### 💻 Some Demo examples
 #### Rio: the big map
+This demo shows the general picture of how all agents combined behave in a real world scenario map. In this case this is a residential are from Rio de Janeiro. This can be further explored executing the main branch.
+
 https://user-images.githubusercontent.com/48654069/211533953-f39a0edf-bcde-422d-ba9b-56016bc33dda.mp4
 
 
-
 #### Backoff mechanism of collectors
+This demo demonstrates how collectors can backoff when they collide between them during a mission. Since they cannot improvise (no map knowledge), one of them needs to backtrack his path until he finds a node of escape and allow that way to the other collector to move on in his mission.
+
+This can be reproduced executing the "conflict_demo".
+
 https://user-images.githubusercontent.com/48654069/211534021-9f908355-c21c-4e30-8a16-4dd0018ad882.mp4
 
 
 
 #### Mission workflow on simplified map
+This demo shows how useful it can be, in a final stage where only one treasure is left to finish the problem, to have a mission mechanism. The diamond collector finds the diamond treasure (which he cannot collect in one go) and the explorers tell him the shortest path to it every time they cross paths.
+
+This can be reproduced executing the "conflict_demo".
+
 https://user-images.githubusercontent.com/48654069/211534073-6b375e66-321a-4b72-82d3-f5fedc8241d1.mp4
 
 
 
 #### Fast resolution on grid map
+This is an example on how the problem is solved in a simplified map.
+
+This can be reproduced executing the "conflict_demo".
+
 https://user-images.githubusercontent.com/48654069/211534113-61abd842-f0a7-4545-a8bb-39bf75146068.mp4
