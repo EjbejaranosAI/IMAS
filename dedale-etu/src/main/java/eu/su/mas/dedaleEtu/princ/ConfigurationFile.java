@@ -54,8 +54,8 @@ public final class ConfigurationFile {
 	/**
 	 * The environment is either manually designed, or generated with a specific generator
 	 */
-	// public static GeneratorType GENERATOR_TYPE=GeneratorType.MANUAL;
-	public static GeneratorType GENERATOR_TYPE=GeneratorType.GS_GRID;
+	public static GeneratorType GENERATOR_TYPE=GeneratorType.MANUAL;
+	// public static GeneratorType GENERATOR_TYPE=GeneratorType.GS_GRID;
 
 	/**
 	 * 	The GateKeeper is in charge of the Platform and of the agents within, do not change its name.
@@ -83,7 +83,7 @@ public final class ConfigurationFile {
 	//public static String INSTANCE_TOPOLOGY="resources/topology/MinimalMapExample";
 	//public static String INSTANCE_TOPOLOGY="resources/interlocking/mapInterlocking2-topology";
 	//public static String INSTANCE_TOPOLOGY="resources/topology/grid.dgs";
-	public static String INSTANCE_TOPOLOGY="resources/topology/rio.dgs";
+	public static String INSTANCE_TOPOLOGY="resources/topology/conflict.dgs";
 	//public static String INSTANCE_TOPOLOGY="resources/map2018-topology";
 	//public static String INSTANCE_TOPOLOGY="resources/map2019-topologyExam1";
 	/**
@@ -92,7 +92,7 @@ public final class ConfigurationFile {
 	// If the environment is loaded but you do not want to define elements on the map
 	// public static String INSTANCE_CONFIGURATION_ELEMENTS="resources/distributedExploration/testMap";
 	// public static String INSTANCE_CONFIGURATION_ELEMENTS="resources/distributedExploration/grid2";
-	public static String INSTANCE_CONFIGURATION_ELEMENTS="resources/distributedExploration/rioDummy";
+	public static String INSTANCE_CONFIGURATION_ELEMENTS="resources/distributedExploration/conflict";
 
 	// otherwise
 	//public static String INSTANCE_CONFIGURATION_ELEMENTS="resources/treasureHunt/map2019-elementsExam1";
