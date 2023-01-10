@@ -345,7 +345,7 @@ public class Principal {
 		agentName="Explo1";
 
 		//3) If you want to give specific parameters to your agent, add them here
-		Object [] entityParametersExplo1={"Explo1"};
+		Object [] entityParametersExplo1={"Explo2", "Explo3"};
 
 		// 4) Give the class name of your agent to let the system instantiate it
 		ag=createNewDedaleAgent(c, agentName,ExploreCoopAgent.class.getName(), entityParametersExplo1);
@@ -383,7 +383,7 @@ public class Principal {
 
 		//3) If you want to give specific parameters to your agent, add them here
 		//Object [] entityParametersExplo3={"My parameters"};
-		Object [] entityParametersExplo3={"Explo3"};
+		Object [] entityParametersExplo3={"Explo1", "Explo2"};
 		//4) Give the class name of your agent to let the system instantiate it
 		ag=createNewDedaleAgent(c, agentName, ExploreCoopAgent.class.getName(), entityParametersExplo3);//ExploreSoloAgent
 		// ag=createNewDedaleAgent(c, agentName, ExploreCoopAgent.class.getName(), entityParametersExplo3);//ExploreSoloAgent

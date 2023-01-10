@@ -60,7 +60,7 @@ public class SharePath extends TickerBehaviour {
                         minSize = temporalPath.size();
                     }
                 } catch(Exception e){
-                    System.out.println("No solution for this goal");
+                    System.out.println(this.myAgent.getLocalName() + " - I could not find a solution for the path: " + points.get(0) + ":" + points.get(i+1));
                 }
             }
 
@@ -85,7 +85,7 @@ public class SharePath extends TickerBehaviour {
             msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
         }
         msg.setContent(message);
-        System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContent()+" - To: "+ Receivers);
+        // System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContent()+" - To: "+ Receivers);
         ((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
     }
 
@@ -103,7 +103,7 @@ public class SharePath extends TickerBehaviour {
 
         if (msgReceived!=null) {
             String message = msgReceived.getContent();
-            System.out.println(this.myAgent.getLocalName() + " received the message --> " + message+" by: "+msgReceived.getSender().getName());
+            // System.out.println(this.myAgent.getLocalName() + " received the message --> " + message+" by: "+msgReceived.getSender().getName());
             ArrayList<String> res =new ArrayList<>(Arrays.asList(message,msgReceived.getSender().getLocalName()));
             return res;
         }
@@ -123,10 +123,9 @@ public class SharePath extends TickerBehaviour {
         //					System.out.println("TankerBehaviour msgReceived: " + msgReceived);
         ArrayList<List> paths = null;
         if (msgReceived != null) {
-            //					System.out.println("TankerBehaviour msgReceived INDISE: " + msgReceived);
             try {
                 paths = (ArrayList<List>) msgReceived.getContentObject();
-                System.out.println(this.myAgent.getLocalName() + " received the message --> " + paths);
+                // System.out.println(this.myAgent.getLocalName() + " received the message --> " + paths);
             } catch (UnreadableException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -153,11 +152,11 @@ public class SharePath extends TickerBehaviour {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        try {
-            System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContentObject());
-        } catch (UnreadableException e) {
-            throw new RuntimeException(e);
-        }
+        // try {
+        //     // System.out.println(this.myAgent.getLocalName()+" sent the message --> "+ msg.getContentObject());
+        // } catch (UnreadableException e) {
+        //     throw new RuntimeException(e);
+        // }
         ((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
     }
 }

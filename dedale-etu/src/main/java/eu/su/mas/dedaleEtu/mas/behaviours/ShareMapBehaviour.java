@@ -48,9 +48,7 @@ public class ShareMapBehaviour extends TickerBehaviour{
 
 	@Override
 	protected void onTick() {
-//		System.out.println("Entro en ShareMap");
 		//4) At each time step, the agent blindly send all its graph to its surrounding to illustrate how to share its knowledge (the topology currently) with the the others agents.
-		// If it was written properly, this sharing action should be in a dedicated behaviour set, the receivers be automatically computed, and only a subgraph would be shared.
 
 		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
 		msg.setProtocol("SHARE-TOPO");
@@ -58,7 +56,6 @@ public class ShareMapBehaviour extends TickerBehaviour{
 //		System.out.println("Senders name:  "+ this.myAgent.getAID());
 		for (String agentName : receivers) {
 			msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
-//			System.out.println("Recievers name:  "+ agentName + AID.ISLOCALNAME);
 		}
 
 		SerializableSimpleGraph<String, MapAttribute> sg=this.myMap.getSerializableGraph();
@@ -67,10 +64,7 @@ public class ShareMapBehaviour extends TickerBehaviour{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-//		System.out.println("Mensajeee! Enviado:  "+ msg);
 		((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
-
-
 	}
 
 }

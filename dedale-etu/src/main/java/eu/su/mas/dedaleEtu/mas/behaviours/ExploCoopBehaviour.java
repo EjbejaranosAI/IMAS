@@ -91,6 +91,9 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
             this.nodeBuffer.add(next_node);
         }
         this.random_tmp_steps -= 1;
+        if (this.random_tmp_steps == 0){
+            System.out.println(this.myAgent.getLocalName() + " - Finished tmp random walk.");
+        }
     }
 
     private String moveToNextNodeRandom(List<Couple<String,List<Couple<Observation,Integer>>>> lobs){
@@ -101,13 +104,11 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
         String goal_node = next_node; // select the initial random by default if the following checks fail
 
         if (!this.nodeBuffer.contains(next_node)){
-            // System.out.println("Selected node : " + next_node);
             goal_node = next_node;
         } else {
             for (int i = 1; i < lobs.size(); i++) {
                 next_node = lobs.get(i).getLeft();
                 if (!this.nodeBuffer.contains(next_node)){
-                    // System.out.println("Selected node : " + i + " " + next_node);
                     goal_node = next_node;
                     break;
                 }
@@ -138,8 +139,8 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 		if(this.myMap==null) {
 			this.myMap= new MapRepresentation();
-			this.myAgent.addBehaviour(new ShareMapBehaviour(this.myAgent, TICK_TIME,this.myMap,list_agentNames));
-			this.myAgent.addBehaviour(new ShareTreasuresLocBehaviour(this.myAgent, TICK_TIME, this.treasures,list_agentNames));
+			this.myAgent.addBehaviour(new ShareMapBehaviour(this.myAgent, TICK_TIME*2,this.myMap,list_agentNames));
+			// this.myAgent.addBehaviour(new ShareTreasuresLocBehaviour(this.myAgent, TICK_TIME, this.treasures,list_agentNames)); // Explorers no longer handle treasure positions. No need to have this
 			this.myAgent.addBehaviour(new SharePath(this.myAgent, this.myMap));
 		}
 		//0) Retrieve the current position
@@ -147,13 +148,12 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 		if (myPosition!=null){
 			//List of observable from the agent's current position
-			List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
+			List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();
             
             if (this.random_tmp_steps > 0){
                 tmpRandomMovement(lobs);
                 return;
             }
-			//System.out.println(this.myAgent.getLocalName()+" -- list of observables: "+lobs);
 
 			/**
 			 * Just added here to let you see what the agent is doing, otherwise he will be too quick
@@ -170,11 +170,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 			//2) get the surrounding nodes and, if not in closedNodes, add them to open nodes.
 			if (!lobs.get(0).getRight().isEmpty()){
                 Observation treasure_observed = lobs.get(0).getRight().get(0).getLeft();
-
                 System.out.println(this.myAgent.getLocalName()+" - I try to open the safe : " + treasure_observed + ", " +((AbstractDedaleAgent) this.myAgent).openLock(treasure_observed));
-
-				this.treasures.add(lobs.get(0));
-				// System.out.println(this.myAgent.getLocalName()+ ":    "+this.treasures);
 			}
 
 			String nextNode=null;
@@ -193,9 +189,8 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 			//3) while openNodes is not empty, continues.
 			if (!this.myMap.hasOpenNode() || explored){
-				//Explo finished
+				// Map completed, start random movement
 				explored=true;
-				// System.out.println(this.myAgent.getLocalName()+" - Exploration successufully done, behaviour removed.");
                 nextNode = moveToNextNodeRandom(lobs);
                 if (nextNode != null && !this.nodeBuffer.contains(nextNode)){
 
@@ -205,8 +200,6 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
                     this.nodeBuffer.add(nextNode);
                 }
-                // TODO: Add this behaviour back somehow without stopping
-				// this.myAgent.addBehaviour(new ExploreCoopAgent.HelloPath((AbstractDedaleAgent) this.myAgent, this.myMap, this.treasures));
 			}else{
 				//4) select next move.
 				//4.1 If there exist one open node directly reachable, go for it,
@@ -216,15 +209,9 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 					//chose one, compute the path and take the first step.
 					nextNode=this.myMap.getShortestPathToClosestOpenNode(myPosition).get(0);//getShortestPath(myPosition,this.openNodes.get(0)).get(0);
                      
-					//System.out.println(this.myAgent.getLocalName()+"-- list= "+this.myMap.getOpenNodes()+"| nextNode: "+nextNode);
-				}else {
-					// return until the node that have other open nodes
-					// System.out.println(this.myAgent.getLocalName()+"-- nextNode: "+nextNode);
-					//System.out.println("nextNode notNUll - "+this.myAgent.getLocalName()+"-- list= "+this.myMap.getOpenNodes()+"\n -- nextNode: "+nextNode);
 				}
 
 				//5) At each time step, the agent check if he received a graph from a teammate.
-				// If it was written properly, this sharing action should be in a dedicated behaviour set.
 				MessageTemplate msgTemplate=MessageTemplate.and(
 						MessageTemplate.MatchProtocol("SHARE-TOPO"),
 						MessageTemplate.MatchPerformative(ACLMessage.INFORM));
@@ -244,7 +231,6 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 							sgreceived = (SerializableSimpleGraph<String, MapAttribute>) msgReceived.getContentObject();
 						} catch (UnreadableException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 
@@ -253,45 +239,12 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 					}
 				}
 
-				MessageTemplate msgTreasure=MessageTemplate.and(
-						MessageTemplate.MatchProtocol("SHARE-TOPO"),
-						MessageTemplate.MatchPerformative(ACLMessage.INFORM));
-				ACLMessage msgTreasureReceived=this.myAgent.receive(msgTreasure);
-//				System.out.println("msgReceived: " + msgReceived);
-
-				if (msgTreasureReceived!=null) {
-					String msgclass;
-					try {
-						msgclass = msgTreasureReceived.getContentObject().getClass().getName();
-
-					} catch (UnreadableException e) {
-						throw new RuntimeException(e);
-					}
-
-					if (msgclass == "java.util.ArrayList") {
-
-						List<Couple<String, List<Couple<Observation, Integer>>>> tlreceived = null;
-						try {
-							tlreceived = (List<Couple<String, List<Couple<Observation, Integer>>>>) msgTreasureReceived.getContentObject();
-						} catch (UnreadableException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-
-						//System.out.println("---------------------->Mensajeeee Treasure! Recibido: " + tlreceived);
-						this.treasures.addAll(tlreceived);
-						Set<Couple<String, List<Couple<Observation, Integer>>>> set = new HashSet<>(this.treasures);
-						this.treasures.clear();
-						this.treasures.addAll((Collection<? extends Couple<String, List<Couple<Observation, Integer>>>>) set);
-						// System.out.println(this.myAgent.getLocalName()+ "----- Merged treasures list: " + this.treasures);
-					}
-				}
-
+                // Resolve blocked path with another explorer by doing a tmp random walk
 				if (!explored && !((AbstractDedaleAgent)this.myAgent).moveTo(nextNode)){
                     this.blocked_counter += 1;
                     // System.out.println("Blocked during: " + this.blocked_counter);
                     if (this.blocked_counter > 5){
-                        System.out.println("I am too sad and blocked");
+                        System.out.println(this.myAgent.getLocalName() + " - I was blocked for too long. Doing a random walk.");
                         this.blocked_counter = 0;
                         this.random_tmp_steps = 10;
 
