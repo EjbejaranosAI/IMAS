@@ -179,6 +179,9 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 			//3) while openNodes is not empty, continues.
 			if (!this.myMap.hasOpenNode() || explored){
 				// Map completed, start random movement
+                if (!explored){
+                    System.out.println("Finished map exploration!");
+                }
 				explored=true;
                 nextNode = moveToNextNodeRandom(lobs);
                 if (nextNode != null && !this.nodeBuffer.contains(nextNode)){
@@ -229,6 +232,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
                 // Resolve blocked path with another explorer by doing a tmp random walk
 				if (!explored && !((AbstractDedaleAgent)this.myAgent).moveTo(nextNode)){
+                    System.out.println(this.myAgent.getLocalName() + " - I am blocked");
                     this.blocked_counter += 1;
                     // System.out.println("Blocked during: " + this.blocked_counter);
                     if (this.blocked_counter > 5){
