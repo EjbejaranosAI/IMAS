@@ -27,9 +27,11 @@ Explorers interaction                         |  Explorers collectors interactio
  
 
 <div align="center">
-Collectors interaction                       |  Tankers collectors interaction             | 
+ 
+Collectors interaction                       |  Tankers collectors interaction              | 
 :--------------------------------------------:|:-------------------------------------------:|
-![](img/Collectors_interaction2.png)         | ![](img/Tankers_Collectors_interaction.png) | 
+![](img/Collectors_interaction2.png)         | ![](img/Tankers_Collectors_interaction.png)  | 
+ 
 </div>
 
 ## 🚀 Getting Started
