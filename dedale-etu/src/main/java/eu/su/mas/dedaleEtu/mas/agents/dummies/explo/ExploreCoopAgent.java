@@ -311,5 +311,24 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 			}
 			return null;
 		}
+
+		public static ArrayList<ArrayList<String>> prevPath(ArrayList<ArrayList<String>> Path) {
+			for (int i = 0; i < Path.size()-1; i++) {
+				System.out.println(Path.get(i+1));
+				System.out.println(Path.get(i).get(Path.get(i).size()-1));
+				Path.get(i+1).add(0, Path.get(i).get(Path.get(i).size()-1));
+				Path.get(i).remove(Path.get(i).size()-1);
+				System.out.println(Path);
+			}
+			return Path;
+		}
+
+		public static ArrayList<ArrayList<String>> postPath(ArrayList<ArrayList<String>> Path) {
+			for (int i = 0; i < Path.size()-1; i++) {
+				Path.get(i).add(Path.get(i+1).get(0));
+				Path.get(i+1).remove(0);
+			}
+			return Path;
+		}
 	}
 }
