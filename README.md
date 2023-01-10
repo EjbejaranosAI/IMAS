@@ -26,9 +26,10 @@ Explorers interaction                         |  Explorers collectors interactio
  ![](img/Explorers_Interaction.png)           | ![](img/Explorers_Collectors_Interaction.png) |   ![](img/Collectors_interaction.png)        |
  
 <p align="center">
- Collectors interaction                       |  Tankers collectors interaction             | 
-:--------------------------------------------:|:-------------------------------------------:|
- ![](img/Collectors_interaction2.png)         | ![](img/Tankers_Collectors_interaction.png) | 
+ 
+                                Collectors interaction                       |  Tankers collectors interaction             | 
+                               :--------------------------------------------:|:-------------------------------------------:|
+                                ![](img/Collectors_interaction2.png)         | ![](img/Tankers_Collectors_interaction.png) | 
 
 </p>
 
