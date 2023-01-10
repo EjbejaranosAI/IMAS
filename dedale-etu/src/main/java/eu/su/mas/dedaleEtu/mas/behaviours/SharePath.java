@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.*;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
+import eu.su.mas.dedaleEtu.princ.Globals;
 
 
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
@@ -31,7 +32,7 @@ public class SharePath extends TickerBehaviour {
 
 
     public SharePath (Agent myagent, MapRepresentation myMap) {
-        super(myagent,100);
+        super(myagent, Globals.TICK_TIME);
         this.myMap=myMap;
         this.myAgent=myagent;
 

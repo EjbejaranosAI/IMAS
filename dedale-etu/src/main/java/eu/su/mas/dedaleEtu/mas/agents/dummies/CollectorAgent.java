@@ -5,6 +5,8 @@ import eu.su.mas.dedale.env.Observation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agent.behaviours.startMyBehaviours;
 
+import eu.su.mas.dedaleEtu.princ.Globals;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,7 +64,7 @@ public class CollectorAgent extends AbstractDedaleAgent{
 	class CollectorBehaviour extends TickerBehaviour{
 		private static final long serialVersionUID = 9088209402507795289L;
 		private static final int BUFFER_SIZE = 8;
-        private static final int TICK_TIME = 100;
+        private static final int TICK_TIME = Globals.TICK_TIME;
 
         private String current_position;
 

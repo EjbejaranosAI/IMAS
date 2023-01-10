@@ -12,7 +12,7 @@ import eu.su.mas.dedale.mas.agent.behaviours.startMyBehaviours;
 
 import eu.su.mas.dedaleEtu.mas.behaviours.ExploCoopBehaviour;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
-
+import eu.su.mas.dedaleEtu.princ.Globals;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.TickerBehaviour;
 
@@ -123,7 +123,7 @@ public class ExploreCoopAgent extends AbstractDedaleAgent {
 
 
 		public PathSharing (final AbstractDedaleAgent myagent, MapRepresentation myMap) {
-			super(myagent,100);
+			super(myagent,Globals.TICK_TIME);
 			this.myMap=myMap;
 			this.myAgent=myagent;
 

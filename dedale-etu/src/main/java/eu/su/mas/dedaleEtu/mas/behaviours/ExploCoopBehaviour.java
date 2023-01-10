@@ -27,6 +27,7 @@ import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 
 
+import eu.su.mas.dedaleEtu.princ.Globals;
 /**
  * <pre>
  * This behaviour allows an agent to explore the environment and learn the associated topological map.
@@ -58,7 +59,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 	private List<Couple<String, List<Couple<Observation, Integer>>>> treasures = new ArrayList<>();
 
-    private static final int TICK_TIME = 100;
+    private static final int TICK_TIME = Globals.TICK_TIME;
     private int blocked_counter = 0;
     private int random_tmp_steps = 0;
 
@@ -140,7 +141,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 
 		if(this.myMap==null) {
 			this.myMap= new MapRepresentation();
-			this.myAgent.addBehaviour(new ShareMapBehaviour(this.myAgent, TICK_TIME*2,this.myMap,list_agentNames));
+			this.myAgent.addBehaviour(new ShareMapBehaviour(this.myAgent, TICK_TIME,this.myMap,list_agentNames));
 			// this.myAgent.addBehaviour(new ShareTreasuresLocBehaviour(this.myAgent, TICK_TIME, this.treasures,list_agentNames)); // Explorers no longer handle treasure positions. No need to have this
 			this.myAgent.addBehaviour(new SharePath(this.myAgent, this.myMap));
 		}
@@ -160,7 +161,7 @@ public class ExploCoopBehaviour extends SimpleBehaviour {
 			 * Just added here to let you see what the agent is doing, otherwise he will be too quick
 			 */
 			try {
-				this.myAgent.doWait(100);
+				this.myAgent.doWait(this.TICK_TIME);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
