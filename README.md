@@ -151,4 +151,5 @@ Contact us:
 * lucia.urcelay@estudiantat.upc.ed
 * wafaa.guendouz@estudiantat.upc.ed
 * edison.bejarano@estudiantat.upc.edu
+
 ![image](https://user-images.githubusercontent.com/91475734/211587108-9387b762-47b8-4763-bc8f-714217a1cc5c.png)
