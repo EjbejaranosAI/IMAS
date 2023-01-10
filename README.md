@@ -78,10 +78,10 @@ Execute the jetbrains-toolbox binary from the extracted directory to run the Too
 
 
 
-#### Builds 
-![image](https://user-images.githubusercontent.com/91475734/211587108-9387b762-47b8-4763-bc8f-714217a1cc5c.png)
+#### Builds ![image](https://user-images.githubusercontent.com/91475734/211587108-9387b762-47b8-4763-bc8f-714217a1cc5c.png)
 
 Next of this, install the Jdk appropiate for your machine:
+
 [Linux/AArch64](https://download.java.net/java/GA/jdk18.0.2.1/db379da656dc47308e138f21b33976fa/1/GPL/openjdk-18.0.2.1_linux-aarch64_bin.tar.gz.sha256)
 
 [Linux/x64](https://download.java.net/java/GA/jdk18.0.2.1/db379da656dc47308e138f21b33976fa/1/GPL/openjdk-18.0.2.1_linux-x64_bin.tar.gz)
