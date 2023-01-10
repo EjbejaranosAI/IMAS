@@ -1,8 +1,24 @@
 # ✨ IMAS MULTI-AGENT SYSTEMS ✨
 
+
 MAS (Integrated Multi-Agent Systems) is a software platform for developing multi-agent systems. It is based on the JADE (Java Agent DEvelopment Framework) platform and provides a set of tools and libraries for building agent-based systems.
 
 In a multi-agent system, multiple agents interact with each other and with their environment to achieve a common goal or solve a problem. Each agent is a self-contained software entity that can act independently and communicate with other agents. The agents in a multi-agent system are typically distributed and communicate with each other using a message-passing model.
+
+#✨Treasure hunt problem✨
+
+### Types of agents available
+
+#### Explorers
+The primary objective of Explorers is to navigate and survey the environment. They can collaborate with other explorers to create a comprehensive map of the area. While they possess strong lock-picking skills, they are not able to collect treasures.
+
+#### Collectors
+Collectors are focused on transporting the treasures that have been collected. They have the ability to carry a large number of treasures, but lack the capability to collect or unlock safes.
+
+#### Tankers
+Tankers are designed to gather treasures, with a limited capacity backpack for carrying either gold or diamonds. They can accumulate as many treasures as their backpack allows. When in communication range with another Tanker, they can transfer the contents of their backpack. Tankers have limited safe-cracking abilities.
+
+
 
 
 
@@ -37,6 +53,26 @@ Hombrew install maven
 - For Windows
 
 - For Linux
+
+```
+sudo apt install maven
+```
+
+```
+sudo tar -xzf jetbrains-toolbox-1.17.7391.tar.gz -C /opt
+```
+
+Execute the jetbrains-toolbox binary from the extracted directory to run the Toolbox App.
+
+Next of this, install the Jdk appropiate for your machine:
+
+Builds
+
+Linux/AArch64 https://download.java.net/java/GA/jdk18.0.2.1/db379da656dc47308e138f21b33976fa/1/GPL/openjdk-18.0.2.1_linux-aarch64_bin.tar.gz.sha256 
+Linux/x64 https://download.java.net/java/GA/jdk18.0.2.1/db379da656dc47308e138f21b33976fa/1/GPL/openjdk-18.0.2.1_linux-x64_bin.tar.gz
+macOS/AArch64 https://download.java.net/java/GA/jdk18.0.2.1/db379da656dc47308e138f21b33976fa/1/GPL/openjdk-18.0.2.1_macos-aarch64_bin.tar.gz
+macOS/x64	https://download.java.net/java/GA/jdk18.0.2.1/db379da656dc47308e138f21b33976fa/1/GPL/openjdk-18.0.2.1_macos-x64_bin.tar.gz
+Windows/ x64	https://download.java.net/java/GA/jdk18.0.2.1/db379da656dc47308e138f21b33976fa/1/GPL/openjdk-18.0.2.1_windows-x64_bin.zip
 
 ### 💻 Run the code
 
