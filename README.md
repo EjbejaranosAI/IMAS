@@ -18,11 +18,11 @@ Collectors are focused on transporting the treasures that have been collected. T
 #### Tankers
 Tankers are designed to gather treasures, with a limited capacity backpack for carrying either gold or diamonds. They can accumulate as many treasures as their backpack allows. When in communication range with another Tanker, they can transfer the contents of their backpack. Tankers have limited safe-cracking abilities.
 
-![](img/Explorers_Collectors_Interaction.png)
 
-![](img/Explorers_Interaction.png)
+Solarized dark                                |  Solarized Ocean                     |  Solarized Ocean                             |
+:--------------------------------------------:|:------------------------------------:|:---------------------------------------------:
+![](img/Explorers_Collectors_Interaction.png) |  ![](img/Explorers_Interaction.png)  |  ![](img/Tankers_Collectors_interaction.png) |
 
-![](img/Tankers_Collectors_interaction.png)
 
 
 
