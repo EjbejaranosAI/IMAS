@@ -51,3 +51,15 @@ mvn install java exec:
 ```
 
 
+### 💻 Some Demo examples
+#### Rio: the big map
+![](img/rio.gif)
+
+#### Backoff mechanism of collectors
+![](img/backoff.gif)
+
+#### Mission workflow on simplified map
+![](img/mission_workflow.mp4)
+
+#### Fast resolution on grid map
+![](img/fast_grid.gif)
