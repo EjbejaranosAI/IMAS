@@ -145,11 +145,11 @@ https://user-images.githubusercontent.com/48654069/211534113-61abd842-f0a7-4545-
 ### Some suggestion?
 
 Contact us: 
-* natalia.de.los.angeles.sanchez@estudiantat.upc.ed
-* mario.rosas@estudiantat.upc.ed
-* adria.carrasquilla@estudiantat.upc.ed
-* lucia.urcelay@estudiantat.upc.ed
-* wafaa.guendouz@estudiantat.upc.ed
+* natalia.de.los.angeles.sanchez@estudiantat.upc.edu
+* mario.rosas@estudiantat.upc.edu
+* adria.carrasquilla@estudiantat.upc.edu
+* lucia.urcelay@estudiantat.upc.edu
+* wafaa.guendouz@estudiantat.upc.edu
 * edison.bejarano@estudiantat.upc.edu
 
 ![image](https://user-images.githubusercontent.com/91475734/211587108-9387b762-47b8-4763-bc8f-714217a1cc5c.png)
