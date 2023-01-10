@@ -297,7 +297,7 @@ public class Principal {
 
 		// 4) Give the class name of your agent to let the system instantiate it
 		ag=createNewDedaleAgent(c, agentName,ExploreCoopAgent.class.getName(), entityParametersExplo1);
-		agentList.add(ag);
+		// agentList.add(ag);
 
 
 		/*********
@@ -315,7 +315,7 @@ public class Principal {
 
 		//4) Give the class name of your agent to let the system instantiate it
 	    ag=createNewDedaleAgent(c, agentName, ExploreCoopAgent.class.getName(), entityParametersExplo2);//ExploreSoloAgent
-	    agentList.add(ag);
+	    // agentList.add(ag);
 
 
 
@@ -336,7 +336,7 @@ public class Principal {
 		ag=createNewDedaleAgent(c, agentName, ExploreCoopAgent.class.getName(), entityParametersExplo3);//ExploreSoloAgent
 		// ag=createNewDedaleAgent(c, agentName, ExploreCoopAgent.class.getName(), entityParametersExplo3);//ExploreSoloAgent
 
-		agentList.add(ag);
+		// agentList.add(ag);
 
 
 		/*********
@@ -354,7 +354,7 @@ public class Principal {
 
         //4) Give the class name of your agent to let the system instantiate it
         ag=createNewDedaleAgent(c, agentName, CollectorAgent.class.getName(), entityParametersC);
-        // agentList.add(ag);
+        agentList.add(ag);
 
 		/*********
 		 * AGENT Collect 2
@@ -372,7 +372,7 @@ public class Principal {
 
         //4) Give the class name of your agent to let the system instantiate it
         ag=createNewDedaleAgent(c, agentName, CollectorAgent.class.getName(), entityParametersC2);
-        // agentList.add(ag);
+        agentList.add(ag);
 
 		/*********
 		 * AGENT Collect 3

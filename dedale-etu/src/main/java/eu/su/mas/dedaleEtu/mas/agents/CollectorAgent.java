@@ -72,7 +72,7 @@ public class CollectorAgent extends AbstractDedaleAgent{
         private HashMap<String, Integer> treasureQuant = new HashMap<String, Integer>();
         private HashMap<String, String> treasureType = new HashMap<String, String>();
 
-        private boolean on_mission = false;
+        private boolean on_mission = true;
         private boolean backing_up = false;
         private int backoff_wait = 0;
         private int mission_step = 0;
@@ -83,14 +83,15 @@ public class CollectorAgent extends AbstractDedaleAgent{
         private boolean stop_for_help = false;
         private int stop_patience = 0;
 
-        private List<String> mission_path = new ArrayList<>(Arrays.asList("-116657", "-116656", "-116655", "-116654", "-116653", "-116652", "-116071", "-121367", "-121366", "-121365", "-121364", "-121363", "-121362", "-121361", "-121360", "-121359", "-121358", "-117834"));
+
+        private List<String> mission_path = new ArrayList<>(Arrays.asList("16","0", "1","2","3","4","5","7","8","9","6"));
 
 
 		public CollectorBehaviour (final AbstractDedaleAgent myagent) {
 			super(myagent, TICK_TIME);
             // TODO: remove this. Debugging purposes
             if (this.myAgent.getLocalName().toString().contains("2")){
-                this.mission_path = new ArrayList<>(Arrays.asList("-117834", "-121358", "-121359", "-121360", "-121361", "-121362", "-121363", "-121364", "-121365", "-121366", "-121367", "-116071", "-116652", "-116653", "-116654", "-116655", "-116656", "-116657"));
+                this.mission_path = new ArrayList<>(Arrays.asList("6","9","8","7","5","4","3","2","1","0","16"));
             }
 		}
 
@@ -235,9 +236,11 @@ public class CollectorAgent extends AbstractDedaleAgent{
             sendBlockingInfo();
             int backup = getBlockingInfo();
             if (backup == 1){
+                System.out.println(this.myAgent.getLocalName() + " Blocking solved! I need to backup");
                 this.backing_up = true;
                 // this.conflict_counter = 0; 
             } else if (backup == -1) {
+                System.out.println(this.myAgent.getLocalName() + " Blocking solved! The other agent will backup.");
                 // this.conflict_counter += 0; 
             } else {
                 this.conflict_counter += 1;
@@ -326,12 +329,13 @@ public class CollectorAgent extends AbstractDedaleAgent{
 
 			Boolean moved = ((AbstractDedaleAgent)this.myAgent).moveTo(next_node);
             if (!moved) {
+                System.out.println(this.myAgent.getLocalName() + " - I am blocked during a mission! Solving it");
                 solveBlockedPath();
                 return null;
             }
             this.mission_step += 1;
             if (this.mission_step == mission_path.size()){
-                System.out.println(this.myAgent.getLocalName() + " -- Finished mission: final node was a treasure :)");
+                System.out.println(this.myAgent.getLocalName() + " -- Finished mission!");
                 this.on_mission = false;
                 this.mission_step = 0;
                 this.mission_path = null;
@@ -475,6 +479,7 @@ public class CollectorAgent extends AbstractDedaleAgent{
 			if (myPosition!=""){
 				List<Couple<String,List<Couple<Observation,Integer>>>> lobs=((AbstractDedaleAgent)this.myAgent).observe();//myPosition
 				
+                // System.out.println(this.myAgent.getLocalName() + " -- " + myPosition);
 				//list of observations associated to the currentPosition
 				List<Couple<Observation,Integer>> lObservations= lobs.get(0).getRight();
 
@@ -531,6 +536,7 @@ public class CollectorAgent extends AbstractDedaleAgent{
                 String next_node = null;
                 if (!this.stop_for_help){
                     if (this.backing_up){
+                        System.out.println(this.myAgent.getLocalName() + " - Backing off...");
                         next_node = backOff(lobs);
                     } else if (this.on_mission && !this.backing_up){
                         next_node = moveToNode(lobs);
